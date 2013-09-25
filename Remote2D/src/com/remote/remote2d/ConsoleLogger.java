@@ -6,6 +6,8 @@ import com.remote.remote2d.world.Console;
 import com.remote.remote2d.world.Message;
 
 public class ConsoleLogger extends Logger {
+	
+	//Hello everyone!
 
 	public ConsoleLogger() {
 		// TODO Auto-generated constructor stub
@@ -14,6 +16,7 @@ public class ConsoleLogger extends Logger {
 	public void log(int level, String category, String message, Throwable ex)
 	{
 		new Logger().log(level, category, message, ex);
+		System.out.println("Evan is awesome!");
 		int color = 0xffffff;
 		if(level == Log.LEVEL_ERROR)
 			color = 0xff0000;
