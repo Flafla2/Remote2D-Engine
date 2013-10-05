@@ -1,7 +1,6 @@
 *.pydevproject
 .project
 .metadata
-bin/**
 tmp/**
 tmp/**/*
 *.tmp
@@ -26,4 +25,4 @@ local.properties
 .buildpath
 
 *.class
-/bin
+/bin/com # ignores compiled class files but still uploads bin/res
