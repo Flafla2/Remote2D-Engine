@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import com.esotericsoftware.minlog.Log;
+//import com.remote.remote2d.engine.art.CursorLoader; 	//for cursor
 import com.remote.remote2d.engine.art.TextureLoader;
 import com.remote.remote2d.engine.logic.ColliderBox;
 import com.remote.remote2d.engine.logic.Vector2;
@@ -167,7 +168,7 @@ public class DisplayHandler {
 		
 		lastTexReload = System.currentTimeMillis();
 		
-		//CursorLoader.setCursor(new Texture("/res/gui/mouse.png"), new Vector2D(22,22));
+		//CursorLoader.setCursor("/res/gui/mouse.png", new Vector2(22,22));
 	}
 	
 	public ColliderBox getScreenRenderArea()
