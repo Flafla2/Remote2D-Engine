@@ -122,19 +122,19 @@ public class DisplayHandler {
 			return new Vector2(screenWidth, screenHeight);
 	}
 
-	public Vector2 getScreenDimensions() {
+	public static Vector2 getScreenDimensions() {
 		return new Vector2(screenWidth, screenHeight);
 	}
 
-	public boolean getFullscreen() {
+	public static boolean getFullscreen() {
 		return fullscreen;
 	}
 
-	public StretchType getStretchType() {
+	public static StretchType getStretchType() {
 		return type;
 	}
 
-	public boolean getBorderless() {
+	public static boolean getBorderless() {
 		return borderless;
 	}
 
@@ -261,7 +261,7 @@ public class DisplayHandler {
 	 *            Sets the stretch mode of the game
 	 * @see StretchType
 	 */
-	public void setGameResolution(int resx, int resy, StretchType stretch) {
+	public static void setGameResolution(int resx, int resy, StretchType stretch) {
 		gameWidth = resx;
 		gameHeight = resy;
 		type = stretch;
