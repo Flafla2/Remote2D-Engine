@@ -8,7 +8,8 @@ public class GuiEditorInspectorSectionSetMaterial extends
 
 	public GuiEditorInspectorSectionSetMaterial(String name, GuiEditor inspector, Vector2 pos, int width) {
 		super(name, inspector, pos, width, new String[]{}, new Class[]{});
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	@Override

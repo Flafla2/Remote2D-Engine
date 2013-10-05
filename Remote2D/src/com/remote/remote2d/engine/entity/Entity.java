@@ -221,7 +221,7 @@ public class Entity extends EditorObject {
 	/**
 	 * All of this Entity's colliders are guaranteed to be inside this broad collider.
 	 * 
-	 * @returns null if there are no colliders, otherwise the broad phase collider.
+	 * @return null if there are no colliders, otherwise the broad phase collider.
 	 */
 	public Collider getBroadPhaseCollider()
 	{

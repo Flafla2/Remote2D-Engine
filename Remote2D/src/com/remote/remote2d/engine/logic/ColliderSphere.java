@@ -10,8 +10,7 @@ public class ColliderSphere extends Collider {
 	
 	/**
 	 * A simple Sphere Collider
-	 * @param x The x-position of the center of the sphere
-	 * @param y The y-position of the center of the sphere
+	 * @param pos The position of the center of the sphere
 	 * @param radius The radius of the sphere
 	 */
 	
