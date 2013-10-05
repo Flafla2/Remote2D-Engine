@@ -26,3 +26,4 @@ local.properties
 .buildpath
 
 *.class
+/bin
