@@ -26,8 +26,6 @@ public class FontRenderer {
 		this.useAntiAliasing = useAntiAliasing;
 		
 		cache = new LinkedHashMap<RenderData,Texture>(16, 0.75f, true) {
-			private static final long serialVersionUID = -7349332831502163204L;
-
 			@Override
 	    	protected boolean removeEldestEntry(Map.Entry<RenderData,Texture> eldest) {
 				if(size() > 16)

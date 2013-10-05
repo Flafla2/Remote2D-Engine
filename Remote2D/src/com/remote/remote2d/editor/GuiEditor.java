@@ -52,7 +52,6 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 		undoList = new Stack<Operation>();
 		redoList = new ArrayList<Operation>();
 		menu = new GuiEditorTopMenu(this);
-		Remote2D.getInstance().setExceptionsWillBeHandled(true);
 	}
 	
 	@Override

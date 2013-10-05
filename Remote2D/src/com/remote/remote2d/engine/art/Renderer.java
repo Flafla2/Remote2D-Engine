@@ -13,6 +13,7 @@ import com.remote.remote2d.engine.logic.Vector2;
  * 
  * TODO: Update from old OpenGL to new OpenGL.
  * @author Adrian
+ *
  */
 public class Renderer {
 	

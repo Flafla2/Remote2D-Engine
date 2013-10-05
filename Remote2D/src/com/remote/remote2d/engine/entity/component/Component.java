@@ -24,10 +24,6 @@ public abstract class Component extends EditorObject{
 	
 	protected Entity entity;
 	
-	public Entity getEntity() {
-		return entity;
-	}
-
 	public Component()
 	{
 		super(null,null);
