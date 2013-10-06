@@ -333,9 +333,8 @@ public class DisplayHandler {
 						}
 
 						// if we've found a match for bpp and frequence against
-						// the
-						// original display mode then it's probably best to go
-						// for this one
+						// the original display mode then it's probably best
+						// to go for this one
 						// since it's most likely compatible with the monitor
 						if ((current.getBitsPerPixel() == Display
 								.getDesktopDisplayMode().getBitsPerPixel())
@@ -363,7 +362,7 @@ public class DisplayHandler {
 			if (fullscreen == true)
 				Display.destroy();
 			System.setProperty("org.lwjgl.opengl.Window.undecorated",
-					borderless ? "true" : "false");
+					Boolean.toString(borderless));
 			Display.setDisplayMode(targetDisplayMode);
 			Display.setFullscreen(fullscreen);
 			Display.setLocation(posX, posY);
