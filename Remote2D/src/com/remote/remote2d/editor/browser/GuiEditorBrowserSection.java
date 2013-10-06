@@ -4,7 +4,6 @@ import java.io.File;
 
 import org.lwjgl.input.Mouse;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.editor.DraggableObjectFile;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;

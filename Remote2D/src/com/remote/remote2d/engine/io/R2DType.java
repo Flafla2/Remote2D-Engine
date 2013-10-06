@@ -4,8 +4,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import com.esotericsoftware.minlog.Log;
-
 public abstract class R2DType {
 	
 	protected String name;

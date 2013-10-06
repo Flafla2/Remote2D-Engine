@@ -9,6 +9,7 @@ public class ConsoleLogger extends Logger {
 	
 	private static Logger logger = new Logger();
 	
+	@Override
 	public void log(int level, String category, String message, Throwable ex)
 	{
 		logger.log(level, category, message, ex);

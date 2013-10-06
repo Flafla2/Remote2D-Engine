@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -23,7 +22,6 @@ import com.remote.remote2d.engine.gui.GuiMenu;
 import com.remote.remote2d.engine.gui.MapHolder;
 import com.remote.remote2d.engine.logic.ColliderBox;
 import com.remote.remote2d.engine.logic.Vector2;
-import com.remote.remote2d.engine.world.Console;
 import com.remote.remote2d.engine.world.Map;
 
 public class Remote2D {
@@ -223,7 +221,7 @@ public class Remote2D {
 	{
 		Vector2 scale = displayHandler.getRenderScale();
 		ColliderBox renderArea = displayHandler.getScreenRenderArea();
-		int[] r = {(int) (Mouse.getX()),(int) (Mouse.getY())};
+		int[] r = {(Mouse.getX()),(Mouse.getY())};
 		r[0] -= renderArea.pos.x;
 		r[1] -= renderArea.pos.y;
 		r[0] /= scale.x;

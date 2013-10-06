@@ -62,6 +62,7 @@ public class Vector2 extends Vector1 {
 		return x*vec.x+y*vec.y;
 	}
 	
+	@Override
 	public float[] getElements()
 	{
 		return new float[]{x,y};

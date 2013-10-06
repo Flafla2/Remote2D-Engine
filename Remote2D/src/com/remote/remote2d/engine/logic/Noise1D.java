@@ -2,8 +2,6 @@ package com.remote.remote2d.engine.logic;
 
 import java.util.Random;
 
-import com.esotericsoftware.minlog.Log;
-
 public class Noise1D{
 	
 	public static float[] GeneratePerlinNoise(float[] baseNoise, int octaveCount)

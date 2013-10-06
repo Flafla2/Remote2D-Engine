@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.lwjgl.opengl.GL11;
 
 import com.remote.remote2d.engine.Remote2D;
-import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.gui.GuiWindow;
 import com.remote.remote2d.engine.gui.WindowHolder;

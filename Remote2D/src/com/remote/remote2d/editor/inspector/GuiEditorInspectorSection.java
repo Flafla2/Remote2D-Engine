@@ -3,7 +3,6 @@ package com.remote.remote2d.editor.inspector;
 import com.remote.remote2d.editor.DraggableObject;
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.engine.gui.Gui;
-import com.remote.remote2d.engine.io.R2DType;
 import com.remote.remote2d.engine.logic.Vector2;
 
 public abstract class GuiEditorInspectorSection extends Gui {

@@ -4,7 +4,6 @@ import org.lwjgl.input.Keyboard;
 
 import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
-import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.io.R2DFileManager;
 import com.remote.remote2d.engine.world.Map;

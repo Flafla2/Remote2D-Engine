@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -13,7 +12,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.StretchType;
@@ -26,7 +24,6 @@ import com.remote.remote2d.engine.gui.GuiTextField;
 import com.remote.remote2d.engine.gui.TextLimiter;
 import com.remote.remote2d.engine.logic.ColliderBox;
 import com.remote.remote2d.engine.logic.Interpolator;
-import com.remote.remote2d.engine.logic.Matrix;
 import com.remote.remote2d.engine.logic.Vector2;
 
 public class GuiOptimizeSpriteSheet extends GuiMenu {
@@ -168,8 +165,8 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 				GL11.glBegin(GL11.GL_LINES);
 					int y = screenHeight()-Mouse.getY();
 					int x = Mouse.getX();
-					boolean right = ((float)(x-offset.x)%scale)/((float)scale) >= 0.5;
-					boolean bottom = ((float)(y-offset.y)%scale)/((float)scale) >= 0.5;
+					boolean right = ((x-offset.x)%scale)/(scale) >= 0.5;
+					boolean bottom = ((y-offset.y)%scale)/(scale) >= 0.5;
 					GL11.glVertex2f(0, y-(y-offset.y)%scale+(bottom?scale:0));
 					GL11.glVertex2f(screenWidth(), y-(y-offset.y)%scale+(bottom?scale:0));
 					
@@ -194,8 +191,8 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 		
 		if(i > 300 && activeDefiner != null)
 		{
-			boolean right = ((float)(i-offset.x)%scale)/((float)scale) >= 0.5;
-			boolean bottom = ((float)(j-offset.y)%scale)/((float)scale) >= 0.5;
+			boolean right = ((i-offset.x)%scale)/(scale) >= 0.5;
+			boolean bottom = ((j-offset.y)%scale)/(scale) >= 0.5;
 			
 			activeDefiner.hover((i-offset.x)/scale+(right?1:0), (j-offset.y)/scale+(bottom?1:0));
 			if(Remote2D.getInstance().hasMouseBeenPressed())

@@ -26,7 +26,7 @@ public class R2DTypeByte extends R2DType {
 
 	@Override
 	public void write(DataOutput d) throws IOException {
-		d.writeByte((int)data);
+		d.writeByte(data);
 	}
 
 	@Override

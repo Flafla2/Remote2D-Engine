@@ -1,6 +1,5 @@
 package com.remote.remote2d.editor;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.logic.Collider;
 import com.remote.remote2d.engine.logic.Vector2;
 

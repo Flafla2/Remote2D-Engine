@@ -1,10 +1,8 @@
 package com.remote.remote2d.engine.art;
 
 import java.awt.Font;
-import java.io.File;
 import java.util.HashMap;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.gui.FontRenderer;

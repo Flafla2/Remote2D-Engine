@@ -7,9 +7,7 @@ import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.StretchType;
 

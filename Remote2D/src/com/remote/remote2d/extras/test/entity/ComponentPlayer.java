@@ -1,15 +1,12 @@
 package com.remote.remote2d.extras.test.entity;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 import com.esotericsoftware.minlog.Log;
-import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Animation;
 import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.entity.component.Component;
 import com.remote.remote2d.engine.logic.ColliderBox;
-import com.remote.remote2d.engine.logic.Interpolator;
 import com.remote.remote2d.engine.logic.Vector2;
 import com.remote.remote2d.engine.particles.ParticleSystem;
 

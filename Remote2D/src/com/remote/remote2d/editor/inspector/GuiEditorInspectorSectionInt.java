@@ -49,7 +49,7 @@ public class GuiEditorInspectorSectionInt extends GuiEditorInspectorSection {
 	public void setData(Object o) {
 		if(o instanceof Integer)
 		{
-			textField.text = (Integer)o+"";
+			textField.text = o+"";
 		}
 	}
 	

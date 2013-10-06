@@ -5,7 +5,6 @@ import java.util.Stack;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.editor.browser.GuiEditorBrowser;
@@ -20,12 +19,10 @@ import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.gui.GuiMenu;
 import com.remote.remote2d.engine.gui.GuiWindow;
-import com.remote.remote2d.engine.gui.KeyShortcut;
 import com.remote.remote2d.engine.gui.MapHolder;
 import com.remote.remote2d.engine.gui.WindowHolder;
 import com.remote.remote2d.engine.logic.ColliderBox;
 import com.remote.remote2d.engine.logic.Vector2;
-import com.remote.remote2d.engine.world.Camera;
 import com.remote.remote2d.engine.world.Map;
 
 public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
@@ -354,6 +351,7 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 			windowStack.peek().setSelected(true);
 	}
 	
+	@Override
 	public Map getMap()
 	{
 		return map;

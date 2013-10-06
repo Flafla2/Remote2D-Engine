@@ -1,7 +1,6 @@
 package com.remote.remote2d.engine.world;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 import com.esotericsoftware.minlog.Log;
 

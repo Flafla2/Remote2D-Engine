@@ -1,9 +1,6 @@
 package com.remote.remote2d.engine.art;
 
-import org.lwjgl.opengl.GL11;
-
 import com.esotericsoftware.minlog.Log;
-import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.io.R2DFileManager;
 import com.remote.remote2d.engine.io.R2DFileSaver;
 import com.remote.remote2d.engine.io.R2DTypeCollection;
@@ -203,6 +200,7 @@ public class Animation implements R2DFileSaver {
 		return ".anim";
 	}
 	
+	@Override
 	public Animation clone()
 	{
 		Animation newAnim = new Animation(texPath, startPos.copy(), spriteDim.copy(), padding.copy(), frames.copy(), framelength);

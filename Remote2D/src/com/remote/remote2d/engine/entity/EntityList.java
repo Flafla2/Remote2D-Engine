@@ -1,8 +1,6 @@
 package com.remote.remote2d.engine.entity;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 import org.lwjgl.opengl.GL11;
 

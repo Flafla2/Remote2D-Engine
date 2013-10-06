@@ -2,7 +2,6 @@ package com.remote.remote2d.editor;
 
 import org.lwjgl.input.Mouse;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;

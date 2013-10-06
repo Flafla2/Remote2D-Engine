@@ -1,6 +1,5 @@
 package com.remote.remote2d.editor.inspector;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.editor.DraggableObject;
 import com.remote.remote2d.editor.DraggableObjectEntity;
 import com.remote.remote2d.editor.GuiEditor;
@@ -79,6 +78,7 @@ public class GuiEditorInspectorSectionEntity extends GuiEditorInspectorSection {
 		return c;
 	}
 	
+	@Override
 	public boolean acceptsDraggableObject(DraggableObject object)
 	{
 		if(object instanceof DraggableObjectEntity)
@@ -93,6 +93,7 @@ public class GuiEditorInspectorSectionEntity extends GuiEditorInspectorSection {
 		return false;
 	}
 	
+	@Override
 	public void acceptDraggableObject(DraggableObject object)
 	{
 		if(object instanceof DraggableObjectEntity)

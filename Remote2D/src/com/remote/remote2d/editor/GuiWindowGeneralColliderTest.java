@@ -1,7 +1,5 @@
 package com.remote.remote2d.editor;
 
-import org.lwjgl.opengl.GL11;
-
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.gui.GuiButton;
 import com.remote.remote2d.engine.gui.GuiWindow;
@@ -27,6 +25,7 @@ public class GuiWindowGeneralColliderTest extends GuiWindow {
 		super(holder, pos, new Vector2(500,500), allowedBounds, "Collider Test");
 	}
 		
+	@Override
 	public void initGui()
 	{
 		buttonList.clear();

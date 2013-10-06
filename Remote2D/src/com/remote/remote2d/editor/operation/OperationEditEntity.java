@@ -1,6 +1,5 @@
 package com.remote.remote2d.editor.operation;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.engine.entity.Entity;
 

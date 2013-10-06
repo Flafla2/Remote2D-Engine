@@ -1,10 +1,6 @@
 package com.remote.remote2d.editor;
 
-import org.lwjgl.input.Mouse;
-
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.art.Fonts;
-import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.logic.Interpolator;
 import com.remote.remote2d.engine.logic.Vector2;
@@ -66,7 +62,7 @@ public class DraggableObject extends Gui {
 			long timesinceletgo = System.currentTimeMillis()-letGoTime;
 			if(timesinceletgo > 200)
 				shouldDelete = true;
-			float time = (float)Math.min(200, timesinceletgo)/200f;
+			float time = Math.min(200, timesinceletgo)/200f;
 			pos = Interpolator.linearInterpolate(interpolatePos, origPos, time);
 		}
 	}

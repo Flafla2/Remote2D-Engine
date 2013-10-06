@@ -3,9 +3,6 @@ package com.remote.remote2d.extras.test;
 import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.Remote2DGame;
-import com.remote.remote2d.engine.StretchType;
-import com.remote.remote2d.engine.art.Animation;
-import com.remote.remote2d.engine.io.R2DFileManager;
 import com.remote.remote2d.extras.test.entity.ComponentPlayer;
 import com.remote.remote2d.extras.test.gui.GuiMainMenu;
 

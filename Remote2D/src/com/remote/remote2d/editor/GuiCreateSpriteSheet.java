@@ -3,7 +3,6 @@ package com.remote.remote2d.editor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.StretchType;
 import com.remote.remote2d.engine.art.Animation;
@@ -102,7 +101,7 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 		framesY.text = (int)anim.getFrames().y+"";
 		paddingX.text = (int)anim.getPadding().x+"";
 		paddingY.text = (int)anim.getPadding().y+"";
-		frameLength.text = (int)anim.getFramelength()+"";
+		frameLength.text = anim.getFramelength()+"";
 		animSave.text = anim.getPath();
 	}
 	

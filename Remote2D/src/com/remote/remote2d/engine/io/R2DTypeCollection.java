@@ -1,6 +1,5 @@
 package com.remote.remote2d.engine.io;
 
-import java.awt.Color;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -9,11 +8,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.esotericsoftware.minlog.Log;
-import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.Remote2DException;
-import com.remote.remote2d.engine.art.Animation;
-import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.logic.Vector2;
 
 public class R2DTypeCollection extends R2DType {
@@ -55,7 +50,7 @@ public class R2DTypeCollection extends R2DType {
 		Iterator<Entry<String, R2DType>> dataIterator = data.entrySet().iterator();
 		while(dataIterator.hasNext())
 		{
-			Map.Entry<String, R2DType> pairs = (Map.Entry<String, R2DType>)dataIterator.next();
+			Map.Entry<String, R2DType> pairs = dataIterator.next();
 			writeNamedType(pairs.getValue(),d);
 		}
 		d.writeByte(0);
@@ -82,7 +77,7 @@ public class R2DTypeCollection extends R2DType {
 		indentString+="    ";
 		while(dataIterator.hasNext())
 		{
-			Map.Entry<String, R2DType> pairs = (Map.Entry<String, R2DType>)dataIterator.next();
+			Map.Entry<String, R2DType> pairs = dataIterator.next();
 			
 			if(pairs.getValue().getId() == getId())
 			{

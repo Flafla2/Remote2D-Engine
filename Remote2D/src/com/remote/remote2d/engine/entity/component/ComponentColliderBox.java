@@ -1,10 +1,6 @@
 package com.remote.remote2d.engine.entity.component;
 
-import org.lwjgl.opengl.GL11;
-
-import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.logic.Collider;
-import com.remote.remote2d.engine.logic.ColliderBox;
 import com.remote.remote2d.engine.logic.Vector2;
 
 public class ComponentColliderBox extends Component implements ComponentCollider {

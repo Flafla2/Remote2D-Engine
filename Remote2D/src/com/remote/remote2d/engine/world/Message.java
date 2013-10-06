@@ -65,6 +65,7 @@ public class Message {
 		}
 	}
 	
+	@Override
 	public String toString()
 	{
 		String str = "";

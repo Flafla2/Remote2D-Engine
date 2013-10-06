@@ -6,8 +6,6 @@ import java.awt.Insets;
 
 import javax.swing.JFrame;
 
-import org.lwjgl.opengl.Display;
-
 import com.remote.remote2d.engine.logic.Vector2;
 
 public abstract class Remote2DGame {

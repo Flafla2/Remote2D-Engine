@@ -62,6 +62,7 @@ public class Vector1 {
 		return this;
 	}
 	
+	@Override
 	public String toString()
 	{
 		return "("+x+")";

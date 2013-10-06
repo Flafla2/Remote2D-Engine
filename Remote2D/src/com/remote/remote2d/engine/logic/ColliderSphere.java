@@ -1,7 +1,5 @@
 package com.remote.remote2d.engine.logic;
 
-import org.lwjgl.opengl.GL11;
-
 import com.remote.remote2d.engine.art.Renderer;
 
 public class ColliderSphere extends Collider {

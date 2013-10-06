@@ -1,6 +1,5 @@
 package com.remote.remote2d.engine.logic;
 
-import com.esotericsoftware.minlog.Log;
 
 public abstract class Collider {
 	

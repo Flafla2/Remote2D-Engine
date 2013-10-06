@@ -4,9 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import org.lwjgl.opengl.GL11;
-
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.editor.GuiCreateSpriteSheet;
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.engine.Remote2D;
@@ -17,7 +14,6 @@ import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.io.R2DFileManager;
 import com.remote.remote2d.engine.logic.Vector2;
-import com.remote.remote2d.engine.particles.ParticleSystem;
 import com.remote.remote2d.engine.world.Map;
 
 public class GuiEditorBrowser extends Gui {
@@ -87,7 +83,7 @@ public class GuiEditorBrowser extends Gui {
 			pushFolder(new Folder(file.getPath()));
 		else if(file.isFile())
 		{
-			String localPath = file.getPath().substring((int) (Remote2D.getJarPath().getPath().length()));
+			String localPath = file.getPath().substring((Remote2D.getJarPath().getPath().length()));
 			if(localPath.endsWith(Animation.getExtension()))
 				Remote2D.getInstance().guiList.push(new GuiCreateSpriteSheet(new Animation(localPath)));
 			else if(localPath.endsWith(Entity.getExtension()))

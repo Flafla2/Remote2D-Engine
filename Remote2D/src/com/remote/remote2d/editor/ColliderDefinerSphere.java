@@ -32,7 +32,7 @@ public class ColliderDefinerSphere extends ColliderDefiner {
 			return null;
 		float a = Math.abs(hover.x-origin.x);
 		float b = Math.abs(hover.y-origin.y);
-		return isDefined() ? new ColliderSphere(new Vector2(origin.getElements()),(float)radius) : new ColliderSphere(new Vector2(origin.getElements()),(int)Math.sqrt(a*a+b*b));
+		return isDefined() ? new ColliderSphere(new Vector2(origin.getElements()),radius) : new ColliderSphere(new Vector2(origin.getElements()),(int)Math.sqrt(a*a+b*b));
 	}
 
 }

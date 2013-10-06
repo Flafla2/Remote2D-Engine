@@ -5,8 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-import com.esotericsoftware.minlog.Log;
-
 public class Noise2D{
 	
 	public static float[][] GeneratePerlinNoise(float[][] baseNoise, int octaveCount)

@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.entity.EditorObject;
 import com.remote.remote2d.engine.logic.Vector2;
 import com.remote.remote2d.engine.world.Map;

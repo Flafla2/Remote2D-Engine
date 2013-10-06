@@ -10,8 +10,8 @@ import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Animation;
 import com.remote.remote2d.engine.art.Material;
-import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.art.Material.RenderType;
+import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.entity.component.Component;
 import com.remote.remote2d.engine.io.R2DFileSaver;
 import com.remote.remote2d.engine.io.R2DTypeCollection;
@@ -44,6 +44,7 @@ public abstract class EditorObject implements R2DFileSaver {
 	public abstract void apply();
 	
 	
+	@Override
 	public void saveR2DFile(R2DTypeCollection collection)
 	{
 		collection.setString("uuid", uuid);
@@ -85,7 +86,7 @@ public abstract class EditorObject implements R2DFileSaver {
 					{
 						Material mat = (Material)o;
 						R2DTypeCollection matColl = new R2DTypeCollection(fields[x].getName());
-						matColl.setByte("RenderType", mat.renderTypeToByte(mat.getRenderType()));
+						matColl.setByte("RenderType", Material.renderTypeToByte(mat.getRenderType()));
 						matColl.setInteger("Color", mat.getColor());
 						if(mat.getTexture() != null)
 							matColl.setString("Texture", mat.getTexture().getTextureLocation());
@@ -107,6 +108,7 @@ public abstract class EditorObject implements R2DFileSaver {
 			}
 		}
 	}
+	@Override
 	public void loadR2DFile(R2DTypeCollection collection)
 	{
 		uuid = collection.getString("uuid");

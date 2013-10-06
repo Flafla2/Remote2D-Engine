@@ -4,7 +4,6 @@ import java.awt.Color;
 
 import org.lwjgl.opengl.GL11;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.logic.Interpolator;

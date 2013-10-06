@@ -5,7 +5,6 @@ import java.util.Collections;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import com.esotericsoftware.minlog.Log;
@@ -20,7 +19,6 @@ import com.remote.remote2d.engine.io.R2DTypeCollection;
 import com.remote.remote2d.engine.logic.Collider;
 import com.remote.remote2d.engine.logic.Collision;
 import com.remote.remote2d.engine.logic.CollisionComparator;
-import com.remote.remote2d.engine.logic.Interpolator;
 import com.remote.remote2d.engine.logic.Vector2;
 
 public class Map implements R2DFileSaver {

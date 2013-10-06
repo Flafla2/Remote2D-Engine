@@ -1,6 +1,5 @@
 package com.remote.remote2d.engine.gui;
 
-import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.logic.Vector2;
@@ -36,6 +35,7 @@ public class GuiButton extends Gui {
 		tex = new Texture("/res/gui/controls.png");
 	}
 	
+	@Override
 	public void render(float interpolation)
 	{
 		renderControlElement(tex,pos,dim,selectState,0);
@@ -119,6 +119,7 @@ public class GuiButton extends Gui {
 		return coords;
 	}
 	
+	@Override
 	public void tick(int i, int j, int k)
 	{
 		if(i > pos.x && j > pos.y && i < pos.x+dim.x && j < pos.y+dim.y && selectState != 0)

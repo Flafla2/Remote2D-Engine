@@ -1,19 +1,11 @@
 package com.remote.remote2d.engine.art;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
 
 import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.entity.Entity;
-import com.remote.remote2d.engine.io.R2DFileManager;
-import com.remote.remote2d.engine.io.R2DFileSaver;
-import com.remote.remote2d.engine.io.R2DType;
-import com.remote.remote2d.engine.io.R2DTypeCollection;
-import com.remote.remote2d.engine.io.R2DTypeString;
 import com.remote.remote2d.engine.particles.ParticleSystem;
 import com.remote.remote2d.engine.world.Map;
 

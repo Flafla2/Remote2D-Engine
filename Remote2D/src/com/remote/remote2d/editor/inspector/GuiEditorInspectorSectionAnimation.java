@@ -2,16 +2,13 @@ package com.remote.remote2d.editor.inspector;
 
 import org.lwjgl.input.Keyboard;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.editor.DraggableObject;
 import com.remote.remote2d.editor.DraggableObjectFile;
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Animation;
 import com.remote.remote2d.engine.art.Fonts;
-import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.gui.GuiTextField;
-import com.remote.remote2d.engine.gui.TextLimiter;
 import com.remote.remote2d.engine.logic.Vector2;
 
 public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSection {
@@ -77,6 +74,7 @@ public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSectio
 		return textField.isSelected() && isComplete() && Remote2D.getInstance().getIntegerKeyboardList().contains(Keyboard.KEY_RETURN);
 	}
 	
+	@Override
 	public boolean acceptsDraggableObject(DraggableObject object)
 	{
 		if(object instanceof DraggableObjectFile)
@@ -91,6 +89,7 @@ public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSectio
 		return false;
 	}
 	
+	@Override
 	public void acceptDraggableObject(DraggableObject object)
 	{
 		if(object instanceof DraggableObjectFile)
@@ -102,7 +101,7 @@ public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSectio
 				{
 					textField.text = fileobj.file.getPath();
 					if(textField.text.startsWith(Remote2D.getJarPath().getAbsolutePath()))
-						textField.text = textField.text.substring((int) Remote2D.getJarPath().getAbsolutePath().length());
+						textField.text = textField.text.substring(Remote2D.getJarPath().getAbsolutePath().length());
 					textField.text.replace('\\', '/');
 				}
 			}

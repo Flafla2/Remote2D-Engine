@@ -6,21 +6,16 @@ import java.util.Map.Entry;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
 
 import com.esotericsoftware.minlog.Log;
-import com.remote.remote2d.editor.operation.GuiWindowConfirmOperation;
 import com.remote.remote2d.editor.operation.OperationDeleteEntity;
 import com.remote.remote2d.editor.operation.OperationNewEntity;
 import com.remote.remote2d.editor.operation.OperationNewMap;
 import com.remote.remote2d.editor.operation.OperationOpenMap;
 import com.remote.remote2d.editor.operation.OperationSaveMap;
 import com.remote.remote2d.engine.Remote2D;
-import com.remote.remote2d.engine.StretchType;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
-import com.remote.remote2d.engine.entity.Entity;
-import com.remote.remote2d.engine.entity.component.Component;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.gui.GuiInGame;
 import com.remote.remote2d.engine.gui.KeyShortcut;

@@ -1,12 +1,5 @@
 package com.remote.remote2d.editor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;

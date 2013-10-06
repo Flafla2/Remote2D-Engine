@@ -4,7 +4,6 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.logic.Vector2;

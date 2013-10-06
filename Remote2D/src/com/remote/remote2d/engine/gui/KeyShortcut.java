@@ -1,11 +1,7 @@
 package com.remote.remote2d.engine.gui;
 
-import java.util.ArrayList;
-
 import org.lwjgl.LWJGLUtil;
 import org.lwjgl.input.Keyboard;
-
-import com.esotericsoftware.minlog.Log;
 
 public class KeyShortcut {
 	

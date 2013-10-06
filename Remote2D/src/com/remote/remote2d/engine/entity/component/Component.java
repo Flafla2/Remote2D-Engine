@@ -79,6 +79,7 @@ public abstract class Component extends EditorObject{
         return null;
 	}
 	
+	@Override
 	public Component clone()
 	{
 		R2DTypeCollection compile = new R2DTypeCollection("Component Clone");

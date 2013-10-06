@@ -10,14 +10,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.lwjgl.opengl.GL11;
-
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
-import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.art.Texture;
-import com.remote.remote2d.engine.art.TextureLoader;
 import com.remote.remote2d.engine.logic.Vector2;
 
 public class FontRenderer {

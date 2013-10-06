@@ -1,13 +1,9 @@
 package com.remote.remote2d.editor.inspector;
 
-import org.lwjgl.opengl.GL11;
-
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
-import com.remote.remote2d.engine.gui.GuiTextField;
-import com.remote.remote2d.engine.gui.TextLimiter;
 import com.remote.remote2d.engine.logic.Vector2;
 
 public class GuiEditorInspectorSectionBoolean extends GuiEditorInspectorSection {

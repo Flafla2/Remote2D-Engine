@@ -49,10 +49,10 @@ public abstract class Gui {
 	
 	public static void renderTextureWithCoords(Texture tex, Vector2 pos, Vector2 dim, Vector2 imgPos, Vector2 imgDim)
 	{
-		Vector2 glImgPos = new Vector2((float)imgPos.x/(float)tex.image.getWidth(),
-				(float)imgPos.y/(float)tex.image.getHeight());
-		Vector2 glImgDim = new Vector2((float)imgDim.x/(float)tex.image.getWidth(),
-				(float)imgDim.y/(float)tex.image.getHeight());
+		Vector2 glImgPos = new Vector2(imgPos.x/tex.image.getWidth(),
+				imgPos.y/tex.image.getHeight());
+		Vector2 glImgDim = new Vector2(imgDim.x/tex.image.getWidth(),
+				imgDim.y/tex.image.getHeight());
 		
 		Renderer.drawRect(pos, dim, glImgPos, glImgDim, tex, 0xffffff, 1.0f);
 	}

@@ -1,9 +1,6 @@
 package com.remote.remote2d.editor;
 
-import org.lwjgl.opengl.GL11;
-
 import com.remote.remote2d.engine.Remote2D;
-import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.gui.GuiButton;
 import com.remote.remote2d.engine.gui.GuiTextField;
@@ -23,6 +20,7 @@ public class GuiWindowViewArtAsset extends GuiWindow {
 		field = new GuiTextField(new Vector2(10,10), new Vector2(380,40), 20);
 	}
 	
+	@Override
 	public void initGui()
 	{
 		buttonList.clear();

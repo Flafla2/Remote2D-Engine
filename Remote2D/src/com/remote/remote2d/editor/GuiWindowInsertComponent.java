@@ -24,6 +24,7 @@ public class GuiWindowInsertComponent extends GuiWindow {
 		this.editor = editor;
 	}
 	
+	@Override
 	public void initGui()
 	{
 		buttonList.clear();
