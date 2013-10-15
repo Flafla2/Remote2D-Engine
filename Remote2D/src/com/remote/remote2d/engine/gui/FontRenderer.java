@@ -34,7 +34,8 @@ public class FontRenderer {
 				{
 					eldest.getValue().removeTexture();
 					eldest.getValue().image.flush();
-					eldest.getValue().image = null;				}
+					eldest.getValue().image = null;
+				}
 				return size() > 16;
 	    	}
 	    };
@@ -80,6 +81,19 @@ public class FontRenderer {
 	
 	public int[] getStringDim(String s, float size)
 	{
+		RenderData data = new RenderData(s,size,0xffffff);
+		if(!cache.containsKey(data))
+		{
+			BufferedImage image = createImageFromString(s,size,0xffffff);
+			if(image == null)
+				return new int[]{0,0};
+			Texture tex = new Texture(image,true,false);
+			cache.put(data, tex);
+		}
+		
+		BufferedImage image = cache.get(data).getImage();
+		return new int[]{image.getWidth(),image.getHeight()};
+		/*
 		Font sizedFont = font.deriveFont(size);
 		FontRenderContext frc = new FontRenderContext(null,useAntiAliasing,true);
 		String[] returnSplit = s.split("\n");
@@ -93,6 +107,7 @@ public class FontRenderer {
 		
 		int[] r = {width,height};
 		return r;
+		*/
 	}
 	
 	public void drawString(String s, float x, float y, float size, int color)
@@ -113,25 +128,6 @@ public class FontRenderer {
 			cache.put(data, tex);
 		}
 		Renderer.drawRect(new Vector2(x,y), new Vector2(tex.image.getWidth(),tex.image.getHeight()), tex, 0xffffff, 1);
-		
-//		GL11.glEnable(GL11.GL_TEXTURE_2D);
-//		int texID = TextureLoader.loadTexture(image,true,false);
-//		
-//		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texID);
-//		GL11.glBegin(GL11.GL_QUADS);
-//		{
-//			GL11.glTexCoord2f(0, 0);
-//			GL11.glVertex2f(x, y);
-//			GL11.glTexCoord2f(1, 0);
-//			GL11.glVertex2f(x+image.getWidth(), y);
-//			GL11.glTexCoord2f(1, 1);
-//			GL11.glVertex2f(x+image.getWidth(), y+image.getHeight());
-//			GL11.glTexCoord2f(0, 1);
-//			GL11.glVertex2f(x, y+image.getHeight());
-//		}
-//		GL11.glEnd();
-//		GL11.glDeleteTextures(texID);
-//		image = null;
 	}
 	
 	public void drawCenteredString(String s, int y, float size, int color)
