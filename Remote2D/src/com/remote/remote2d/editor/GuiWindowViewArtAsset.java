@@ -40,7 +40,7 @@ public class GuiWindowViewArtAsset extends GuiWindow {
 	
 	public void reloadTex()
 	{
-		if(Remote2D.getInstance().artLoader.textureExists(field.text))
+		if(Remote2D.artLoader.textureExists(field.text))
 		{
 			if(tex != null)
 				tex.removeTexture();

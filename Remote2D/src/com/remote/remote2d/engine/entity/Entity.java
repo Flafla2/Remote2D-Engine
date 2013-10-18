@@ -274,8 +274,8 @@ public class Entity extends EditorObject {
 		
 		boolean selected = false;
 		if(editor)
-			if(Remote2D.getInstance().guiList.peek() instanceof GuiEditor)
-				if(((GuiEditor)Remote2D.getInstance().guiList.peek()).getSelectedEntity() == this)
+			if(Remote2D.guiList.peek() instanceof GuiEditor)
+				if(((GuiEditor)Remote2D.guiList.peek()).getSelectedEntity() == this)
 					selected = true;
 		if(editor)
 		{

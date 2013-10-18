@@ -27,7 +27,7 @@ public class GuiEditorInspectorSectionTexture extends GuiEditorInspectorSection 
 
 	@Override
 	public Object getData() {
-		if(Remote2D.getInstance().artLoader.textureExists(textField.text))
+		if(Remote2D.artLoader.textureExists(textField.text))
 			return new Texture(textField.text);
 		else
 			return null;
@@ -69,12 +69,12 @@ public class GuiEditorInspectorSectionTexture extends GuiEditorInspectorSection 
 
 	@Override
 	public boolean isComplete() {
-		return Remote2D.getInstance().artLoader.textureExists(textField.text);
+		return Remote2D.artLoader.textureExists(textField.text);
 	}
 	
 	@Override
 	public boolean hasFieldBeenChanged() {
-		return textField.isSelected() && isComplete() && Remote2D.getInstance().getIntegerKeyboardList().contains(Keyboard.KEY_RETURN);
+		return textField.isSelected() && isComplete() && Remote2D.getIntegerKeyboardList().contains(Keyboard.KEY_RETURN);
 	}
 	
 	@Override

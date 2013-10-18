@@ -132,7 +132,7 @@ public abstract class EditorObject implements R2DFileSaver {
 					else if(field.getType() == Vector2.class)
 						field.set(this, collection.getVector2D(field.getName()));
 					else if(field.getType() == Animation.class)
-						field.set(this, Remote2D.getInstance().artLoader.getAnimation(collection.getString(field.getName())));
+						field.set(this, Remote2D.artLoader.getAnimation(collection.getString(field.getName())));
 					else if(field.getType() == boolean.class)
 						field.set(this, collection.getBoolean(field.getName()));
 					else if(field.getType() == Color.class)

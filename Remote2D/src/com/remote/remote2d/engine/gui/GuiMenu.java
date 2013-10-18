@@ -85,7 +85,7 @@ public class GuiMenu extends Gui{
 			buttonList.get(x).tick(i, j, k);
 			if(buttonList.get(x).selectState == 2 || buttonList.get(x).selectState == 3)
 			{
-				if(Remote2D.getInstance().hasMouseBeenPressed())
+				if(Remote2D.hasMouseBeenPressed())
 				{
 					//if(buttonList.get(x).sound != 0)
 					//	DefenseStep.getInstance().soundManager.quickPlay((buttonList.get(x).sound==1 ? "gui.select" : "gui.back"), 0, 0, false, false, false);

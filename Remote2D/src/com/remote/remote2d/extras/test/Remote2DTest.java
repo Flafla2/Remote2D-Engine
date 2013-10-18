@@ -17,9 +17,9 @@ public class Remote2DTest extends Remote2DGame {
 	@Override
 	public void initGame() {
 		Log.TRACE();
-		Remote2D.getInstance().guiList.push(new GuiMainMenu());
-		Remote2D.getInstance().componentList.addInsertableComponent("Player", ComponentPlayer.class);
-		Remote2D.getInstance().componentList.addInsertableComponent("Top Down Player", ComponentTopDownPlayer.class);
+		Remote2D.guiList.push(new GuiMainMenu());
+		Remote2D.componentList.addInsertableComponent("Player", ComponentPlayer.class);
+		Remote2D.componentList.addInsertableComponent("Top Down Player", ComponentTopDownPlayer.class);
 	}
 	
 	@Override

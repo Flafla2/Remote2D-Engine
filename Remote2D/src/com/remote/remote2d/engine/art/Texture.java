@@ -49,7 +49,7 @@ public class Texture {
 
 	public void bind()
 	{
-		if(lastReload < Remote2D.getInstance().displayHandler.getLastTexReload())
+		if(lastReload < Remote2D.displayHandler.getLastTexReload())
 			reload();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, glId);
 	}
@@ -72,7 +72,7 @@ public class Texture {
 	}
 
 	public void reload() {
-		if(lastReload >= Remote2D.getInstance().displayHandler.getLastTexReload())
+		if(lastReload >= Remote2D.displayHandler.getLastTexReload())
 			GL11.glDeleteTextures(glId);
 		glId = TextureLoader.loadTexture(image,linearScaling,repeat);
 		lastReload = System.currentTimeMillis();

@@ -122,7 +122,7 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 		Vector2 iOffset = Interpolator.linearInterpolate(oldOffset, offset, interpolation);
 		
 		drawBlueprintBackground();
-		if(Remote2D.getInstance().artLoader.textureExists(texturePath.text))
+		if(Remote2D.artLoader.textureExists(texturePath.text))
 		{
 			if(!tex.textureLocation.equals(texturePath.text))
 			{
@@ -195,7 +195,7 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 			boolean bottom = ((j-offset.y)%scale)/(scale) >= 0.5;
 			
 			activeDefiner.hover((i-offset.x)/scale+(right?1:0), (j-offset.y)/scale+(bottom?1:0));
-			if(Remote2D.getInstance().hasMouseBeenPressed())
+			if(Remote2D.hasMouseBeenPressed())
 			{
 				if(isPickingBG)
 				{
@@ -232,12 +232,12 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 		if(activeDefiner == null)
 			activeDefiner = new ColliderDefinerBox();
 		
-		if(Remote2D.getInstance().getKeyboardList().contains('[') && scale >= 2)
+		if(Remote2D.getKeyboardList().contains('[') && scale >= 2)
 			scale /= 2;
-		else if(Remote2D.getInstance().getKeyboardList().contains(']'))
+		else if(Remote2D.getKeyboardList().contains(']'))
 			scale *= 2;
 		
-		if(!Remote2D.getInstance().artLoader.textureExists(texturePath.text) || !savePath.text.startsWith("/") || !savePath.text.endsWith(".png") || savePath.text.endsWith("/.png"))
+		if(!Remote2D.artLoader.textureExists(texturePath.text) || !savePath.text.startsWith("/") || !savePath.text.endsWith(".png") || savePath.text.endsWith("/.png"))
 			button.setDisabled(true);
 		else
 		{
@@ -245,7 +245,7 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 				button.setDisabled(false);
 		}
 		
-		if(!Remote2D.getInstance().artLoader.textureExists(texturePath.text))
+		if(!Remote2D.artLoader.textureExists(texturePath.text))
 			bgButton.setDisabled(true);
 		else
 		{
@@ -254,7 +254,7 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 		}
 			
 		
-		if(Remote2D.getInstance().artLoader.textureExists(texturePath.text) )
+		if(Remote2D.artLoader.textureExists(texturePath.text) )
 		{
 			if(!tex.textureLocation.equals(texturePath.text))
 			{
@@ -382,14 +382,14 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 				 saveFile.getParentFile().mkdirs();
 				 saveFile.createNewFile();
 				 ImageIO.write(image, "png", saveFile);
-				// Remote2D.getInstance().guiList.pop();
+				// Remote2D.guiList.pop();
 			 } catch(Exception e)
 			 {
 				 throw new Remote2DException(e,"Error Saving Optimized Sprite Sheet!");
 			 }
 		 } else if(button.id == 9)
 		 {
-			 Remote2D.getInstance().guiList.pop();
+			 Remote2D.guiList.pop();
 		 }
 	}
 	

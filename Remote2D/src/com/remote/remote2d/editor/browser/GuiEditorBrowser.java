@@ -85,7 +85,7 @@ public class GuiEditorBrowser extends Gui {
 		{
 			String localPath = file.getPath().substring((Remote2D.getJarPath().getPath().length()));
 			if(localPath.endsWith(Animation.getExtension()))
-				Remote2D.getInstance().guiList.push(new GuiCreateSpriteSheet(new Animation(localPath)));
+				Remote2D.guiList.push(new GuiCreateSpriteSheet(new Animation(localPath)));
 			else if(localPath.endsWith(Entity.getExtension()))
 			{
 				Entity e = new Entity(editor.getMap());

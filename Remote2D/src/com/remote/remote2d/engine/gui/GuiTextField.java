@@ -45,12 +45,12 @@ public class GuiTextField extends Gui {
 	@Override
 	public void tick(int i, int j, int k) {
 		hasTyped = false;
-		if(pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)) && Remote2D.getInstance().hasMouseBeenPressed())
+		if(pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)) && Remote2D.hasMouseBeenPressed())
 		{
 			isSelected = true;
 			blink = true;
 			blinkTimer = 50;
-		} else if(Remote2D.getInstance().hasMouseBeenPressed())
+		} else if(Remote2D.hasMouseBeenPressed())
 		{
 			isSelected = false;
 		}
@@ -68,7 +68,7 @@ public class GuiTextField extends Gui {
 		
 		if(isSelected)
 		{
-			ArrayList<Character> typedChars = Remote2D.getInstance().getLimitedKeyboardList();
+			ArrayList<Character> typedChars = Remote2D.getLimitedKeyboardList();
 			for(char c : paste.toCharArray())
 				typedChars.add(c);
 			for(int x=0;x<typedChars.size();x++)

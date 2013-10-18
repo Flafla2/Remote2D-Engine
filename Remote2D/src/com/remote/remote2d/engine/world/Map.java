@@ -221,7 +221,7 @@ public class Map implements R2DFileSaver {
 			for(int y=0;y<components.size();y++)
 			{
 				R2DTypeCollection cComp = new R2DTypeCollection("component_"+y);
-				cComp.setString("className", Remote2D.getInstance().componentList.getComponentID(components.get(y)));
+				cComp.setString("className", Remote2D.componentList.getComponentID(components.get(y)));
 				components.get(y).saveR2DFile(cComp);
 				c.setCollection(cComp);
 			}
@@ -247,7 +247,7 @@ public class Map implements R2DFileSaver {
 			for(int y=0;y<componentCount;y++)
 			{
 				R2DTypeCollection cComp = c.getCollection("component_"+y);
-				Component comp = Remote2D.getInstance().componentList.getComponentWithEntity(cComp.getString("className"),e);
+				Component comp = Remote2D.componentList.getComponentWithEntity(cComp.getString("className"),e);
 				comp.loadR2DFile(cComp);
 				comp.apply();
 				e.addComponent(comp);

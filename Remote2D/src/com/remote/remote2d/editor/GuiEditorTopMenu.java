@@ -79,7 +79,7 @@ public class GuiEditorTopMenu extends Gui {
 		
 		world.reloadSubWidth();
 		
-		Iterator<Entry<String,Class<?>>> iterator = Remote2D.getInstance().componentList.getIterator();
+		Iterator<Entry<String,Class<?>>> iterator = Remote2D.componentList.getIterator();
 		ArrayList<String> contents = new ArrayList<String>();
 		while(iterator.hasNext())
 			contents.add(iterator.next().getKey());
@@ -158,9 +158,9 @@ public class GuiEditorTopMenu extends Gui {
 			sections.get(x).render(interpolation);
 		}
 		
-		String fps = "FPS: "+Remote2D.getInstance().getFPS();
+		String fps = "FPS: "+Remote2D.getFPS();
 		int width = Fonts.get("Arial").getStringDim(fps, 20)[0];
-		Fonts.get("Arial").drawString(fps, Remote2D.getInstance().displayHandler.getDimensions().x-width, 0, 20, 0xffffff);
+		Fonts.get("Arial").drawString(fps, Remote2D.displayHandler.getDimensions().x-width, 0, 20, 0xffffff);
 	}
 
 	@Override
@@ -213,10 +213,10 @@ public class GuiEditorTopMenu extends Gui {
 		{
 			if(secSubTitle.equalsIgnoreCase("Create Animated Sprite"))
 			{
-				Remote2D.getInstance().guiList.push(new GuiCreateSpriteSheet());
+				Remote2D.guiList.push(new GuiCreateSpriteSheet());
 			} else if(secSubTitle.equalsIgnoreCase("Optimize Spritesheet"))
 			{
-				Remote2D.getInstance().guiList.push(new GuiOptimizeSpriteSheet());
+				Remote2D.guiList.push(new GuiOptimizeSpriteSheet());
 			} else if(secSubTitle.startsWith("Undo"))
 			{
 				editor.undo();
@@ -228,7 +228,7 @@ public class GuiEditorTopMenu extends Gui {
 		{
 			if(secSubTitle.equalsIgnoreCase("Toggle Fullscreen"))
 			{
-				Remote2D.getInstance().displayHandler.setDisplayMode(Display.getDesktopDisplayMode().getWidth(),
+				Remote2D.displayHandler.setDisplayMode(Display.getDesktopDisplayMode().getWidth(),
 						Display.getDesktopDisplayMode().getHeight(), !Display.isFullscreen(), 
 						false);
 			} else if(secSubTitle.equalsIgnoreCase("Console"))
@@ -236,14 +236,14 @@ public class GuiEditorTopMenu extends Gui {
 				editor.pushWindow(new GuiWindowConsole(editor, new Vector2(100), new Vector2(400), editor.getWindowBounds()));
 			} else if(secSubTitle.equalsIgnoreCase("Exit"))
 			{
-				Remote2D.getInstance().guiList.pop();
+				Remote2D.guiList.pop();
 			}
 		} else if(secTitle.equalsIgnoreCase("Developer"))
 		{
 			if(secSubTitle.equals("Reinitialize Editor"))
 			{
-				Remote2D.getInstance().guiList.pop();
-				Remote2D.getInstance().guiList.push(new GuiEditor());
+				Remote2D.guiList.pop();
+				Remote2D.guiList.push(new GuiEditor());
 			} else if(secSubTitle.equals("View Art Asset"))
 			{
 				GuiWindowViewArtAsset window = new GuiWindowViewArtAsset(editor, new Vector2(200,200), editor.getWindowBounds());
@@ -281,7 +281,7 @@ public class GuiEditorTopMenu extends Gui {
 				editor.confirmOperation(new OperationNewEntity(editor));
 			} else if(secSubTitle.equalsIgnoreCase("Run Map"))
 			{
-				Remote2D.getInstance().guiList.push(new GuiInGame(editor.getMap().copy()));
+				Remote2D.guiList.push(new GuiInGame(editor.getMap().copy()));
 			} else if(secSubTitle.equalsIgnoreCase("Delete Entity"))
 			{
 				OperationDeleteEntity delete = new OperationDeleteEntity(editor);
@@ -310,7 +310,7 @@ public class GuiEditorTopMenu extends Gui {
 		{
 			if(editor.getSelectedEntity() != null)
 			{
-				editor.getSelectedEntity().addComponent(Remote2D.getInstance().componentList.getComponentWithEntity(secSubTitle,editor.getSelectedEntity()));
+				editor.getSelectedEntity().addComponent(Remote2D.componentList.getComponentWithEntity(secSubTitle,editor.getSelectedEntity()));
 				editor.getInspector().setCurrentEntity(editor.getSelectedEntity());
 			}
 		}

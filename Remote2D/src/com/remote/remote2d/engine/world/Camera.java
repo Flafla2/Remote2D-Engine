@@ -40,7 +40,7 @@ public class Camera {
 	
 	public void renderBefore(float interpolation)
 	{
-		Vector2 pos = Interpolator.linearInterpolate(oldPos, this.pos, interpolation).subtract(Remote2D.getInstance().displayHandler.getDimensions());		
+		Vector2 pos = Interpolator.linearInterpolate(oldPos, this.pos, interpolation).subtract(Remote2D.displayHandler.getDimensions());		
 		Vector2 dim = getDimensions();
 		GL11.glPushMatrix();
 		GL11.glScalef(scale, scale, 0);
@@ -64,7 +64,7 @@ public class Camera {
 	
 	public Vector2 getDimensions()
 	{
-		return Remote2D.getInstance().displayHandler.getDimensions();
+		return Remote2D.displayHandler.getDimensions();
 	}
 
 	public Camera copy() {

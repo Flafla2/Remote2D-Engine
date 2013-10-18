@@ -64,14 +64,14 @@ public abstract class GuiWindow extends Gui {
 		
 		boolean buttonOverride = false;
 		
-		if(!pos.getColliderWithDim(dim.add(new Vector2(20,20))).isPointInside(new Vector2(i,j)) && Remote2D.getInstance().hasMouseBeenPressed())
+		if(!pos.getColliderWithDim(dim.add(new Vector2(20,20))).isPointInside(new Vector2(i,j)) && Remote2D.hasMouseBeenPressed())
 		{
 			isSelected = false;
 			buttonOverride = true;
 		}
 		if(!isSelected)
 		{
-			if(pos.getColliderWithDim(dim.add(new Vector2(0,20))).isPointInside(new Vector2(i,j)) && Remote2D.getInstance().hasMouseBeenPressed())
+			if(pos.getColliderWithDim(dim.add(new Vector2(0,20))).isPointInside(new Vector2(i,j)) && Remote2D.hasMouseBeenPressed())
 			{
 				holder.pushWindow(this);
 				buttonOverride = true;
@@ -149,7 +149,7 @@ public abstract class GuiWindow extends Gui {
 			buttonList.get(x).tick((int)getMouseInWindow(i,j).x, (int)getMouseInWindow(i,j).y, k);
 			if(buttonList.get(x).selectState == 2 || buttonList.get(x).selectState == 3)
 			{
-				if(Remote2D.getInstance().hasMouseBeenPressed() && !buttonOverride)
+				if(Remote2D.hasMouseBeenPressed() && !buttonOverride)
 				{
 					actionPerformed(buttonList.get(x));
 				}

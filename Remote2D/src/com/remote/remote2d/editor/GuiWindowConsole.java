@@ -49,9 +49,9 @@ public class GuiWindowConsole extends GuiWindow {
 		oldOffset = offset;
 		if(pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)))
 		{
-			if(Remote2D.getInstance().getDeltaWheel() < 0)
+			if(Remote2D.getDeltaWheel() < 0)
 				offset += 20;
-			if(Remote2D.getInstance().getDeltaWheel() > 0)
+			if(Remote2D.getDeltaWheel() > 0)
 				offset -= 20;
 			
 			if(offset > getTotalSectionHeight()-dim.y+20)

@@ -291,7 +291,7 @@ public class Renderer {
 	public static void startScissor(Vector2 pos, Vector2 dim)
 	{
 		Vector2 newPos = pos.copy();
-		ColliderBox screenPos = Remote2D.getInstance().displayHandler.getScreenRenderArea();
+		ColliderBox screenPos = Remote2D.displayHandler.getScreenRenderArea();
 		newPos.y += dim.y;//bottom left
 		newPos.y = Gui.screenHeight()-newPos.y;//translate into GL coordinates
 		newPos = newPos.add(screenPos.pos);

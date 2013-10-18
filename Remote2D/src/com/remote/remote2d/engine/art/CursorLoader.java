@@ -40,7 +40,7 @@ public class CursorLoader {
 	{
 		if(tex != null)
 		{
-			Vector2 renderpos = new Vector2(Remote2D.getInstance().getMouseCoords()).subtract(hotspot);
+			Vector2 renderpos = new Vector2(Remote2D.getMouseCoords()).subtract(hotspot);
 			Vector2 renderDim = new Vector2(tex.image.getWidth(),tex.image.getHeight());
 
 

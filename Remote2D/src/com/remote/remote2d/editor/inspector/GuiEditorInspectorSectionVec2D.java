@@ -49,7 +49,7 @@ public class GuiEditorInspectorSectionVec2D extends GuiEditorInspectorSection {
 		textField1.tick(i, j, k);
 		textField2.tick(i, j, k);
 		
-		if(i > pos.x+width-20 && i < pos.x+width && j > pos.y && j < pos.y+20 && Remote2D.getInstance().hasMouseBeenPressed())
+		if(i > pos.x+width-20 && i < pos.x+width && j > pos.y && j < pos.y+20 && Remote2D.hasMouseBeenPressed())
 			link = !link;
 		
 		if(link)
@@ -125,7 +125,7 @@ public class GuiEditorInspectorSectionVec2D extends GuiEditorInspectorSection {
 	
 	@Override
 	public boolean hasFieldBeenChanged() {
-		return (textField1.isSelected() || textField2.isSelected()) && isComplete() && Remote2D.getInstance().getIntegerKeyboardList().contains(Keyboard.KEY_RETURN);
+		return (textField1.isSelected() || textField2.isSelected()) && isComplete() && Remote2D.getIntegerKeyboardList().contains(Keyboard.KEY_RETURN);
 	}
 
 }

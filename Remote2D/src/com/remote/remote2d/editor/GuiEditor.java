@@ -203,7 +203,7 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 				} else
 					dragPoint = null;
 				
-				int deltaWheel = Remote2D.getInstance().getDeltaWheel();
+				int deltaWheel = Remote2D.getDeltaWheel();
 				float scale = map.camera.scale;
 				if(deltaWheel > 0 && map.camera.scale < 16)//zoom in, up
 					scale *= 2;
@@ -229,7 +229,7 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 		}
 
 		
-		if(Remote2D.getInstance().hasMouseBeenPressed() && !(getMouseInWindow(i,j) || menu.isMenuHovered(i,j)))
+		if(Remote2D.hasMouseBeenPressed() && !(getMouseInWindow(i,j) || menu.isMenuHovered(i,j)))
 		{
 			if(map != null && !isWidgetHovered(i,j))
 				setSelectedEntity(map.getEntityList().indexOf(map.getTopEntityAtPoint(getMapMousePos())));
@@ -261,7 +261,7 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 	
 	public Vector2 getMapMousePos()
 	{
-		Vector2 mouse = new Vector2(Remote2D.getInstance().getMouseCoords());
+		Vector2 mouse = new Vector2(Remote2D.getMouseCoords());
 		return map.screenToWorldCoords(mouse);
 	}
 	
@@ -300,7 +300,7 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 		}else if(windowStack.peek().equals(window))
 		{
 			
-		}else if(!(windowStack.peek().pos.getColliderWithDim(windowStack.peek().dim).isPointInside(new Vector2(new Vector2(Remote2D.getInstance().getMouseCoords()).getElements()))))
+		}else if(!(windowStack.peek().pos.getColliderWithDim(windowStack.peek().dim).isPointInside(new Vector2(new Vector2(Remote2D.getMouseCoords()).getElements()))))
 		{
 			int x = windowStack.indexOf(window);
 			windowStack.peek().setSelected(false);

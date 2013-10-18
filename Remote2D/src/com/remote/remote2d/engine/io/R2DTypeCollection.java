@@ -217,7 +217,7 @@ public class R2DTypeCollection extends R2DType {
 //	{
 //		if(!data.containsKey(key))
 //			return null;
-//		return Remote2D.getInstance().artLoader.getAnimation(((R2DTypeAnimation) data.get(key)).data.getPath());
+//		return Remote2D.artLoader.getAnimation(((R2DTypeAnimation) data.get(key)).data.getPath());
 //	}
 	
 	public long getLong(String key)

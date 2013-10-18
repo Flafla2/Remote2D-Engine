@@ -43,7 +43,7 @@ public class DisplayHandler {
 			Display.setLocation(0, 0);
 			Display.setFullscreen(fullscreen && !borderless);
 			
-			setIcons(Remote2D.getInstance().getGame().getIconPath());
+			setIcons(Remote2D.getGame().getIconPath());
 			
 			Display.create();
 		} catch (LWJGLException e) {
@@ -74,7 +74,7 @@ public class DisplayHandler {
 	
 	public Vector2 getGameDimensions()
 	{
-		if(Remote2D.getInstance().getGame().getDefaultStretchType() != StretchType.NONE)
+		if(Remote2D.getGame().getDefaultStretchType() != StretchType.NONE)
 			return new Vector2(gameWidth,gameHeight);
 		else
 			return new Vector2(screenWidth,screenHeight);
@@ -126,13 +126,13 @@ public class DisplayHandler {
 	{
 		if(Display.getWidth() != screenWidth || Display.getHeight() != screenHeight)
 		{
-			Log.debug("Resolution not in sync!  LWJGL: "+Display.getWidth()+"x"+Display.getHeight()+" ­ Remote2D: "+screenWidth+"x"+screenHeight);
+			Log.debug("Resolution not in sync!  LWJGL: "+Display.getWidth()+"x"+Display.getHeight()+" ï¿½ Remote2D: "+screenWidth+"x"+screenHeight);
 			screenWidth = Display.getWidth();
 			screenHeight = Display.getHeight();
 			initGL();
 			
-			for(int x=0;x<Remote2D.getInstance().guiList.size();x++)
-				Remote2D.getInstance().guiList.get(x).initGui();
+			for(int x=0;x<Remote2D.guiList.size();x++)
+				Remote2D.guiList.get(x).initGui();
 		}
 	}
 	
@@ -225,8 +225,8 @@ public class DisplayHandler {
 		type = stretch;
 		initGL();
 		
-		for(int x=0;x<Remote2D.getInstance().guiList.size();x++)
-			Remote2D.getInstance().guiList.get(x).initGui();
+		for(int x=0;x<Remote2D.guiList.size();x++)
+			Remote2D.guiList.get(x).initGui();
 	}
 	
 	public void setStretchType(StretchType stretch)
@@ -234,8 +234,8 @@ public class DisplayHandler {
 		type = stretch;
 		initGL();
 		
-		for(int x=0;x<Remote2D.getInstance().guiList.size();x++)
-			Remote2D.getInstance().guiList.get(x).initGui();
+		for(int x=0;x<Remote2D.guiList.size();x++)
+			Remote2D.guiList.get(x).initGui();
 	}
 	
 	/**
@@ -314,7 +314,7 @@ public class DisplayHandler {
 	        Display.setDisplayMode(targetDisplayMode);
 	        Display.setFullscreen(fullscreen);
 	        Display.setLocation(posX, posY);
-	        setIcons(Remote2D.getInstance().getGame().getIconPath());
+	        setIcons(Remote2D.getGame().getIconPath());
 	        Display.setVSyncEnabled(fullscreen);
 	        if(fullscreen == true)
 	        {
@@ -326,8 +326,8 @@ public class DisplayHandler {
 	        Log.warn("Unable to setup mode "+width+"x"+height+" fullscreen="+fullscreen + e);
 	    }
 	    
-	    for(int x=0;x<Remote2D.getInstance().guiList.size();x++)
-			Remote2D.getInstance().guiList.get(x).initGui();
+	    for(int x=0;x<Remote2D.guiList.size();x++)
+			Remote2D.guiList.get(x).initGui();
 	}
 	
 	/**

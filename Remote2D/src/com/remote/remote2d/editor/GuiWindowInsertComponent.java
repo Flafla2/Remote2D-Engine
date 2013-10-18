@@ -46,9 +46,9 @@ public class GuiWindowInsertComponent extends GuiWindow {
 		Vector2 mouse = getMouseInWindow(i,j);
 		textField.tick((int)mouse.x, (int)mouse.y, k);
 		
-		if(!Remote2D.getInstance().componentList.containsComponent(textField.text) && !doneButton.getDisabled())
+		if(!Remote2D.componentList.containsComponent(textField.text) && !doneButton.getDisabled())
 			doneButton.setDisabled(true);
-		if(Remote2D.getInstance().componentList.containsComponent(textField.text) && doneButton.getDisabled())
+		if(Remote2D.componentList.containsComponent(textField.text) && doneButton.getDisabled())
 			doneButton.setDisabled(false);
 	}
 	
@@ -58,7 +58,7 @@ public class GuiWindowInsertComponent extends GuiWindow {
 		if(button.id == 0)
 		{
 			editor.getInspector().apply();
-			Component c = Remote2D.getInstance().componentList.getComponentWithEntity(textField.text.trim(),entity);
+			Component c = Remote2D.componentList.getComponentWithEntity(textField.text.trim(),entity);
 			entity.addComponent(c.clone());
 			editor.getInspector().setCurrentEntity(entity);
 		}

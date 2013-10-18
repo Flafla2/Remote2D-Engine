@@ -27,8 +27,8 @@ public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSectio
 
 	@Override
 	public Object getData() {
-		if(Remote2D.getInstance().artLoader.R2DExists(textField.text))
-			return Remote2D.getInstance().artLoader.getAnimation(textField.text);
+		if(Remote2D.artLoader.R2DExists(textField.text))
+			return Remote2D.artLoader.getAnimation(textField.text);
 		return null;
 	}
 
@@ -54,7 +54,7 @@ public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSectio
 		{
 			textField.text = ((Animation)o).getPath();
 		} else if(o instanceof String)
-			if(Remote2D.getInstance().artLoader.R2DExists((String)o))
+			if(Remote2D.artLoader.R2DExists((String)o))
 				textField.text = (String)o;
 	}
 
@@ -70,12 +70,12 @@ public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSectio
 
 	@Override
 	public boolean isComplete() {
-		return Remote2D.getInstance().artLoader.R2DExists(textField.text);
+		return Remote2D.artLoader.R2DExists(textField.text);
 	}
 
 	@Override
 	public boolean hasFieldBeenChanged() {
-		return textField.isSelected() && isComplete() && Remote2D.getInstance().getIntegerKeyboardList().contains(Keyboard.KEY_RETURN);
+		return textField.isSelected() && isComplete() && Remote2D.getIntegerKeyboardList().contains(Keyboard.KEY_RETURN);
 	}
 	
 	@Override

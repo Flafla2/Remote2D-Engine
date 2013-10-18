@@ -62,7 +62,7 @@ public class GuiEditorHeirarchy extends GuiMenu {
 		DraggableObject object = editor.dragObject;
 		if(object != null && object instanceof DraggableObjectEntity)
 		{
-			Vector2 mouse = new Vector2(Remote2D.getInstance().getMouseCoords());
+			Vector2 mouse = new Vector2(Remote2D.getMouseCoords());
 			for(int x=0;x < sections.size();x++)
 			{
 				if(sections.get(x).pos.getColliderWithDim(sections.get(x).dim).isPointInside(mouse))
@@ -93,8 +93,8 @@ public class GuiEditorHeirarchy extends GuiMenu {
 		if(selectedIndex != -1)
 			sec = sections.get(selectedIndex);
 		int newSelectedIndex = -1;
-		if(sec != null && pos.getColliderWithDim(dim).isPointInside(new Vector2(Remote2D.getInstance().getMouseCoords())))
-			newSelectedIndex = (int)(Remote2D.getInstance().getMouseCoords()[1]-pos.y)/20;
+		if(sec != null && pos.getColliderWithDim(dim).isPointInside(new Vector2(Remote2D.getMouseCoords())))
+			newSelectedIndex = (int)(Remote2D.getMouseCoords()[1]-pos.y)/20;
 		else if(sec != null)
 			newSelectedIndex = selectedIndex;
 		
@@ -185,7 +185,7 @@ public class GuiEditorHeirarchy extends GuiMenu {
 	{
 		if(object != null && object instanceof DraggableObjectEntity)
 		{
-			Vector2 mouse = new Vector2(Remote2D.getInstance().getMouseCoords());
+			Vector2 mouse = new Vector2(Remote2D.getMouseCoords());
 			for(int x=0;x < sections.size();x++)
 			{
 				DraggableObjectEntity drag = (DraggableObjectEntity)object;

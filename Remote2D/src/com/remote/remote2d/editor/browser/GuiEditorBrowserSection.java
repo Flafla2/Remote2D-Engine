@@ -33,7 +33,7 @@ public class GuiEditorBrowserSection extends Gui {
 	@Override
 	public void tick(int i, int j, int k) {
 		long time = System.currentTimeMillis();
-		if(Remote2D.getInstance().hasMouseBeenPressed())
+		if(Remote2D.hasMouseBeenPressed())
 		{
 			if(pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)))
 			{

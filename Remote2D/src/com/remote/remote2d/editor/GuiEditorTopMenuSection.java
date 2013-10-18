@@ -134,7 +134,7 @@ public class GuiEditorTopMenuSection extends Gui {
 		if(!isEnabled)
 			return;
 		isHovered = i > x && j > y && i < x+width && j < y+height;
-		if (Remote2D.getInstance().hasMouseBeenPressed() && isHovered)
+		if (Remote2D.hasMouseBeenPressed() && isHovered)
 		{
 			isSelected = !isSelected;
 		}
@@ -166,7 +166,7 @@ public class GuiEditorTopMenuSection extends Gui {
 				
 				currentY += subheight;
 			}
-			if(!isHovered && Remote2D.getInstance().hasMouseBeenPressed())
+			if(!isHovered && Remote2D.hasMouseBeenPressed())
 			{
 				isSelected = false;
 				if(hoveredBox != -1)

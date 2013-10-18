@@ -40,7 +40,7 @@ public class GuiInGame extends GuiMenu implements MapHolder {
 	public void render(float interpolation)
 	{
 		map.render(false,interpolation);
-		Fonts.get("Arial").drawString("FPS: "+Remote2D.getInstance().getFPS(), 10, 10, 20, 0x000000);
+		Fonts.get("Arial").drawString("FPS: "+Remote2D.getFPS(), 10, 10, 20, 0x000000);
 	}
 	
 	@Override
@@ -48,7 +48,7 @@ public class GuiInGame extends GuiMenu implements MapHolder {
 	{
 		map.tick(i,j,k,false);
 		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
-			Remote2D.getInstance().guiList.pop();
+			Remote2D.guiList.pop();
 	}
 
 	@Override

@@ -34,17 +34,17 @@ public abstract class Gui {
 	
 	public static int screenWidth()
 	{
-		return (int)Remote2D.getInstance().displayHandler.getDimensions().x;
+		return (int)Remote2D.displayHandler.getDimensions().x;
 	}
 	
 	public static int screenHeight()
 	{
-		return (int)Remote2D.getInstance().displayHandler.getDimensions().y;
+		return (int)Remote2D.displayHandler.getDimensions().y;
 	}
 	
 	public static Vector2 screenDim()
 	{
-		return Remote2D.getInstance().displayHandler.getDimensions();
+		return Remote2D.displayHandler.getDimensions();
 	}
 	
 	public static void renderTextureWithCoords(Texture tex, Vector2 pos, Vector2 dim, Vector2 imgPos, Vector2 imgDim)

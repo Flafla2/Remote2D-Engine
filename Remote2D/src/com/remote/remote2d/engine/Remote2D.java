@@ -27,56 +27,55 @@ import com.remote.remote2d.engine.world.Map;
 public class Remote2D {
 	
 	/*----------CORE VARIABLES--------------*/
-	public DisplayHandler displayHandler;
-	private Remote2DGame game;
-	private static final Remote2D instance = new Remote2D();
+	public static DisplayHandler displayHandler;
+	private static Remote2DGame game;
 	public static final boolean RESIZING_ENABLED = true;
 	
 	/*----------GAMELOOP VARIABLES----------*/
-	public boolean running = true;
-	private int fpsCounter = 0;
-	private int fps = 0;
+	public static boolean running = true;
+	private static int fpsCounter = 0;
+	private static int fps = 0;
 	
 	/**
 	 * The speed at which the tick() function runs, in hertz.  In other words, the target "Ticks per second"
 	 */
-	private final double GAME_HERTZ = 30.0;
+	private static final double GAME_HERTZ = 30.0;
 	/**
 	 * The calculated value in nanoseconds on how much time <i>should</i> be in between tick functions, based on GAME_HERTZ.
 	 */
-	private final double TIME_BETWEEN_UPDATES = 1000000000 / GAME_HERTZ;
+	private static final double TIME_BETWEEN_UPDATES = 1000000000 / GAME_HERTZ;
 	/**
 	 * An arbitrary value dictating the max amount of ticks() we should do if we are playing catchup.  The lower this is, the better
 	 * render quality on slower machines, but physics/game logic will appear to slow down.  Set this to -1 for 100% accuracy.
 	 */
-	private final int MAX_UPDATES_BEFORE_RENDER = 5;
+	private static final int MAX_UPDATES_BEFORE_RENDER = 5;
 	/**
 	 * When the last time we ticked was.  This is used to determine how many times we need to tick().
 	 */
-	private double lastUpdateTime = System.nanoTime();
+	private static double lastUpdateTime = System.nanoTime();
 	/**
 	 * The last time that we rendered, in nanoseconds.  This is used to maintain a stable FPS using TARGET_FPS.
 	 */
-	private double lastRenderTime = System.nanoTime();
+	private static double lastRenderTime = System.nanoTime();
 	
-	private final double TARGET_FPS = 60;
-	private final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;
+	private static final double TARGET_FPS = 60;
+	private static final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;
 	
 	/*----------GAME VARIABLES--------------*/
 	/**
 	 * ALL rendering and ticking, besides REALLY basic stuff goes through here.  Even in-game!
 	 */
-	public Stack<GuiMenu> guiList;
-	public ArtLoader artLoader;	
-	public InsertableComponentList componentList;
+	public static Stack<GuiMenu> guiList;
+	public static ArtLoader artLoader;	
+	public static InsertableComponentList componentList;
 	
-	private boolean mousePressed = false;
-	private boolean mouseReleased = false;
-	private int deltaWheel = 0;
-	private ArrayList<Character> charList;
-	private ArrayList<Character> charListLimited;
-	private ArrayList<Integer> keyboardList;
-	private String allowedChars = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-_=+\\][';:\"/.,?><`~ ";
+	private static boolean mousePressed = false;
+	private static boolean mouseReleased = false;
+	private static int deltaWheel = 0;
+	private static ArrayList<Character> charList;
+	private static ArrayList<Character> charListLimited;
+	private static ArrayList<Integer> keyboardList;
+	private static String allowedChars = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-_=+\\][';:\"/.,?><`~ ";
 	
 	public static void startRemote2D(Remote2DGame game) {
 				
@@ -85,22 +84,17 @@ public class Remote2D {
 			@Override
 			public void run()
 			{
-				instance.start();
+				Remote2D.start();
 			}
 			
 		};
 		
-		instance.game = game;
+		Remote2D.game = game;
 		thread.start();
 		
 	}
 	
-	public static Remote2D getInstance()
-	{
-		return instance;
-	}
-	
-	public void start()
+	public static void start()
 	{
 		Vector2 gameDim = game.getDefaultResolution();
 		Vector2 winDim = game.getDefaultScreenResolution();
@@ -116,7 +110,7 @@ public class Remote2D {
 		
 	}
 	
-	public void initGame()
+	public static void initGame()
 	{
 		Log.setLogger(new ConsoleLogger());
 		
@@ -134,7 +128,7 @@ public class Remote2D {
 		game.initGame();
 	}
 	
-	public void gameLoop()
+	public static void gameLoop()
 	{
 		int lastSecondTime = (int) (lastUpdateTime / 1000000000);
 		
@@ -217,7 +211,7 @@ public class Remote2D {
 		}
 	}
 	
-	public int[] getMouseCoords()
+	public static int[] getMouseCoords()
 	{
 		Vector2 scale = displayHandler.getRenderScale();
 		ColliderBox renderArea = displayHandler.getScreenRenderArea();
@@ -230,7 +224,7 @@ public class Remote2D {
 		return r;
 	}
 	
-	public int getMouseDown()
+	public static int getMouseDown()
 	{
 		if(Mouse.isButtonDown(0))
 			return 1;
@@ -239,7 +233,7 @@ public class Remote2D {
 		return 0;
 	}
 	
-	public void tick(int i, int j, int k)
+	public static void tick(int i, int j, int k)
 	{
 		updateKeyboardList();
 		guiList.peek().tick(i, j, k);
@@ -250,17 +244,17 @@ public class Remote2D {
 		return new File(Remote2D.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 	}
 	
-	public boolean hasMouseBeenPressed()
+	public static boolean hasMouseBeenPressed()
 	{
 		return mousePressed;
 	}
 	
-	public boolean hasMouseBeenReleased()
+	public static boolean hasMouseBeenReleased()
 	{
 		return mouseReleased;
 	}
 	
-	private void updateKeyboardList()
+	private static void updateKeyboardList()
 	{
 		mousePressed = false;
 		mouseReleased = false;
@@ -296,28 +290,28 @@ public class Remote2D {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<Character> getKeyboardList()
+	public static ArrayList<Character> getKeyboardList()
 	{
 		return (ArrayList<Character>) charList.clone();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<Character> getLimitedKeyboardList()
+	public static ArrayList<Character> getLimitedKeyboardList()
 	{
 		return (ArrayList<Character>) charListLimited.clone();
 	}
 	
-	public ArrayList<Integer> getIntegerKeyboardList()
+	public static ArrayList<Integer> getIntegerKeyboardList()
 	{
 		return keyboardList;
 	}
 	
-	public int getDeltaWheel()
+	public static int getDeltaWheel()
 	{
 		return deltaWheel;
 	}
 	
-	public void render(float interpolation)
+	public static void render(float interpolation)
 	{
 		StretchType stretch = guiList.peek().getOverrideStretchType();
 		if(stretch == null)
@@ -349,7 +343,7 @@ public class Remote2D {
 	 * Returns the topmost instance of the Editor in the Gui Stack.
 	 * @return Instance of GuiEditor, or null if none exist.
 	 */
-	public GuiEditor getEditor()
+	public static GuiEditor getEditor()
 	{
 		for(int x=0;x<guiList.size();x++)
 			if(guiList.get(x) instanceof GuiEditor)
@@ -357,12 +351,12 @@ public class Remote2D {
 		return null;
 	}
 	
-	public Remote2DGame getGame()
+	public static Remote2DGame getGame()
 	{
 		return game;
 	}
 	
-	public int getFPS()
+	public static int getFPS()
 	{
 		return fps;
 	}
@@ -374,7 +368,7 @@ public class Remote2D {
 	 * 
 	 * @return The Map on the top of the stack.
 	 */
-	public Map getMap()
+	public static Map getMap()
 	{
 		for(GuiMenu menu : guiList)
 		{
@@ -384,7 +378,7 @@ public class Remote2D {
 		return null;
 	}
 	
-	public void shutDown()
+	public static void shutDown()
 	{
 		Log.info("Remote2D Engine Shutting Down");
 	}

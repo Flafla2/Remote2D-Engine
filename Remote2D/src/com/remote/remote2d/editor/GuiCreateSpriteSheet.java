@@ -153,7 +153,7 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 		Vector2 realOffset = Interpolator.linearInterpolate(oldOffset, offset, interpolation);
 		
 		drawBlueprintBackground();
-		if(Remote2D.getInstance().artLoader.textureExists(texID.text) && tex != null)
+		if(Remote2D.artLoader.textureExists(texID.text) && tex != null)
 		{
 			if(!tex.textureLocation.equals(texID.text))
 			{
@@ -216,12 +216,12 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 		createButton.setDisabled(!(isReady() && animSave.hasText() && animSave.text.endsWith(Animation.getExtension())));
 		regenButton.setDisabled(!isReady());
 		
-		if(Remote2D.getInstance().getKeyboardList().contains('[') && scale >= 2)
+		if(Remote2D.getKeyboardList().contains('[') && scale >= 2)
 			scale /= 2;
-		else if(Remote2D.getInstance().getKeyboardList().contains(']'))
+		else if(Remote2D.getKeyboardList().contains(']'))
 			scale *= 2;
 
-		if(Remote2D.getInstance().artLoader.textureExists(texID.text) )
+		if(Remote2D.artLoader.textureExists(texID.text) )
 		{
 			reloadTex();
 			boolean up = Keyboard.isKeyDown(Keyboard.KEY_UP);
@@ -268,10 +268,10 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 			manager.write();
 			lastMessageTime = System.currentTimeMillis();
 			message = "File "+manager.getFile().getName()+" saved.";
-			//Remote2D.getInstance().guiList.pop();
+			//Remote2D.guiList.pop();
 		} else if(button.id == 1)
 		{
-			Remote2D.getInstance().guiList.pop();
+			Remote2D.guiList.pop();
 		} else if(button.id == 2)
 		{
 			if(isReady())
@@ -290,7 +290,7 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 	
 	private boolean isReady()
 	{
-		boolean containsKey = Remote2D.getInstance().artLoader.textureExists(texID.text);
+		boolean containsKey = Remote2D.artLoader.textureExists(texID.text);
 		boolean total = texID.hasText() && startX.hasText() && startY.hasText() 
 				&& dimX.hasText() && dimY.hasText() && framesX.hasText() &&
 				framesY.hasText() && paddingX.hasText() && paddingY.hasText()

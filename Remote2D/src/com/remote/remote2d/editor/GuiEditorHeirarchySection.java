@@ -43,7 +43,7 @@ public class GuiEditorHeirarchySection {
 		}
 		
 		long time = System.currentTimeMillis();
-		if(Remote2D.getInstance().hasMouseBeenPressed())
+		if(Remote2D.hasMouseBeenPressed())
 		{
 			if(pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)))
 			{	
@@ -64,7 +64,7 @@ public class GuiEditorHeirarchySection {
 		{
 			String uuid = heirarchy.getEntityForSec(this).getUUID();
 			heirarchy.getEditor().dragObject = new DraggableObjectEntity(heirarchy.getEditor(),content,uuid,pos,dim,new Vector2(i,j).subtract(pos));
-		} else if(pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)) && Remote2D.getInstance().hasMouseBeenReleased())
+		} else if(pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)) && Remote2D.hasMouseBeenReleased())
 		{
 			heirarchy.setAllUnselected();
 			selected = true;

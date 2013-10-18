@@ -41,10 +41,10 @@ public class GuiMainMenu extends GuiMenu {
 	{
 		if(button.id == 0)
 		{
-			Remote2D.getInstance().guiList.add(new GuiEditor());
+			Remote2D.guiList.add(new GuiEditor());
 		} else if(button.id == 1)
 		{
-			Remote2D.getInstance().running = false;
+			Remote2D.running = false;
 		}
 	}
 	

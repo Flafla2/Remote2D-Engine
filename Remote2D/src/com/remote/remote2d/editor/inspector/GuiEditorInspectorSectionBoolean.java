@@ -33,7 +33,7 @@ public class GuiEditorInspectorSectionBoolean extends GuiEditorInspectorSection 
 	@Override
 	public void tick(int i, int j, int k) {
 		hasBeenChanged = false;
-		if(i > pos.x+width-20 && i < pos.x+width && j > pos.y && j < pos.y+20 && Remote2D.getInstance().hasMouseBeenPressed())
+		if(i > pos.x+width-20 && i < pos.x+width && j > pos.y && j < pos.y+20 && Remote2D.hasMouseBeenPressed())
 		{
 			isTrue = !isTrue;
 			hasBeenChanged = true;

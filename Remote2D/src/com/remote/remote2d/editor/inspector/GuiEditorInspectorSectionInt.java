@@ -70,7 +70,7 @@ public class GuiEditorInspectorSectionInt extends GuiEditorInspectorSection {
 	
 	@Override
 	public boolean hasFieldBeenChanged() {
-		return textField.isSelected() && isComplete() && Remote2D.getInstance().getIntegerKeyboardList().contains(Keyboard.KEY_RETURN);
+		return textField.isSelected() && isComplete() && Remote2D.getIntegerKeyboardList().contains(Keyboard.KEY_RETURN);
 	}
 
 }
