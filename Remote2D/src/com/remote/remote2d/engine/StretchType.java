@@ -8,6 +8,8 @@ package com.remote.remote2d.engine;
  * <li>{@link StretchType#MULTIPLES}: Scales the target resolution proportionally by multiples of 2, with black borders on the sides - great for pixel art.</li>
  * <li>{@link StretchType#NONE}: Completely ignores the target Window Size.  No resolution independence at all.</li>
  * </ul>
+ * 
+ * @author Flafla2
  */
 public enum StretchType {
 	

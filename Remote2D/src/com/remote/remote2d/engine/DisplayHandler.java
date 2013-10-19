@@ -15,6 +15,12 @@ import com.remote.remote2d.engine.art.TextureLoader;
 import com.remote.remote2d.engine.logic.ColliderBox;
 import com.remote.remote2d.engine.logic.Vector2;
 
+/**
+ * Responsible for all handling of LWJGL's {@link Display} as well as any initial
+ * OpenGL calls.  This class is also responsible for maintaining resolution
+ * independence with {@link StretchType}
+ * @author Flafla2
+ */
 public class DisplayHandler {
 	
 	private int screenWidth;
@@ -64,6 +70,9 @@ public class DisplayHandler {
 		Display.setIcon(buffers);
 	}
 	
+	/**
+	 * The renderable dimensions of the game right now (in pixels).
+	 */
 	public Vector2 getDimensions()
 	{
 		if(type != StretchType.NONE)
@@ -72,7 +81,11 @@ public class DisplayHandler {
 			return new Vector2(screenWidth,screenHeight);
 	}
 	
-	public Vector2 getGameDimensions()
+	/**
+	 * The default renderable dimensions of the game (in pixels).  In
+	 * other words this ignores any Gui overrides to the StretchType.
+	 */
+	public Vector2 getDefaultDimensions()
 	{
 		if(Remote2D.getGame().getDefaultStretchType() != StretchType.NONE)
 			return new Vector2(gameWidth,gameHeight);
@@ -80,26 +93,50 @@ public class DisplayHandler {
 			return new Vector2(screenWidth,screenHeight);
 	}
 	
+	/**
+	 * The dimensions of the screen - NOT the game.  In other words
+	 * this includes the black bars/box around the game when the
+	 * StretchType isn't {@link StretchType#NONE}.
+	 */
 	public Vector2 getScreenDimensions()
 	{
 		return new Vector2(screenWidth,screenHeight);
 	}
 	
+	/**
+	 * If the game is in full screen
+	 */
 	public boolean getFullscreen()
 	{
 		return fullscreen;
 	}
 	
+	/**
+	 * The current StretchType of the game.
+	 * @see StretchType
+	 */
 	public StretchType getStretchType()
 	{
 		return type;
 	}
 	
+	/**
+	 * If the game is in borderless mode.<br />
+	 * 
+	 * NOTE: Borderless doesn't work on Macs, and it doesn't work
+	 * when fullscreen mode is on at the same time!
+	 */
 	public boolean getBorderless()
 	{
 		return borderless;
 	}
 	
+	/**
+	 * Creates a {@link ByteBuffer} from an image.  This is used by
+	 * LWJGL low level utilities.
+	 * @param image Image to convert
+	 * @param BYTES_PER_PIXEL How many bytes in 1 pixel - 4 for RGBA, 3 for RGB
+	 */
 	public ByteBuffer getBufferFromImage(BufferedImage image, int BYTES_PER_PIXEL)
 	{
 		int[] pixels = new int[image.getWidth() * image.getHeight()];
@@ -122,11 +159,15 @@ public class DisplayHandler {
         return buffer;
 	}
 	
+	/**
+	 * Checks to see if the display has been resized.  If it has, reinitializes
+	 * OpenGL.
+	 */
 	public void checkDisplayResolution()
 	{
 		if(Display.getWidth() != screenWidth || Display.getHeight() != screenHeight)
 		{
-			Log.debug("Resolution not in sync!  LWJGL: "+Display.getWidth()+"x"+Display.getHeight()+" � Remote2D: "+screenWidth+"x"+screenHeight);
+			Log.debug("Resolution not in sync!  LWJGL: "+Display.getWidth()+"x"+Display.getHeight()+"; Remote2D: "+screenWidth+"x"+screenHeight);
 			screenWidth = Display.getWidth();
 			screenHeight = Display.getHeight();
 			initGL();
@@ -136,12 +177,20 @@ public class DisplayHandler {
 		}
 	}
 	
+	/**
+	 * The ratio of the OpenGL camera size and the window size.
+	 */
 	public Vector2 getRenderScale()
 	{
 		ColliderBox renderArea = getScreenRenderArea();
 		return renderArea.dim.divide(getDimensions());
 	}
 	
+	/**
+	 * Initializes OpenGL.  This must be done whenever the Display window is reset
+	 * (when it is resized, toggled into fullscreen, etc.) as well as when the game
+	 * first launches.
+	 */
 	public void initGL()
 	{
 		Log.debug("Initializing OpenGL");
@@ -170,6 +219,10 @@ public class DisplayHandler {
 		//CursorLoader.setCursor(new Texture("/res/gui/mouse.png"), new Vector2D(22,22));
 	}
 	
+	/**
+	 * A {@link ColliderBox} representing the renderable area of the game, in window
+	 * coordinates (NOT OpenGL/game coordinates).
+	 */
 	public ColliderBox getScreenRenderArea()
 	{
 		if(type == StretchType.NONE || type == StretchType.STRETCH)
@@ -229,6 +282,12 @@ public class DisplayHandler {
 			Remote2D.guiList.get(x).initGui();
 	}
 	
+	/**
+	 * Sets the StretchType of the game.<br />
+	 * 
+	 * NOTE: DO NOT use this unless you have to!  Usually you can
+	 * use {@link com.remote.remote2d.engine.gui.GuiMenu#getOverrideStretchType()}!
+	 */
 	public void setStretchType(StretchType stretch)
 	{
 		type = stretch;
@@ -243,7 +302,8 @@ public class DisplayHandler {
 	 * 
 	 * @param width The width of the display required
 	 * @param height The height of the display required
-	 * @param fullscreen True if we want fullscreen mode
+	 * @param fullscreen If we want fullscreen mode
+	 * @param borderless If we want the window to be borderless
 	 */
 	public void setDisplayMode(int width, int height, boolean fullscreen, boolean borderless) {
 		int posX = Display.getX();

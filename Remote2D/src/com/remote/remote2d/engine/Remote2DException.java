@@ -2,6 +2,10 @@ package com.remote.remote2d.engine;
 
 import com.esotericsoftware.minlog.Log;
 
+/**
+ * A type of exception specifically able to be handled by Remote2D.
+ * @author Flafla2
+ */
 public class Remote2DException extends RuntimeException {
 	
 	private static final long serialVersionUID = 1L;

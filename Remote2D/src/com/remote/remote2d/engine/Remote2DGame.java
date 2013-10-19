@@ -8,6 +8,13 @@ import javax.swing.JFrame;
 
 import com.remote.remote2d.engine.logic.Vector2;
 
+/**
+ * A catch-all class that each and every game MUST use.  This class handles information
+ * such as what method of platform independence must be used, how to initialize the game
+ * what components should be registered with the engine, etc.
+ * 
+ * @author Flafla2
+ */
 public abstract class Remote2DGame {
 	
 	/**
