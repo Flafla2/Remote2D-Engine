@@ -81,64 +81,6 @@ public class Remote2D {
 	private static ArrayList<Integer> keyboardList;
 	private static final String allowedChars = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-_=+\\][';:\"/.,?><`~ ";
 	
-	/**
-	 * Starts Remote2D.  This initializes all engine-related tasks, opens up the
-	 * display, and gets your game up and running.
-	 * @param game This game's {@link Remote2DGame} instance.
-	 * @see Remote2DGame
-	 */
-	public static void startRemote2D(Remote2DGame game) {
-				
-		Thread thread = new Thread("Remote2D Thread") {
-			
-			@Override
-			public void run()
-			{
-				Remote2D.start();
-			}
-			
-		};
-		
-		Remote2D.game = game;
-		thread.start();
-		
-	}
-	
-	private static void start()
-	{
-		Vector2 gameDim = game.getDefaultResolution();
-		Vector2 winDim = game.getDefaultScreenResolution();
-		displayHandler = new DisplayHandler((int)winDim.x,(int)winDim.y,(int)gameDim.x,(int)gameDim.y,game.getDefaultStretchType(),false,false);
-		
-		initGame();
-		
-		gameLoop();
-		
-		shutDown();
-		displayHandler.setDisplayMode(1024,576,false,false);
-		Display.destroy();
-		System.exit(0);
-		
-	}
-	
-	private static void initGame()
-	{
-		Log.setLogger(new ConsoleLogger());
-		
-		guiList = new Stack<GuiMenu>();
-		charList = new ArrayList<Character>();
-		charListLimited = new ArrayList<Character>();
-		keyboardList = new ArrayList<Integer>();
-		
-		componentList = new InsertableComponentList();
-		componentList.addInsertableComponent("Box Collider", ComponentColliderBox.class);
-		componentList.addInsertableComponent("Camera", ComponentCamera.class);
-				
-		artLoader = new ArtLoader();
-		
-		game.initGame();
-	}
-	
 	private static void gameLoop()
 	{
 		int lastSecondTime = (int) (lastUpdateTime / 1000000000);
@@ -221,64 +163,72 @@ public class Remote2D {
 		}
 	}
 	
-	/**
-	 * The current coordinates of the mouse on-screen.  This is the same thing as <i>i</i> and <i>j</i>
-	 * in {@link #tick(i, j, k)}.  Useful if mouse coordinates are needed while rendering.<br />
-	 * 
-	 * NOTE: You MUST use this instead of {@link Mouse#getX()} and {@link Mouse#getY()}
-	 * due to the fact that 
-	 */
-	public static Vector2 getMouseCoords()
+	private static void initGame()
 	{
-		Vector2 scale = displayHandler.getRenderScale();
-		ColliderBox renderArea = displayHandler.getScreenRenderArea();
-		Vector2 r = new Vector2(Mouse.getX(),Mouse.getY());
-		r.x -= renderArea.pos.x;
-		r.y -= renderArea.pos.y;
-		r.x /= scale.x;
-		r.y /= scale.y;
-		r.y = (int) (displayHandler.getDimensions().y-r.y);
-		return r;
+		Log.setLogger(new ConsoleLogger());
+		
+		guiList = new Stack<GuiMenu>();
+		charList = new ArrayList<Character>();
+		charListLimited = new ArrayList<Character>();
+		keyboardList = new ArrayList<Integer>();
+		
+		componentList = new InsertableComponentList();
+		componentList.addInsertableComponent("Box Collider", ComponentColliderBox.class);
+		componentList.addInsertableComponent("Camera", ComponentCamera.class);
+				
+		artLoader = new ArtLoader();
+		
+		game.initGame();
 	}
 	
-	/**
-	 * If the mouse has been pressed.  This is the same thing as <i>k</i>
-	 * in {@link #tick(i, j, k)}.  Useful if mouse button state is needed while rendering.
-	 */
-	public static int getMouseDown()
+	private static void render(float interpolation)
 	{
-		if(Mouse.isButtonDown(0))
-			return 1;
-		if(Mouse.isButtonDown(1))
-			return 2;
-		return 0;
+		StretchType stretch = guiList.peek().getOverrideStretchType();
+		if(stretch == null)
+			stretch = game.getDefaultStretchType();
+		if(stretch != displayHandler.getStretchType())
+			displayHandler.setStretchType(stretch);
+		
+		GL11.glLoadIdentity();
+		
+		int color = guiList.peek().backgroundColor;
+		float r = ((color >> 16) & 0xff)/255f;
+		float g = ((color >> 8) & 0xff)/255f;
+		float b = (color & 0xff)/255f;
+		
+		GL11.glClearColor(0, 0, 0, 1);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		
+		Renderer.drawRect(new Vector2(0,0), displayHandler.getDimensions(), r, g, b, 1.0f);
+		
+		if(RESIZING_ENABLED)
+			displayHandler.checkDisplayResolution();
+				
+		guiList.peek().render(interpolation);
+		
+		CursorLoader.render(interpolation);
 	}
 	
-	public static void tick(int i, int j, int k)
+	private static void shutDown()
 	{
-		updateKeyboardList();
-		guiList.peek().tick(i, j, k);
+		Log.info("Remote2D Engine Shutting Down");
 	}
 	
-	public static File getJarPath()
+	private static void start()
 	{
-		return new File(Remote2D.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-	}
-	
-	/**
-	 * @return True if the mouse button has been pressed this tick (NOT held down, just pressed).  Otherwise, false.
-	 */
-	public static boolean hasMouseBeenPressed()
-	{
-		return mousePressed;
-	}
-	
-	/**
-	 * @return True if the mouse button has been released this tick.  Otherwise, false.
-	 */
-	public static boolean hasMouseBeenReleased()
-	{
-		return mouseReleased;
+		Vector2 gameDim = game.getDefaultResolution();
+		Vector2 winDim = game.getDefaultScreenResolution();
+		displayHandler = new DisplayHandler((int)winDim.x,(int)winDim.y,(int)gameDim.x,(int)gameDim.y,game.getDefaultStretchType(),false,false);
+		
+		initGame();
+		
+		gameLoop();
+		
+		shutDown();
+		displayHandler.setDisplayMode(1024,576,false,false);
+		Display.destroy();
+		System.exit(0);
+		
 	}
 	
 	private static void updateKeyboardList()
@@ -317,6 +267,56 @@ public class Remote2D {
 	}
 	
 	/**
+	 * How much the mouse wheel has moved since the last tick.
+	 */
+	public static int getDeltaWheel()
+	{
+		return deltaWheel;
+	}
+	
+	/**
+	 * Returns the topmost instance of the Editor in the Gui Stack.
+	 * @return Instance of GuiEditor, or null if none exist.
+	 */
+	public static GuiEditor getEditor()
+	{
+		for(int x=0;x<guiList.size();x++)
+			if(guiList.get(x) instanceof GuiEditor)
+				return (GuiEditor)guiList.get(x);
+		return null;
+	}
+	
+	public static int getFPS()
+	{
+		return fps;
+	}
+	
+	/**
+	 * The current instance of {@link Remote2DGame}.
+	 * @see Remote2DGame
+	 */
+	public static Remote2DGame getGame()
+	{
+		return game;
+	}
+	
+	/**
+	 * The same thing as {@link #getKeyboardList()} except it contains LWJGL's integer index
+	 * of that character instead of Java's Character class.
+	 * 
+	 * @see Keyboard#isKeyDown(int)
+	 */
+	public static ArrayList<Integer> getIntegerKeyboardList()
+	{
+		return keyboardList;
+	}
+	
+	public static File getJarPath()
+	{
+		return new File(Remote2D.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+	}
+	
+	/**
 	 * A list of all keys that have been pressed this tick.
 	 * 
 	 * NOTE: This does NOT include keys that are held down.  Use {@link Keyboard#isKeyDown(int)}
@@ -342,79 +342,6 @@ public class Remote2D {
 	}
 	
 	/**
-	 * The same thing as {@link #getKeyboardList()} except it contains LWJGL's integer index
-	 * of that character instead of Java's Character class.
-	 * 
-	 * @see Keyboard#isKeyDown(int)
-	 */
-	public static ArrayList<Integer> getIntegerKeyboardList()
-	{
-		return keyboardList;
-	}
-	
-	/**
-	 * How much the mouse wheel has moved since the last tick.
-	 */
-	public static int getDeltaWheel()
-	{
-		return deltaWheel;
-	}
-	
-	private static void render(float interpolation)
-	{
-		StretchType stretch = guiList.peek().getOverrideStretchType();
-		if(stretch == null)
-			stretch = game.getDefaultStretchType();
-		if(stretch != displayHandler.getStretchType())
-			displayHandler.setStretchType(stretch);
-		
-		GL11.glLoadIdentity();
-		
-		int color = guiList.peek().backgroundColor;
-		float r = ((color >> 16) & 0xff)/255f;
-		float g = ((color >> 8) & 0xff)/255f;
-		float b = (color & 0xff)/255f;
-		
-		GL11.glClearColor(0, 0, 0, 1);
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		
-		Renderer.drawRect(new Vector2(0,0), displayHandler.getDimensions(), r, g, b, 1.0f);
-		
-		if(RESIZING_ENABLED)
-			displayHandler.checkDisplayResolution();
-				
-		guiList.peek().render(interpolation);
-		
-		CursorLoader.render(interpolation);
-	}
-	
-	/**
-	 * Returns the topmost instance of the Editor in the Gui Stack.
-	 * @return Instance of GuiEditor, or null if none exist.
-	 */
-	public static GuiEditor getEditor()
-	{
-		for(int x=0;x<guiList.size();x++)
-			if(guiList.get(x) instanceof GuiEditor)
-				return (GuiEditor)guiList.get(x);
-		return null;
-	}
-	
-	/**
-	 * The current instance of {@link Remote2DGame}.
-	 * @see Remote2DGame
-	 */
-	public static Remote2DGame getGame()
-	{
-		return game;
-	}
-	
-	public static int getFPS()
-	{
-		return fps;
-	}
-	
-	/**
 	 * Finds the best version of the map by scanning through all available GUIs.
 	 * The first one that it finds (starting from the top of the stack) that implements
 	 * MapHolder is assumed to be the most plausible map to use.
@@ -431,9 +358,82 @@ public class Remote2D {
 		return null;
 	}
 	
-	private static void shutDown()
+	/**
+	 * The current coordinates of the mouse on-screen.  This is the same thing as <i>i</i> and <i>j</i>
+	 * in {@link #tick(i, j, k)}.  Useful if mouse coordinates are needed while rendering.<br />
+	 * 
+	 * NOTE: You MUST use this instead of {@link Mouse#getX()} and {@link Mouse#getY()}
+	 * due to the fact that 
+	 */
+	public static Vector2 getMouseCoords()
 	{
-		Log.info("Remote2D Engine Shutting Down");
+		Vector2 scale = displayHandler.getRenderScale();
+		ColliderBox renderArea = displayHandler.getScreenRenderArea();
+		Vector2 r = new Vector2(Mouse.getX(),Mouse.getY());
+		r.x -= renderArea.pos.x;
+		r.y -= renderArea.pos.y;
+		r.x /= scale.x;
+		r.y /= scale.y;
+		r.y = (int) (displayHandler.getDimensions().y-r.y);
+		return r;
+	}
+	
+	/**
+	 * If the mouse has been pressed.  This is the same thing as <i>k</i>
+	 * in {@link #tick(i, j, k)}.  Useful if mouse button state is needed while rendering.
+	 */
+	public static int getMouseDown()
+	{
+		if(Mouse.isButtonDown(0))
+			return 1;
+		if(Mouse.isButtonDown(1))
+			return 2;
+		return 0;
+	}
+	
+	/**
+	 * @return True if the mouse button has been pressed this tick (NOT held down, just pressed).  Otherwise, false.
+	 */
+	public static boolean hasMouseBeenPressed()
+	{
+		return mousePressed;
+	}
+	
+	/**
+	 * @return True if the mouse button has been released this tick.  Otherwise, false.
+	 */
+	public static boolean hasMouseBeenReleased()
+	{
+		return mouseReleased;
+	}
+	
+	/**
+	 * Starts Remote2D.  This initializes all engine-related tasks, opens up the
+	 * display, and gets your game up and running.
+	 * @param game This game's {@link Remote2DGame} instance.
+	 * @see Remote2DGame
+	 */
+	public static void startRemote2D(Remote2DGame game) {
+				
+		Thread thread = new Thread("Remote2D Thread") {
+			
+			@Override
+			public void run()
+			{
+				Remote2D.start();
+			}
+			
+		};
+		
+		Remote2D.game = game;
+		thread.start();
+		
+	}
+	
+	public static void tick(int i, int j, int k)
+	{
+		updateKeyboardList();
+		guiList.peek().tick(i, j, k);
 	}
 
 }
