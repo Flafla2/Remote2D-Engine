@@ -94,7 +94,7 @@ public class GuiEditorHeirarchy extends GuiMenu {
 			sec = sections.get(selectedIndex);
 		int newSelectedIndex = -1;
 		if(sec != null && pos.getColliderWithDim(dim).isPointInside(new Vector2(Remote2D.getMouseCoords())))
-			newSelectedIndex = (int)(Remote2D.getMouseCoords()[1]-pos.y)/20;
+			newSelectedIndex = (int)(Remote2D.getMouseCoords().y-pos.y)/20;
 		else if(sec != null)
 			newSelectedIndex = selectedIndex;
 		

@@ -32,6 +32,10 @@ public class Remote2D {
 	public static final boolean RESIZING_ENABLED = true;
 	
 	/*----------GAMELOOP VARIABLES----------*/
+	/**
+	 * Whether or not the game is running.  If this is false, the game loop will
+	 * stop after the current iteration of the loop and the game will shut down.
+	 */
 	public static boolean running = true;
 	private static int fpsCounter = 0;
 	private static int fps = 0;
@@ -75,8 +79,14 @@ public class Remote2D {
 	private static ArrayList<Character> charList;
 	private static ArrayList<Character> charListLimited;
 	private static ArrayList<Integer> keyboardList;
-	private static String allowedChars = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-_=+\\][';:\"/.,?><`~ ";
+	private static final String allowedChars = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-_=+\\][';:\"/.,?><`~ ";
 	
+	/**
+	 * Starts Remote2D.  This initializes all engine-related tasks, opens up the
+	 * display, and gets your game up and running.
+	 * @param game This game's {@link Remote2DGame} instance.
+	 * @see Remote2DGame
+	 */
 	public static void startRemote2D(Remote2DGame game) {
 				
 		Thread thread = new Thread("Remote2D Thread") {
@@ -94,7 +104,7 @@ public class Remote2D {
 		
 	}
 	
-	public static void start()
+	private static void start()
 	{
 		Vector2 gameDim = game.getDefaultResolution();
 		Vector2 winDim = game.getDefaultScreenResolution();
@@ -104,13 +114,14 @@ public class Remote2D {
 		
 		gameLoop();
 		
+		shutDown();
 		displayHandler.setDisplayMode(1024,576,false,false);
 		Display.destroy();
 		System.exit(0);
 		
 	}
 	
-	public static void initGame()
+	private static void initGame()
 	{
 		Log.setLogger(new ConsoleLogger());
 		
@@ -128,7 +139,7 @@ public class Remote2D {
 		game.initGame();
 	}
 	
-	public static void gameLoop()
+	private static void gameLoop()
 	{
 		int lastSecondTime = (int) (lastUpdateTime / 1000000000);
 		
@@ -142,11 +153,10 @@ public class Remote2D {
 			
 			while( now - lastUpdateTime > TIME_BETWEEN_UPDATES && (updateCount < MAX_UPDATES_BEFORE_RENDER || MAX_UPDATES_BEFORE_RENDER == -1) )
 			{
-				int i = getMouseCoords()[0];
-				int j = getMouseCoords()[1];
+				Vector2 mouseCoords = getMouseCoords();
 				try
 				{
-					tick(i, j, getMouseDown());
+					tick((int)mouseCoords.x, (int)mouseCoords.y, getMouseDown());
 				} catch(Exception e)
 				{
 					GuiEditor editor = getEditor();
@@ -211,19 +221,30 @@ public class Remote2D {
 		}
 	}
 	
-	public static int[] getMouseCoords()
+	/**
+	 * The current coordinates of the mouse on-screen.  This is the same thing as <i>i</i> and <i>j</i>
+	 * in {@link #tick(i, j, k)}.  Useful if mouse coordinates are needed while rendering.<br />
+	 * 
+	 * NOTE: You MUST use this instead of {@link Mouse#getX()} and {@link Mouse#getY()}
+	 * due to the fact that 
+	 */
+	public static Vector2 getMouseCoords()
 	{
 		Vector2 scale = displayHandler.getRenderScale();
 		ColliderBox renderArea = displayHandler.getScreenRenderArea();
-		int[] r = {(Mouse.getX()),(Mouse.getY())};
-		r[0] -= renderArea.pos.x;
-		r[1] -= renderArea.pos.y;
-		r[0] /= scale.x;
-		r[1] /= scale.y;
-		r[1] = (int) (displayHandler.getDimensions().y-r[1]);
+		Vector2 r = new Vector2(Mouse.getX(),Mouse.getY());
+		r.x -= renderArea.pos.x;
+		r.y -= renderArea.pos.y;
+		r.x /= scale.x;
+		r.y /= scale.y;
+		r.y = (int) (displayHandler.getDimensions().y-r.y);
 		return r;
 	}
 	
+	/**
+	 * If the mouse has been pressed.  This is the same thing as <i>k</i>
+	 * in {@link #tick(i, j, k)}.  Useful if mouse button state is needed while rendering.
+	 */
 	public static int getMouseDown()
 	{
 		if(Mouse.isButtonDown(0))
@@ -244,11 +265,17 @@ public class Remote2D {
 		return new File(Remote2D.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 	}
 	
+	/**
+	 * @return True if the mouse button has been pressed this tick (NOT held down, just pressed).  Otherwise, false.
+	 */
 	public static boolean hasMouseBeenPressed()
 	{
 		return mousePressed;
 	}
 	
+	/**
+	 * @return True if the mouse button has been released this tick.  Otherwise, false.
+	 */
 	public static boolean hasMouseBeenReleased()
 	{
 		return mouseReleased;
@@ -289,29 +316,51 @@ public class Remote2D {
 		}
 	}
 	
+	/**
+	 * A list of all keys that have been pressed this tick.
+	 * 
+	 * NOTE: This does NOT include keys that are held down.  Use {@link Keyboard#isKeyDown(int)}
+	 * for seeing if keys are held down.
+	 */
 	@SuppressWarnings("unchecked")
 	public static ArrayList<Character> getKeyboardList()
 	{
 		return (ArrayList<Character>) charList.clone();
 	}
 	
+	/**
+	 * A limited list of all keys that have been pressed this tick.  Similar to
+	 * {@link #getKeyboardList()}, however this only counts keys that are included
+	 * in {@link #allowedChars}:<br /><br />
+	 * 
+	 * {@value #allowedChars}
+	 */
 	@SuppressWarnings("unchecked")
 	public static ArrayList<Character> getLimitedKeyboardList()
 	{
 		return (ArrayList<Character>) charListLimited.clone();
 	}
 	
+	/**
+	 * The same thing as {@link #getKeyboardList()} except it contains LWJGL's integer index
+	 * of that character instead of Java's Character class.
+	 * 
+	 * @see Keyboard#isKeyDown(int)
+	 */
 	public static ArrayList<Integer> getIntegerKeyboardList()
 	{
 		return keyboardList;
 	}
 	
+	/**
+	 * How much the mouse wheel has moved since the last tick.
+	 */
 	public static int getDeltaWheel()
 	{
 		return deltaWheel;
 	}
 	
-	public static void render(float interpolation)
+	private static void render(float interpolation)
 	{
 		StretchType stretch = guiList.peek().getOverrideStretchType();
 		if(stretch == null)
@@ -351,6 +400,10 @@ public class Remote2D {
 		return null;
 	}
 	
+	/**
+	 * The current instance of {@link Remote2DGame}.
+	 * @see Remote2DGame
+	 */
 	public static Remote2DGame getGame()
 	{
 		return game;
@@ -378,7 +431,7 @@ public class Remote2D {
 		return null;
 	}
 	
-	public static void shutDown()
+	private static void shutDown()
 	{
 		Log.info("Remote2D Engine Shutting Down");
 	}

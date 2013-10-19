@@ -109,8 +109,8 @@ public abstract class GuiEditorInspectorSectionSet extends GuiEditorInspectorSec
 		for(GuiEditorInspectorSection sec : set)
 			sec.render(interpolation);
 		
-		int[] mouse = Remote2D.getMouseCoords();
-		Vector2 mouseVec = new Vector2(mouse[0],mouse[1]).add(new Vector2(0,editor.getInspector().offset));
+		Vector2 mouse = Remote2D.getMouseCoords();
+		Vector2 mouseVec = mouse.add(new Vector2(0,editor.getInspector().offset));
 		
 		if(dragObject != -1)
 		{

@@ -181,8 +181,8 @@ public class EditorObjectWizard {
 	
 	public boolean recieveDraggableObject(DraggableObject drag)
 	{
-		int[] mouse = Remote2D.getMouseCoords();
-		Vector2 mouseVec = new Vector2(mouse[0],mouse[1]).add(new Vector2(0,editor.getInspector().offset));
+		Vector2 mouse = Remote2D.getMouseCoords();
+		Vector2 mouseVec = mouse.add(new Vector2(0,editor.getInspector().offset));
 		for(int x=0;x<sections.size();x++)
 		{
 			Vector2 secDim = new Vector2(width,sections.get(x).sectionHeight());
@@ -198,8 +198,8 @@ public class EditorObjectWizard {
 	
 	public void render(float interpolation)
 	{
-		int[] mouse = Remote2D.getMouseCoords();
-		Vector2 mouseVec = new Vector2(mouse[0],mouse[1]).add(new Vector2(0,editor.getInspector().offset));
+		Vector2 mouse = Remote2D.getMouseCoords();
+		Vector2 mouseVec = mouse.add(new Vector2(0,editor.getInspector().offset));
 		for(int x=0;x<sections.size();x++)
 		{
 			
