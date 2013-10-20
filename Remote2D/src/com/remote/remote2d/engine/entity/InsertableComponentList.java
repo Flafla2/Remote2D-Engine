@@ -6,6 +6,13 @@ import java.util.Map.Entry;
 
 import com.remote.remote2d.engine.entity.component.Component;
 
+/**
+ * A list of all components that can be inserted within the editor, as
+ * well as saved/loaded in the engine.  You MUST add a component to this
+ * list if you wish to use it.
+ * 
+ * @author Flafla2
+ */
 public class InsertableComponentList {
 	
 	private HashMap<String,Class<?>> insertableComponents;

@@ -29,8 +29,17 @@ import com.remote.remote2d.engine.world.Map;
 public class Entity extends EditorObject {
 	
 	public String name;
+	/**
+	 * This entity's position
+	 */
 	public Vector2 pos;
+	/**
+	 * This entity's dimensions
+	 */
 	public Vector2 dim;
+	/**
+	 * The material of this entity - what color, textures, etc. This entity uses.
+	 */
 	public Material material;
 	public boolean repeatTex = false;
 	public boolean linearScaling = false;
@@ -78,6 +87,10 @@ public class Entity extends EditorObject {
 		this(map, "");
 	}
 	
+	/**
+	 * Tells the entity (and more importantly its components) that they have spawned.
+	 * In other words, calls {@link Component#onEntitySpawn()} for all components.
+	 */
 	public void spawnEntityInWorld()
 	{
 		oldPos = pos.copy();
@@ -86,31 +99,52 @@ public class Entity extends EditorObject {
 			components.get(x).onEntitySpawn();
 	}
 	
+	/**
+	 * Removes this entity from its map's entity list.
+	 */
 	public void removeEntityFromWorld()
 	{
 		map.getEntityList().removeEntityFromList(this);
 	}
 	
+	/**
+	 * Gets a child entity at the specified index.
+	 * @param index The index of a child entity
+	 */
 	public Entity getChild(int index)
 	{
 		return children.get(index);
 	}
 	
-	public boolean hasChild(Entity e)
+	/**
+	 * @param e Any entity
+	 * @return If <i>e</i> is a child of this entity.
+	 */
+	public boolean isChild(Entity e)
 	{
 		return children.contains(e);
 	}
 	
+	/**
+	 * How many children this entity has.
+	 */
 	public int getChildrenSize()
 	{
 		return children.size();
 	}
 	
+	/**
+	 * The position of this entity, given any interpolation value.
+	 */
 	public Vector2 getPos(float interpolation)
 	{
 		return Interpolator.linearInterpolate(oldPos, pos, interpolation);
 	}
 	
+	/**
+	 * Adds a new component to this entity.
+	 * @param c The component
+	 */
 	public void addComponent(Component c)
 	{
 		Component cnew = c.clone();
@@ -118,12 +152,20 @@ public class Entity extends EditorObject {
 		components.add(cnew);
 	}
 	
+	/**
+	 * Adds a child to this entity
+	 * @param e The child
+	 */
 	public void addChild(Entity e)
 	{
 		e.parent = this;
 		children.add(e);
 	}
 	
+	/**
+	 * Removes a child from this entity
+	 * @param e The child to remove
+	 */
 	public void removeChild(Entity e)
 	{
 		if(children.contains(e))
@@ -133,11 +175,17 @@ public class Entity extends EditorObject {
 		}
 	}
 	
+	/**
+	 * A list of all of the components of this entity
+	 */
 	public ArrayList<Component> getComponents()
 	{
 		return components;
 	}
 	
+	/**
+	 * A list of all colliders associated with this entity (through a ComponentCollider).
+	 */
 	public ArrayList<Collider> getColliders()
 	{
 		ArrayList<Collider> colliders = new ArrayList<Collider>();
@@ -178,11 +226,18 @@ public class Entity extends EditorObject {
 		return retColliders;
 	}
 	
+	/**
+	 * The parent of this entity.
+	 */
 	public Entity getParent()
 	{
 		return parent;
 	}
 	
+	/**
+	 * Calculates if a given Vector2 is inside this entity, using its colliders.
+	 * @param vec Any point
+	 */
 	public boolean isPointInside(Vector2 vec)
 	{
 		Collider mainCollider = getBroadPhaseCollider().getTransformedCollider(pos);
@@ -195,9 +250,12 @@ public class Entity extends EditorObject {
 			
 			return false;
 		} else
-			return true;
+			return false;
 	}
 	
+	/**
+	 * Renders all of this entity's colliders for debugging purposes.
+	 */
 	public void renderColliders()
 	{
 		Collider mainCollider = getBroadPhaseCollider();
@@ -247,16 +305,31 @@ public class Entity extends EditorObject {
 		return v1.getColliderWithDim(v2.subtract(v1));
 	}
 	
+	/**
+	 * A general collider that encompasses this Entity's rendered area.  NOT to be used
+	 * for collision detection.
+	 */
 	public Collider getGeneralCollider()
 	{
 		return pos.getColliderWithDim(getDim());
 	}
 	
+	/**
+	 * This entity's dimensions.
+	 */
 	public Vector2 getDim()
 	{
 		return dim;
 	}
 	
+	/**
+	 * Responsible for all logic.  This should only be called by {@link Remote2D#tick(int, int, int)}.
+	 * Also calls {@link Component#tick(int, int, int)} for all components.
+	 * 
+	 * @param i Mouse X
+	 * @param j Mouse Y
+	 * @param k Mouse Down (1 if left mouse, 2 if right mouse, 0 if no mouse)
+	 */
 	public void tick(int i, int j, int k)
 	{
 		oldPos = pos.copy();
@@ -265,6 +338,12 @@ public class Entity extends EditorObject {
 			components.get(x).tick(i, j, k);
 	}
 	
+	/**
+	 * Responsible for all rendering.  This should only be called by {@link Remote2D#render(int)}.
+	 * DOES NOT call rendering for components.
+	 * @param editor If the Entity is being rendered in the editor (useful for debug graphics)
+	 * @param interpolation A float between 0.0 - 1.0 detailing how far in between the last tick and the next tick this render is.
+	 */
 	public void render(boolean editor, float interpolation)
 	{
 		Vector2 pos = Interpolator.linearInterpolate(oldPos, this.pos, interpolation);
@@ -310,6 +389,11 @@ public class Entity extends EditorObject {
 		return clone;
 	}
 	
+	/**
+	 * Gets all components of this of a specific type
+	 * @param type Any Class that extends Component
+	 * @see Component
+	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Component> ArrayList<T> getComponentsOfType(Class<T> type)
 	{
@@ -334,11 +418,19 @@ public class Entity extends EditorObject {
 		
 	}
 	
+	/**
+	 * Ignores interpolation for rendering this tick.  Useful after teleporting
+	 * an Entity; to not make it quickly move to its new position but rather
+	 * pop up right there.
+	 */
 	public void updatePos()
 	{
 		oldPos = pos.copy();
 	}
-
+	
+	/**
+	 * Renders a preview of this entity
+	 */
 	public void renderPreview(float interpolation) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(-pos.x, -pos.y, 0);
