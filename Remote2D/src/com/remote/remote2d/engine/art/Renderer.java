@@ -19,6 +19,16 @@ public class Renderer {
 	
 	private static boolean wireframe = false;
 	
+	/**
+	 * Draws a polygon using the given coordinates
+	 * @param vectors
+	 * @param uv
+	 * @param tex
+	 * @param red
+	 * @param green
+	 * @param blue
+	 * @param alpha
+	 */
 	public static void drawPoly(Vector2[] vectors, Vector2[] uv, Texture tex, float red, float green, float blue, float alpha)
 	{
 		if(isWireframe())
@@ -288,6 +298,14 @@ public class Renderer {
 		drawCircleOpaque(center,radius,sides,r,g,b,alpha);
 	}
 	
+	/**
+	 * Handles the use of {@link GL11#glScissor(int, int, int, int)} while taking into
+	 * account platform independence features which would otherwise mess up glScissor.
+	 * 
+	 * @param pos Top left corner of scissor box
+	 * @param dim Dimensions of scissor box
+	 * @see org.lwjgl.opengl.GL11#glScissor(int)
+	 */
 	public static void startScissor(Vector2 pos, Vector2 dim)
 	{
 		Vector2 newPos = pos.copy();
@@ -299,16 +317,28 @@ public class Renderer {
 		GL11.glScissor((int)newPos.x, (int)newPos.y, (int)dim.x, (int)dim.y);
 	}
 	
+	/**
+	 * Ends any current scissor.  In its current this is identical to
+	 * <code>GL11.glDisable(GL11.GL_SCISSOR_TEST);</code>, however it is
+	 * reccommended to use this instead for more control over rendering.
+	 */
 	public static void endScissor()
 	{
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);
 	}
 	
+	/**
+	 * Toggles wireframe mode.  Note that this only works when using a
+	 * render call from {@link Renderer}.
+	 */
 	public static void setWireframe(boolean wireframe)
 	{
 		Renderer.wireframe = wireframe;
 	}
-
+	
+	/**
+	 * If the Renderer is currently in wireframe mode.
+	 */
 	public static boolean isWireframe() {
 		return wireframe;
 	}

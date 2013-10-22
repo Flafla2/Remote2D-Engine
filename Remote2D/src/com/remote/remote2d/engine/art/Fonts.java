@@ -7,6 +7,11 @@ import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.gui.FontRenderer;
 
+/**
+ * A holder class which holds all {@link FontRenderer} instances.
+ * 
+ * @author Flafla2
+ */
 public class Fonts {
 	
 	private static HashMap<String, FontRenderer> fontTable;
@@ -33,9 +38,30 @@ public class Fonts {
 		}
 	}
 	
+	/**
+	 * Returns a registered instance of {@link FontRenderer} with the specified name.
+	 * @param fontname Name of the font.
+	 */
 	public static FontRenderer get(String fontname)
 	{
 		return fontTable.get(fontname);
+	}
+	
+	/**
+	 * Adds a font to the font list.  This only needs to be done once.
+	 * @param fontName Name of the font to use in {@link #get(String)}
+	 * @param path Path to the font in relation to the jar path
+	 */
+	public static void add(String fontName, String path)
+	{
+		Font font;
+		try {
+			font = Font.createFont(Font.TRUETYPE_FONT, Remote2D.class.getResourceAsStream(path));
+			fontTable.put(fontName, new FontRenderer(font, true));
+		} catch(Exception e)
+		{
+			throw new Remote2DException(e,"Failed adding font to Font list!");
+		}
 	}
 	
 }

@@ -4,6 +4,12 @@ import java.awt.Color;
 
 import com.remote.remote2d.engine.logic.Vector2;
 
+/**
+ * Holder class to contain all pertinent color, texture, and animation data needed
+ * to render an Entity.
+ * 
+ * @author Flafla2
+ */
 public class Material {
 	
 	/**
@@ -25,7 +31,7 @@ public class Material {
 	private Animation anim;
 	/**
 	 * Render Type of this material.  If it is set to TEX, {@link #tex} will render.
-	 * If it is set to ANIM, {@link #anim} will render.  If it is set to opaque,
+	 * If it is set to ANIM, {@link #anim} will render.  If it is set to SOLID,
 	 * no texture or animation will render.
 	 */
 	private RenderType renderType;
@@ -180,6 +186,13 @@ public class Material {
 		}
 	}
 	
+	/**
+	 * Dictates how this material will render.
+	 * 
+	 * @author Flafla2
+	 * @see Material#setRenderType(RenderType)
+	 * @see Material#getRenderType()
+	 */
 	public static enum RenderType
 	{
 		SOLID, TEX, ANIM

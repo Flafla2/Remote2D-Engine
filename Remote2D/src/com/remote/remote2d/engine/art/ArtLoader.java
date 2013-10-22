@@ -10,9 +10,10 @@ import com.remote.remote2d.engine.particles.ParticleSystem;
 import com.remote.remote2d.engine.world.Map;
 
 /**
- * Loads textures for you, and also caches them in case a texture is used a lot.
+ * Loads textures and animations for you, and also caches animations in case
+ * it is used a lot.
+ * 
  * @author Flafla2
- *
  */
 public class ArtLoader {
 	

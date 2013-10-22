@@ -12,6 +12,11 @@ public class CursorLoader {
 	private static Texture tex;
 	private static Vector2 hotspot;
 	
+	/**
+	 * Set the cursor to the specified image.
+	 * @param tex Image to use as the cursor, or null to reset it to default
+	 * @param hotspot The "hotspot" fot his cursor.  In other words, the position on this texture where the actual clicking occurs.
+	 */
 	public static void setCursor(String tex, Vector2 hotspot)
 	{
 		CursorLoader.tex = new Texture(tex);
@@ -36,6 +41,9 @@ public class CursorLoader {
 		}
 	}
 	
+	/**
+	 * Renders the cursor, if there is one registered with the system.
+	 */
 	public static void render(float interpolation)
 	{
 		if(tex != null)
@@ -49,6 +57,9 @@ public class CursorLoader {
 		}
 	}
 	
+	/**
+	 * Sets the cursor texture
+	 */
 	public static void setMouseTexLoc(String tex)
 	{
 		CursorLoader.tex.removeTexture();
