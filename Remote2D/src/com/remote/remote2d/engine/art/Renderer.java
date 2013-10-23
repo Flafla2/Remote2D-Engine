@@ -12,7 +12,7 @@ import com.remote.remote2d.engine.logic.Vector2;
  * This is also useful to do any widespread changes to the render system (switching core libraries, or OpenGL versions).
  * 
  * TODO: Update from old OpenGL to new OpenGL.
- * @author Adrian
+ * @author Flafla2
  *
  */
 public class Renderer {
@@ -20,14 +20,20 @@ public class Renderer {
 	private static boolean wireframe = false;
 	
 	/**
-	 * Draws a polygon using the given coordinates
-	 * @param vectors
-	 * @param uv
-	 * @param tex
-	 * @param red
-	 * @param green
-	 * @param blue
-	 * @param alpha
+	 * Draws a polygon using the given coordinates.  The polygon must be convex.
+	 * Note that this is relatively very slow compared to quads/triangles due to
+	 * the fact that it uses {@link org.lwjgl.opengl.GL11#GL_POLYGON}.
+	 * 
+	 * @param vectors Each vertex of the polygon, in a <b>clockwise</b> direction.
+	 * @param uv UV coordinates of each vertex
+	 * @param tex Texture to use
+	 * @param red Red value, (0.0-1.0)
+	 * @param green Green value, (0.0-1.0)
+	 * @param blue Blue value, (0.0-1.0)
+	 * @param alpha Alpha (opaque) value, (0.0-1.0)
+	 * @see #drawPoly(Vector2[], float, float, float, float)
+	 * @see #drawLinePoly(Vector2[], int, float)
+	 * @see #drawLinePoly(Vector2[], float, float, float, float)
 	 */
 	public static void drawPoly(Vector2[] vectors, Vector2[] uv, Texture tex, float red, float green, float blue, float alpha)
 	{
@@ -51,6 +57,20 @@ public class Renderer {
 		GL11.glColor3f(1, 1, 1);
 	}
 	
+	/**
+	 * Draws a polygon using the given coordinates.  The polygon must be convex.
+	 * Note that this is relatively very slow compared to quads/triangles due to
+	 * the fact that it uses {@link org.lwjgl.opengl.GL11#GL_POLYGON}.
+	 * 
+	 * @param vectors Each vertex of the polygon, in a <b>clockwise</b> direction.
+	 * @param red Red value, (0.0-1.0)
+	 * @param green Green value, (0.0-1.0)
+	 * @param blue Blue value, (0.0-1.0)
+	 * @param alpha Alpha (opaque) value, (0.0-1.0)
+	 * @see #drawPoly(Vector2[], Vector2[], Texture, float, float, float, float)
+	 * @see #drawLinePoly(Vector2[], int, float)
+	 * @see #drawLinePoly(Vector2[], float, float, float, float)
+	 */
 	public static void drawPoly(Vector2[] vectors, float red, float green, float blue, float alpha)
 	{
 		if(isWireframe())
@@ -71,6 +91,21 @@ public class Renderer {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 	
+	/**
+	 * Draws a polygon out of lines (wireframe) using the given coordinates.
+	 * The polygon must be convex.  Note that this is relatively very slow
+	 * compared to quads/triangles due to the fact that it uses
+	 * {@link org.lwjgl.opengl.GL11#GL_POLYGON}.
+	 * 
+	 * @param vectors Each vertex of the polygon, in a <b>clockwise</b> direction.
+	 * @param red Red value, (0.0-1.0)
+	 * @param green Green value, (0.0-1.0)
+	 * @param blue Blue value, (0.0-1.0)
+	 * @param alpha Alpha (opaque) value, (0.0-1.0)
+	 * @see #drawPoly(Vector2[], Vector2[], Texture, float, float, float, float)
+	 * @see #drawPoly(Vector2[], float, float, float, float)
+	 * @see #drawLinePoly(Vector2[], int, float)
+	 */
 	public static void drawLinePoly(Vector2[] vectors, float red, float green, float blue, float alpha)
 	{
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -88,6 +123,19 @@ public class Renderer {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 	
+	/**
+	 * Draws a polygon out of lines (wireframe) using the given coordinates.
+	 * The polygon must be convex.  Note that this is relatively very slow
+	 * compared to quads/triangles due to the fact that it uses
+	 * {@link org.lwjgl.opengl.GL11#GL_POLYGON}.
+	 * 
+	 * @param vectors Each vertex of the polygon, in a <b>clockwise</b> direction.
+	 * @param color Color in hex (0x000000-0xffffff)
+	 * @param alpha Alpha (opaque) value, (0.0-1.0)
+	 * @see #drawPoly(Vector2[], Vector2[], Texture, float, float, float, float)
+	 * @see #drawPoly(Vector2[], float, float, float, float)
+	 * @see #drawLinePoly(Vector2[], int, float)
+	 */
 	public static void drawLinePoly(Vector2[] verts, int color, float alpha) {
 		float r = ((color >> 16) & 0xff)/255f;
 		float g = ((color >> 8) & 0xff)/255f;
