@@ -24,17 +24,29 @@ public class EntityList {
 	private ArrayList<Entity> entityList;
 	private Map map;
 	
+	/**
+	 * Creates a new EntityList based on a parent map
+	 */
 	public EntityList(Map map)
 	{
 		 entityList = new ArrayList<Entity>();
 		 this.map = map;
 	}
 	
+	/**
+	 * Adds an entity to the list at the end of the list
+	 * @param e Entity to add
+	 */
 	public void addEntityToList(Entity e)
 	{
 		entityList.add(e);
 	}
 	
+	/**
+	 * Adds an entity to the list at a given index
+	 * @param e Entity to add
+	 * @param i Index to add to
+	 */
 	public void addEntityToList(Entity e,int i)
 	{
 		entityList.add(i,e);
@@ -54,6 +66,10 @@ public class EntityList {
 		}
 	}
 	
+	/**
+	 * Removes a given entity from the list.
+	 * @param e Entity to remove
+	 */
 	public void removeEntityFromList(Entity e)
 	{
 		for(int i=0;i<entityList.size();i++)
@@ -61,6 +77,10 @@ public class EntityList {
 				entityList.remove(i);
 	}
 	
+	/**
+	 * Removes the entity at the given index from the list
+	 * @param i Index to remove from
+	 */
 	public void removeEntityFromList(int i)
 	{
 		entityList.remove(i);
@@ -119,21 +139,37 @@ public class EntityList {
 		}
 	}
 	
-	public void set(int x, Entity e)
+	/**
+	 * Sets the entity at the given index to the given entity
+	 * @param i Index to set
+	 * @param e Entity to set at the given index
+	 */
+	public void set(int i, Entity e)
 	{
-		entityList.set(x, e);
+		entityList.set(i, e);
 	}
 	
+	/**
+	 * Size of the list
+	 */
 	public int size()
 	{
 		return entityList.size();
 	}
 	
+	/**
+	 * The index of the given entity in the list
+	 * @param e Entity to search for
+	 */
 	public int indexOf(Entity e)
 	{
 		return entityList.indexOf(e);
 	}
 	
+	/**
+	 * @param index Index to get from
+	 * @return The Entity at the given index of the list.
+	 */
 	public Entity get(int index)
 	{
 		return entityList.get(index);
@@ -170,7 +206,10 @@ public class EntityList {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Clears the list completely
+	 */
 	public void clear() {
 		entityList.clear();
 	}

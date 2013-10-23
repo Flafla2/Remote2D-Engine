@@ -28,14 +28,31 @@ import com.remote.remote2d.engine.world.Map;
 public abstract class EditorObject implements R2DFileSaver {
 	
 	private String uuid;
+	/**
+	 * The map that is associated with this EditorObject.
+	 */
 	protected Map map;
 	
+	/**
+	 * Creates a new EditorObject based on a map and a UUID.
+	 * @param map Map associated with this EditorObject
+	 * @param uuid A set unique identifier, or null to randomly generate a UUID
+	 */
 	public EditorObject(Map map, String uuid)
 	{
 		this.uuid = uuid;
 		if(this.uuid == null)
 			this.uuid = UUID.randomUUID().toString();
 		this.map = map;
+	}
+	
+	/**
+	 * Creates a new EditorObject based on a map and generates a UUID.
+	 * @param map Map associated with this EditorObject
+	 */
+	public EditorObject(Map map)
+	{
+		this(map, null);
 	}
 	
 	/**

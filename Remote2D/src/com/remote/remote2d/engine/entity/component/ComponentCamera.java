@@ -6,6 +6,11 @@ import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.logic.Vector2;
 import com.remote.remote2d.engine.world.Camera;
 
+/**
+ * Simple built-in component that sets the camera based on position.
+ * 
+ * @author Flafla2
+ */
 public class ComponentCamera extends Component {
 
 	@Override

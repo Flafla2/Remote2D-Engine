@@ -22,41 +22,68 @@ public class InsertableComponentList {
 		insertableComponents = new HashMap<String,Class<?>>();
 	}
 	
-	public void addInsertableComponent(String s, Class<?> e)
+	/**
+	 * Adds a Class to the component list
+	 * @param s Unique, human-readable name of this component.  This is what the class will show up as in the editor/while saving.
+	 * @param c Class to add to the list.  Class MUST extend {@link com.remote.remote2d.engine.entity.component.Component}.
+	 * @throws java.lang.IllegalArgumentException.IllegalArgumentException if <i>e</i> does not extend {@link com.remote.remote2d.engine.entity.component.Component}
+	 */
+	public void addInsertableComponent(String s, Class<?> c)
 	{
-		if(Component.class.isAssignableFrom(e))
-			insertableComponents.put(s, e);
+		if(Component.class.isAssignableFrom(c))
+			insertableComponents.put(s, c);
 		else
-			throw new IllegalArgumentException("Class "+e.getSimpleName()+" does not directly extend Component!");
+			throw new IllegalArgumentException("Class "+c.getSimpleName()+" does not directly extend Component!");
 	}
 	
+	/**
+	 * Creates a new component with the given name
+	 * @param s Component name
+	 * @param entity Entity to add this component to
+	 * @return A new instance of the class associated with <i>s</i>.
+	 */
 	public Component getComponentWithEntity(String s,Entity entity)
 	{
 		return Component.newInstanceWithEntity(insertableComponents.get(s), entity);
 	}
 	
+	/**
+	 * Whether or not the given identifier is in the component list.
+	 * @param s possible identifier
+	 */
 	public boolean containsComponent(String s)
 	{
 		return insertableComponents.containsKey(s);
 	}
 	
+	/**
+	 * The identifier of the given Component on the list.
+	 * @param c Component to test.
+	 */
 	public String getComponentID(Component c)
 	{
 		return getComponentID(c.getClass());
 	}
 	
-	public String getComponentID(Class<?> e)
+	/**
+	 * The identifier of the given class
+	 * @param c Any class that extends {@link com.remote.remote2d.engine.entity.component.Component}.
+	 */
+	public String getComponentID(Class<?> c)
 	{
 		Iterator<Entry<String, Class<?>>> iterator = insertableComponents.entrySet().iterator();
 		while(iterator.hasNext())
 		{
 			Entry<String, Class<?>> entry = iterator.next();
-			if(entry.getValue().equals(e))
+			if(entry.getValue().equals(c))
 				return entry.getKey();
 		}
 		return null;
 	}
 	
+	/**
+	 * An instance of {@link java.util.Iterator} for each Class/ID pair in the list
+	 */
 	public Iterator<Entry<String,Class<?>>> getIterator()
 	{
 		return insertableComponents.entrySet().iterator();
