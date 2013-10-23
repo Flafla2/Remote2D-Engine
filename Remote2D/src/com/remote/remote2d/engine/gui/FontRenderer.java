@@ -33,8 +33,7 @@ public class FontRenderer {
 				if(size() > 16)
 				{
 					eldest.getValue().removeTexture();
-					eldest.getValue().image.flush();
-					eldest.getValue().image = null;
+					eldest.getValue().removeImage();
 				}
 				return size() > 16;
 	    	}
@@ -127,7 +126,10 @@ public class FontRenderer {
 			tex = new Texture(image,true,false);
 			cache.put(data, tex);
 		}
-		Renderer.drawRect(new Vector2(x,y), new Vector2(tex.image.getWidth(),tex.image.getHeight()), tex, 0xffffff, 1);
+		BufferedImage image = tex.getImage();
+		Renderer.drawRect(new Vector2(x,y), new Vector2(image.getWidth(),image.getHeight()), tex, 0xffffff, 1);
+		image.flush();
+		image = null;
 	}
 	
 	public void drawCenteredString(String s, int y, float size, int color)

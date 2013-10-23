@@ -80,7 +80,7 @@ public class EditorObjectWizard {
 					{
 						GuiEditorInspectorSectionTexture sec = new GuiEditorInspectorSectionTexture(name,editor,currentPos,width);
 						if(o != null)
-							sec.textField.text = ((Texture)o).textureLocation;
+							sec.textField.text = ((Texture)o).getTextureLocation();
 						sections.add(sec);
 						currentPos.y += sec.sectionHeight();
 					} else if(type == boolean.class)

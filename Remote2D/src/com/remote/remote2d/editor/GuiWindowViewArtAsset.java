@@ -34,7 +34,7 @@ public class GuiWindowViewArtAsset extends GuiWindow {
 
 		if(tex == null)
 			reloadTex();
-		else if(!field.text.equals(tex.textureLocation))
+		else if(!field.text.equals(tex.getTextureLocation()))
 			reloadTex();
 	}
 	

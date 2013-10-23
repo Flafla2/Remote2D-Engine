@@ -1,5 +1,7 @@
 package com.remote.remote2d.engine.art;
 
+import java.awt.image.BufferedImage;
+
 import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.io.R2DFileManager;
 import com.remote.remote2d.engine.io.R2DFileSaver;
@@ -166,8 +168,11 @@ public class Animation implements R2DFileSaver {
 		}
 		
 		ColliderBox collider = framePos[currentframe];
-		Vector2 imgPos = collider.pos.divide(new Vector2(tex.image.getWidth(),tex.image.getHeight()));
-		Vector2 imgDim = collider.dim.divide(new Vector2(tex.image.getWidth(),tex.image.getHeight()));
+		BufferedImage image = tex.getImage();
+		Vector2 imgPos = collider.pos.divide(new Vector2(image.getWidth(),image.getHeight()));
+		Vector2 imgDim = collider.dim.divide(new Vector2(image.getWidth(),image.getHeight()));
+		image.flush();
+		image = null;
 		
 		if(flippedX)
 		{

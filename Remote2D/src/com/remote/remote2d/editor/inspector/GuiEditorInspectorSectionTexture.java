@@ -53,7 +53,7 @@ public class GuiEditorInspectorSectionTexture extends GuiEditorInspectorSection 
 	public void setData(Object o) {
 		if(o instanceof Texture)
 		{
-			textField.text = ((Texture)o).textureLocation;
+			textField.text = ((Texture)o).getTextureLocation();
 		}
 	}
 	

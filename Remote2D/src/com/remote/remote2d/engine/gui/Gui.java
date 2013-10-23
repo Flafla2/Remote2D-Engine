@@ -1,5 +1,7 @@
 package com.remote.remote2d.engine.gui;
 
+import java.awt.image.BufferedImage;
+
 import org.lwjgl.opengl.GL11;
 
 import com.remote.remote2d.engine.Remote2D;
@@ -49,10 +51,13 @@ public abstract class Gui {
 	
 	public static void renderTextureWithCoords(Texture tex, Vector2 pos, Vector2 dim, Vector2 imgPos, Vector2 imgDim)
 	{
-		Vector2 glImgPos = new Vector2(imgPos.x/tex.image.getWidth(),
-				imgPos.y/tex.image.getHeight());
-		Vector2 glImgDim = new Vector2(imgDim.x/tex.image.getWidth(),
-				imgDim.y/tex.image.getHeight());
+		BufferedImage image = tex.getImage();
+		Vector2 glImgPos = new Vector2(imgPos.x/image.getWidth(),
+				imgPos.y/image.getHeight());
+		Vector2 glImgDim = new Vector2(imgDim.x/image.getWidth(),
+				imgDim.y/image.getHeight());
+		image.flush();
+		image = null;
 		
 		Renderer.drawRect(pos, dim, glImgPos, glImgDim, tex, 0xffffff, 1.0f);
 	}

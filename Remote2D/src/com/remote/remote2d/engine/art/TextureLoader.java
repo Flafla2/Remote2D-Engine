@@ -30,8 +30,19 @@ import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.Remote2DException;
 
 public class TextureLoader {
+	/**
+	 * How many bytes ares stored in memory for each pixel. 3 allocates space for
+	 * Red, Green, and Blue. 4 allocates space for Red, Green, Blue, and Alpha (opaqueness).
+	 */
 	private static final int BYTES_PER_PIXEL = 4;
 	
+	/**
+	 * Converts a standard BufferedImage to an OpenGL texture.
+	 * @param image Image to load
+	 * @param linearScaling Whether or not to use linear interpolation when scaling a texture.
+	 * @param repeat Whether or not to repeat a texture when scaling, instead of stretching to the bounds of the texture.
+	 * @return An OpenGL Texture ID
+	 */
 	public static int loadTexture(BufferedImage image, boolean linearScaling, boolean repeat){
 		int[] pixels = new int[image.getWidth() * image.getHeight()];
 		image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());

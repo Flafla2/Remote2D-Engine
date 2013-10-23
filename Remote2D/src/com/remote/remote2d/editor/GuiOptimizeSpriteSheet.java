@@ -124,13 +124,16 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 		drawBlueprintBackground();
 		if(Remote2D.artLoader.textureExists(texturePath.text))
 		{
-			if(!tex.textureLocation.equals(texturePath.text))
+			if(!tex.getTextureLocation().equals(texturePath.text))
 			{
 				tex.removeTexture();
 				tex = new Texture(texturePath.text);
 			}
 			tex.bind();			
-			Vector2 dim = new Vector2(tex.image.getWidth(),tex.image.getHeight());
+			BufferedImage image = tex.getImage();
+			Vector2 dim = new Vector2(image.getWidth(),image.getHeight());
+			image.flush();
+			image = null;
 			
 			Renderer.startScissor(new Vector2(300,0), new Vector2(screenWidth()-300,screenHeight()));
 			
@@ -199,7 +202,7 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 			{
 				if(isPickingBG)
 				{
-					if(!tex.textureLocation.equals(texturePath.text))
+					if(!tex.getTextureLocation().equals(texturePath.text))
 					{
 						tex.removeTexture();
 						tex = new Texture(texturePath.text);
@@ -256,7 +259,7 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 		
 		if(Remote2D.artLoader.textureExists(texturePath.text) )
 		{
-			if(!tex.textureLocation.equals(texturePath.text))
+			if(!tex.getTextureLocation().equals(texturePath.text))
 			{
 				tex.removeTexture();
 				tex = new Texture(texturePath.text);
@@ -274,10 +277,13 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 			if(right)
 				offset.x -= 5;
 			
-			if(offset.x+tex.image.getWidth()*scale < screenWidth())
-				offset.x = screenWidth()-tex.image.getWidth();
-			if(offset.y+tex.image.getHeight()*scale < screenHeight())
-				offset.y = screenHeight()-tex.image.getHeight();
+			BufferedImage image = tex.getImage();
+			if(offset.x+image.getWidth()*scale < screenWidth())
+				offset.x = screenWidth()-image.getWidth();
+			if(offset.y+image.getHeight()*scale < screenHeight())
+				offset.y = screenHeight()-image.getHeight();
+			image.flush();
+			image = null;
 			
 			if(offset.x > 300)
 				offset.x = 300;
@@ -316,12 +322,12 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 				vertical = VerticalPositioning.BOTTOM;
 		 else if(button.id == 8)
 		 {
-			if(!tex.textureLocation.equals(texturePath.text))
+			if(!tex.getTextureLocation().equals(texturePath.text))
 			{
 				tex.removeTexture();
 				tex = new Texture(texturePath.text);
 			}
-			 BufferedImage source = tex.image;
+			 BufferedImage source = tex.getImage();
 			 Vector2 frameSize = new Vector2(0,0);
 			 for(int x=0;x<frameDefiners.size();x++)
 			 {

@@ -1,5 +1,7 @@
 package com.remote.remote2d.editor;
 
+import java.awt.image.BufferedImage;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -155,13 +157,16 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 		drawBlueprintBackground();
 		if(Remote2D.artLoader.textureExists(texID.text) && tex != null)
 		{
-			if(!tex.textureLocation.equals(texID.text))
+			if(!tex.getTextureLocation().equals(texID.text))
 			{
 				tex.removeTexture();
 				tex = new Texture(texID.text);
 			}
 			tex.bind();	
-			Vector2 dim = new Vector2(tex.image.getWidth(),tex.image.getHeight());
+			BufferedImage image = tex.getImage();
+			Vector2 dim = new Vector2(image.getWidth(),image.getHeight());
+			image.flush();
+			image = null;
 			
 			Renderer.startScissor(new Vector2(300,0), new Vector2(screenWidth()-300,screenHeight()));
 			
@@ -237,10 +242,13 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 			if(right)
 				offset.x -= 5;
 			
-			if(offset.x+tex.image.getWidth()*scale < screenWidth())
-				offset.x = screenWidth()-tex.image.getWidth();
-			if(offset.y+tex.image.getHeight()*scale < screenHeight())
-				offset.y = screenHeight()-tex.image.getHeight();
+			BufferedImage image = tex.getImage();
+			if(offset.x+image.getWidth()*scale < screenWidth())
+				offset.x = screenWidth()-image.getWidth();
+			if(offset.y+image.getHeight()*scale < screenHeight())
+				offset.y = screenHeight()-image.getHeight();
+			image.flush();
+			image = null;
 			
 			if(offset.x > 300)
 				offset.x = 300;
@@ -251,7 +259,7 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 	
 	public void reloadTex()
 	{
-		if(tex == null || !tex.textureLocation.equals(texID.text))
+		if(tex == null || !tex.getTextureLocation().equals(texID.text))
 		{
 			if(tex != null)
 				tex.removeTexture();

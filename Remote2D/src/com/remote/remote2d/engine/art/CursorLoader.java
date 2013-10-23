@@ -1,5 +1,7 @@
 package com.remote.remote2d.engine.art;
 
+import java.awt.image.BufferedImage;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Cursor;
@@ -48,9 +50,11 @@ public class CursorLoader {
 	{
 		if(tex != null)
 		{
+			BufferedImage image = tex.getImage();
 			Vector2 renderpos = new Vector2(Remote2D.getMouseCoords()).subtract(hotspot);
-			Vector2 renderDim = new Vector2(tex.image.getWidth(),tex.image.getHeight());
-
+			Vector2 renderDim = new Vector2(image.getWidth(),image.getHeight());
+			image.flush();
+			image = null;
 
 			Renderer.drawRect(renderpos, renderDim, new Vector2(0,0), new Vector2(1,1), tex, 0xffffff, 1.0f);
 			
