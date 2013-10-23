@@ -1,6 +1,5 @@
 package com.remote.remote2d.engine.logic;
 
-
 public abstract class Collider {
 	
 	public boolean isIdle = true;
@@ -87,14 +86,6 @@ public abstract class Collider {
 		return false;
 	}
 	
-	/**
-	 * 
-	 * @param axis
-	 * @param poly
-	 * @param info
-	 * @return If the collision info is "finished."  In other words, if more calculations
-	 * 			are not needed.
-	 */
 	protected boolean calculateCollisionInfo(Vector2 axis, Collider moved, Collider poly2, Collision info) {
 		int[] thisMinMax = moved.calculateInterval(axis);
 		int mina = thisMinMax[0];

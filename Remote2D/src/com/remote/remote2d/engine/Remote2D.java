@@ -360,7 +360,7 @@ public class Remote2D {
 	
 	/**
 	 * The current coordinates of the mouse on-screen.  This is the same thing as <i>i</i> and <i>j</i>
-	 * in {@link #tick(i, j, k)}.  Useful if mouse coordinates are needed while rendering.<br />
+	 * in {@link #tick(int, int, int)}.  Useful if mouse coordinates are needed while rendering.<br />
 	 * 
 	 * NOTE: You MUST use this instead of {@link Mouse#getX()} and {@link Mouse#getY()}
 	 * due to the fact that 
@@ -380,7 +380,7 @@ public class Remote2D {
 	
 	/**
 	 * If the mouse has been pressed.  This is the same thing as <i>k</i>
-	 * in {@link #tick(i, j, k)}.  Useful if mouse button state is needed while rendering.
+	 * in {@link #tick(int, int, int)}.  Useful if mouse button state is needed while rendering.
 	 */
 	public static int getMouseDown()
 	{

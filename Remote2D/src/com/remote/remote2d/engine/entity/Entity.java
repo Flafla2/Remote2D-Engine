@@ -339,7 +339,7 @@ public class Entity extends EditorObject {
 	}
 	
 	/**
-	 * Responsible for all rendering.  This should only be called by {@link Remote2D#render(int)}.
+	 * Responsible for all rendering.  This should only be called by {@link Remote2D#render(float)}.
 	 * DOES NOT call rendering for components.
 	 * @param editor If the Entity is being rendered in the editor (useful for debug graphics)
 	 * @param interpolation A float between 0.0 - 1.0 detailing how far in between the last tick and the next tick this render is.

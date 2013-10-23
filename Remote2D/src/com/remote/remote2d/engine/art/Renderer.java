@@ -78,7 +78,7 @@ public class Renderer {
 	 * @param green Green value, (0.0-1.0)
 	 * @param blue Blue value, (0.0-1.0)
 	 * @param alpha Alpha (opaque) value, (0.0-1.0)
-	 * @see #drawCircle(Vector2, float, int, int, float)
+	 * @see #drawCircleOpaque(Vector2, float, int, int, float)
 	 */
 	public static void drawCircleOpaque(Vector2 center, float radius, int sides, float red, float green, float blue, float alpha)
 	{
@@ -117,7 +117,7 @@ public class Renderer {
 	 * @param sides How many sides the circle has (infinite sides are obviously not possible)
 	 * @param color Color in hex (0x000000-0xffffff)
 	 * @param alpha Alpha (opaque) value, (0.0-1.0)
-	 * @see #drawCircle(Vector2, float, int, float, float, float, float)
+	 * @see #drawCircleOpaque(Vector2, float, int, float, float, float, float)
 	 */
 	public static void drawCircleOpaque(Vector2 center, float radius, int sides, int color, float alpha) {
 		float r = ((color >> 16) & 0xff)/255f;
@@ -164,7 +164,7 @@ public class Renderer {
 	 * Draws a simple line between two points.
 	 * @param vec1 First point of the line
 	 * @param vec2 Second point of the line
-	 * @oaram red Red value, (0.0-1.0)
+	 * @param red Red value, (0.0-1.0)
 	 * @param green Green value, (0.0-1.0)
 	 * @param blue Blue value, (0.0-1.0)
 	 * @param alpha Alpha (opaque) value, (0.0-1.0)
@@ -239,7 +239,7 @@ public class Renderer {
 	 * compared to quads/triangles due to the fact that it uses
 	 * {@link org.lwjgl.opengl.GL11#GL_POLYGON}.
 	 * 
-	 * @param vectors Each vertex of the polygon, in a <b>clockwise</b> direction.
+	 * @param verts Each vertex of the polygon, in a <b>clockwise</b> direction.
 	 * @param color Color in hex (0x000000-0xffffff)
 	 * @param alpha Alpha (opaque) value, (0.0-1.0)
 	 * @see #drawPoly(Vector2[], Vector2[], Texture, float, float, float, float)
@@ -262,10 +262,6 @@ public class Renderer {
 	 * @param blue Blue value, (0.0-1.0)
 	 * @param alpha Alpha (opaque) value, (0.0-1.0).
 	 * @see #drawLineRect(Vector2, Vector2, int, float)
-	 * @see #drawLineRect(Vector2, Vector2, Texture, int, float)
-	 * @see #drawLineRect(Vector2, Vector2, Texture, float, float, float, float)
-	 * @see #drawLineRect(Vector2, Vector2, Vector2, Vector2, Texture, float, float, float, float)
-	 * @see #drawLineRect(Vector2, Vector2, Vector2, Vector2, Texture, int, float)
 	 */
 	public static void drawLineRect(Vector2 pos, Vector2 dim, float red, float green, float blue, float alpha)
 	{
@@ -285,6 +281,14 @@ public class Renderer {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 	
+	/**
+	 * Draws a rectangle out of lines (wireframe).
+	 * @param pos Top left corner of the rectangle
+	 * @param dim Dimensions of the rectangle
+	 * @param color Color in hex (0x000000-0xffffff)
+	 * @param alpha Alpha (opaque) value, (0.0-1.0).
+	 * @see #drawLineRect(Vector2, Vector2, float, float, float, float)
+	 */
 	public static void drawLineRect(Vector2 pos, Vector2 dim, int color, float alpha) {
 		float r = ((color >> 16) & 0xff)/255f;
 		float g = ((color >> 8) & 0xff)/255f;
@@ -554,7 +558,7 @@ public class Renderer {
 	 * 
 	 * @param pos Top left corner of scissor box
 	 * @param dim Dimensions of scissor box
-	 * @see org.lwjgl.opengl.GL11#glScissor(int)
+	 * @see org.lwjgl.opengl.GL11#glScissor(int, int, int, int)
 	 */
 	public static void startScissor(Vector2 pos, Vector2 dim)
 	{

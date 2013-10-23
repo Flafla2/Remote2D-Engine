@@ -42,7 +42,7 @@ public class Texture {
 	/**
 	 * Loads a new texture from a file.
 	 * @param loc Location to any PNG file, in relation to the jar path.
-	 * @param linearScaling Whether or not to scale this Texture linearly (see {@link #linearScale})
+	 * @param linearScaling Whether or not to scale this Texture linearly (see {@link #linearScaling})
 	 * @param repeat Whether or not to repeat this texture (see {@link #repeat})
 	 */
 	public Texture(String loc, boolean linearScaling, boolean repeat)
@@ -58,7 +58,7 @@ public class Texture {
 	/**
 	 * Loads a new texture from a BufferedImage.
 	 * @param image BufferedImage to use for this texture.
-	 * @param linearScaling Whether or not to scale this Texture linearly (see {@link #linearScale})
+	 * @param linearScaling Whether or not to scale this Texture linearly (see {@link #linearScaling})
 	 * @param repeat Whether or not to repeat this texture (see {@link #repeat})
 	 */
 	public Texture(BufferedImage image, boolean linearScaling,boolean repeat) {
@@ -90,7 +90,7 @@ public class Texture {
 
 	/**
 	 * Binds this texture to OpenGL.  Generally this shouldn't need to be used;
-	 * use {@link com.remote.remote2D.engine.art.Renderer} instead.
+	 * use {@link com.remote.remote2d.engine.art.Renderer} instead.
 	 */
 	public void bind()
 	{

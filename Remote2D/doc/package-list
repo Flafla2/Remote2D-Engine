@@ -1,0 +1,16 @@
+com.remote.remote2d.editor
+com.remote.remote2d.editor.browser
+com.remote.remote2d.editor.inspector
+com.remote.remote2d.editor.operation
+com.remote.remote2d.engine
+com.remote.remote2d.engine.art
+com.remote.remote2d.engine.entity
+com.remote.remote2d.engine.entity.component
+com.remote.remote2d.engine.gui
+com.remote.remote2d.engine.io
+com.remote.remote2d.engine.logic
+com.remote.remote2d.engine.particles
+com.remote.remote2d.engine.world
+com.remote.remote2d.extras.test
+com.remote.remote2d.extras.test.entity
+com.remote.remote2d.extras.test.gui
