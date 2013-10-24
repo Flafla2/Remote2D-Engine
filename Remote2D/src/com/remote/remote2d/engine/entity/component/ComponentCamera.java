@@ -4,7 +4,6 @@ import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.logic.Vector2;
-import com.remote.remote2d.engine.world.Camera;
 
 /**
  * Simple built-in component that sets the camera based on position.
@@ -15,7 +14,7 @@ public class ComponentCamera extends Component {
 
 	@Override
 	public void tick(int i, int j, int k) {
-		
+		entity.getMap().camera.pos = entity.pos;
 	}
 
 	@Override
@@ -31,8 +30,8 @@ public class ComponentCamera extends Component {
 
 	@Override
 	public void onEntitySpawn() {
-		Camera camera = new Camera(entity.pos);
-		entity.getMap().camera = camera;
+		entity.getMap().camera.pos = entity.pos;
+		entity.getMap().camera.updatePos();
 	}
 
 	@Override

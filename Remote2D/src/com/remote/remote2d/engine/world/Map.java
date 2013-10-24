@@ -7,7 +7,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.entity.Entity;
@@ -170,7 +169,7 @@ public class Map implements R2DFileSaver {
 	{
 		if(collection.size() <= 1)
 			return collection;
-		Log.debug("sort colliders:"+collection.size());
+		//Log.debug("sort colliders:"+collection.size());
 		int pivot = collection.size()/2;
 		boolean odd = collection.size()%2 != 0;
 		ArrayList<Collision> less = new ArrayList<Collision>();
@@ -183,14 +182,14 @@ public class Map implements R2DFileSaver {
 				distancePivot = (collection.get(pivot).max+collection.get(pivot+1).max)/2-(collection.get(pivot).min+collection.get(pivot+1).min)/2;
 			else
 				distancePivot = collection.get(pivot).max-collection.get(pivot).min;
-			Log.debug(x+" "+distancePivot+" "+distanceThis);
+			//Log.debug(x+" "+distancePivot+" "+distanceThis);
 			if(distanceThis > distancePivot)//if the shortest correction is longer than the pivot(so shortest time to collision), we set it towards the front
 				less.add(collection.get(x));
 			else
 				more.add(collection.get(x));
 		}
 		
-		Log.debug("less:"+less.size()+" more:"+more.size());
+		//Log.debug("less:"+less.size()+" more:"+more.size());
 		
 		ArrayList<Collision> returnArray = sortColliders(less);
 		returnArray.addAll(sortColliders(more));

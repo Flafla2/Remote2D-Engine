@@ -4,8 +4,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import com.esotericsoftware.minlog.Log;
-
 public class R2DTypeInt extends R2DType {
 	
 	public int data;
@@ -38,7 +36,6 @@ public class R2DTypeInt extends R2DType {
 	public String toString()
 	{
 		String hexString = Integer.toHexString(data);
-		Log.debug(hexString);
 		return data+" (0x"+hexString+")";
 	}
 

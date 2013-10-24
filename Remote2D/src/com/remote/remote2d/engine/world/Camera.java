@@ -96,4 +96,9 @@ public class Camera {
 		
 		return matrix;
 	}
+	
+	public void updatePos()
+	{
+		this.oldPos = pos.copy();
+	}
 }
