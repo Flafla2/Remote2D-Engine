@@ -29,6 +29,10 @@ public abstract class Remote2DGame {
 	 * One 16x16 and one 32x32 icon for full windows support</li><li>
 	 * One 32x32 icon for full Linux (and similar platforms) support</li><li>
 	 * One 128x128 icon for full Mac support</li></ul>
+	 * 
+	 * Finally, the icon list should be <b>in order from largest icon to the smallest</b>.  In other
+	 * words, the largest icon should be the first one in the list.  Not doing this may lead to a
+	 * small icon being the dock icon on Mac.
 	 * @return A string array with icons to use, or null for the default LWJGL icon.
 	 */
 	public String[] getIconPath()

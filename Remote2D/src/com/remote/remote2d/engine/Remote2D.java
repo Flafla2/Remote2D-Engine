@@ -8,6 +8,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.simplericity.macify.eawt.Application;
+import org.simplericity.macify.eawt.DefaultApplication;
 
 import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.editor.GuiEditor;
@@ -15,6 +17,7 @@ import com.remote.remote2d.editor.GuiWindowConsole;
 import com.remote.remote2d.engine.art.ArtLoader;
 import com.remote.remote2d.engine.art.CursorLoader;
 import com.remote.remote2d.engine.art.Renderer;
+import com.remote.remote2d.engine.art.TextureLoader;
 import com.remote.remote2d.engine.entity.InsertableComponentList;
 import com.remote.remote2d.engine.entity.component.ComponentCamera;
 import com.remote.remote2d.engine.entity.component.ComponentColliderBox;
@@ -414,6 +417,17 @@ public class Remote2D {
 	 * @see Remote2DGame
 	 */
 	public static void startRemote2D(Remote2DGame game) {
+		
+		if(System.getProperty("os.name").toLowerCase().indexOf("mac") != -1)
+		{
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Remote2D");
+			Application application = new DefaultApplication();
+			application.addApplicationListener(new MacUIHandler());
+			application.setEnabledPreferencesMenu(false);
+			
+			application.setApplicationIconImage(TextureLoader.loadImage(game.getIconPath()[0]));
+		}
 				
 		Thread thread = new Thread("Remote2D Thread") {
 			
@@ -434,6 +448,11 @@ public class Remote2D {
 	{
 		updateKeyboardList();
 		guiList.peek().tick(i, j, k);
+	}
+	
+	public static String getVersion()
+	{
+		return "1.0 BETA";
 	}
 
 }
