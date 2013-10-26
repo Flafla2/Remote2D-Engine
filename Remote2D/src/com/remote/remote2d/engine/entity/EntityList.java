@@ -103,7 +103,7 @@ public class EntityList {
 				if(editor)
 				{
 					GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR);
-					Renderer.drawCrossRect(entityList.get(i).pos, entityList.get(i).dim, 0xffffff, 1.0f);
+					Renderer.drawCrossRect(entityList.get(i).getPosGlobal(interpolation), entityList.get(i).dim, 0xffffff, 1.0f);
 					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				}
 				else

@@ -588,14 +588,15 @@ public class Renderer {
 	{
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
 		matrixStack.peek().store(buffer);
+		buffer.flip();
 		GL11.glLoadMatrix(buffer);
 		buffer.clear();
-		buffer = null;
+		buffer = null;		
 	}
 	
 	public static void pushMatrix()
 	{
-		matrixStack.push(matrixStack.peek());
+		matrixStack.push(new Matrix4f(matrixStack.peek()));
 	}
 	
 	public static void popMatrix()

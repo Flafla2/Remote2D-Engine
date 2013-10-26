@@ -201,7 +201,7 @@ public class Map implements R2DFileSaver {
 		Entity top = null;
 		for(int x=0;x<entities.size();x++)
 		{
-			if(entities.get(x).pos.getColliderWithDim(entities.get(x).getDim()).isPointInside(vec))
+			if(entities.get(x).getPosGlobal().getColliderWithDim(entities.get(x).getDim()).isPointInside(vec))
 				top = entities.get(x);
 		}
 		return top;

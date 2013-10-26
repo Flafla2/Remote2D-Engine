@@ -145,7 +145,8 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 			for(int x = 0;x<map.getEntityList().size();x++)
 			{
 				Entity entity = map.getEntityList().get(x);
-				if(entity.pos.getColliderWithDim(entity.getDim()).isPointInside(getMapMousePos()))
+				Vector2 epos = entity.getPosGlobal(interpolation);
+				if(epos.getColliderWithDim(entity.getDim()).isPointInside(getMapMousePos()))
 				{
 					int fontsize = 10;
 					String name = entity.name;
@@ -153,7 +154,7 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 						name = entity.getUUID();
 					int fontdim[] = Fonts.get("Arial").getStringDim(name, fontsize);
 					Vector2 dim = new Vector2(fontdim[0]+20,fontdim[1]);
-					Vector2 pos = new Vector2(entity.pos.x+entity.dim.x/2,entity.pos.y+entity.dim.y);
+					Vector2 pos = new Vector2(epos.x+entity.dim.x/2,epos.y+entity.dim.y);
 					pos = map.worldToScreenCoords(pos);
 					pos.x -= fontdim[0]/2+10;
 					Renderer.drawRect(pos, dim, 0x000000, 0.5f);

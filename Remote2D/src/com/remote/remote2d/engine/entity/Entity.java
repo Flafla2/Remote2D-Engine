@@ -44,7 +44,7 @@ public class Entity extends EditorObject {
 	 */
 	public Vector2 pos;
 	/**
-	 * This entity's dimensions
+	 * This entity's dimensions, in pixels
 	 */
 	public Vector2 dim;
 	/**
@@ -425,6 +425,7 @@ public class Entity extends EditorObject {
 	public void render(boolean editor, float interpolation)
 	{
 		Vector2 pos = Interpolator.linearInterpolate(oldPos, this.pos, interpolation);
+		Vector2 globalPos = getPosGlobal(interpolation);
 		
 		if(editor)
 			oldPos = pos.copy();
@@ -439,9 +440,9 @@ public class Entity extends EditorObject {
 			components.get(x).renderBefore(editor, interpolation);
 		
 		Renderer.pushMatrix();
-			Renderer.translate(new Vector2(-pos.x, -pos.y));
+			Renderer.translate(new Vector2(-globalPos.x, -globalPos.y));
 			Renderer.rotate(rotation);
-			Renderer.translate(new Vector2(pos.x, pos.y));
+			Renderer.translate(new Vector2(globalPos.x, globalPos.y));
 			if(editor)
 			{
 				float maxX = (dim.x)/32f;
@@ -451,16 +452,14 @@ public class Entity extends EditorObject {
 					color = 0xff0000;
 				else
 					color = 0xffaaaa;
-				Renderer.drawRect(pos, dim, new Vector2(0,0), new Vector2(maxX, maxY), slashTex, color, 1);
+				Renderer.drawRect(globalPos, dim, new Vector2(0,0), new Vector2(maxX, maxY), slashTex, color, 1);
 			}
 			
-			material.render(pos, dim);
+			material.render(globalPos, dim);
 			
 			if(editor && selected)
-				Renderer.drawLineRect(pos, dim, 1, 0, 0, 1);
+				Renderer.drawLineRect(globalPos, dim, 1, 0, 0, 1);
 		Renderer.popMatrix();
-		
-		
 		
 		for(int x=components.size()-1;x>=0;x--)
 			components.get(x).renderAfter(editor, interpolation);
@@ -490,11 +489,7 @@ public class Entity extends EditorObject {
 		Renderer.translate(new Vector2(-pos.x, -pos.y));
 		try
 		{
-			for(int x=0;x<getComponents().size();x++)
-				getComponents().get(x).renderBefore(false,interpolation);
 			render(false,interpolation);
-			for(int x=0;x<getComponents().size();x++)
-				getComponents().get(x).renderAfter(false,interpolation);
 		} catch(Exception e)
 		{
 			GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR);

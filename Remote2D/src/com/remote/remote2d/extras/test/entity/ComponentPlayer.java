@@ -79,7 +79,9 @@ public class ComponentPlayer extends Component {
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && (state == PlayerState.WALK || state == PlayerState.IDLE))
 			velocity.y -= 20;
 		
-		Vector2 correction = entity.getMap().getCorrection(entity.pos.getColliderWithDim(entity.getDim()),new Vector2(velocity.getElements()));
+		Vector2 globalPos = entity.getPosGlobal();
+		
+		Vector2 correction = entity.getMap().getCorrection(globalPos.getColliderWithDim(entity.getDim()),new Vector2(velocity.getElements()));
 		velocity = velocity.add(correction);
 		
 		//velocity = velocity.multiply(new Vector2DF(friction,friction));
@@ -97,17 +99,17 @@ public class ComponentPlayer extends Component {
 		ColliderBox renderarea = entity.getMap().camera.getMapRenderArea();
 		float right = renderarea.pos.x+renderarea.dim.x;
 		float left = renderarea.pos.x;
-		if(entity.pos.x+entity.getDim().x > right)
+		if(globalPos.x+entity.getDim().x > right)
 			entity.getMap().camera.pos.x += (entity.pos.x+entity.getDim().x)-right;
-		if(entity.pos.x < left)
+		if(globalPos.x < left)
 			entity.getMap().camera.pos.x -= left-entity.pos.x;
 		
 		float bottom = renderarea.pos.y+renderarea.dim.y;
 		float top = renderarea.pos.y;
-		if(entity.pos.y+entity.getDim().y > bottom)
-			entity.getMap().camera.pos.y += (entity.pos.y+entity.getDim().y)-bottom;
-		if(entity.pos.y < top)
-			entity.getMap().camera.pos.y -= top-entity.pos.y;
+		if(globalPos.y+entity.getDim().y > bottom)
+			entity.getMap().camera.pos.y += (globalPos.y+entity.getDim().y)-bottom;
+		if(globalPos.y < top)
+			entity.getMap().camera.pos.y -= top-globalPos.y;
 		
 		Animation anim = getAnim();
 		
