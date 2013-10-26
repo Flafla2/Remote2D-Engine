@@ -31,6 +31,9 @@ import com.remote.remote2d.engine.world.Map;
  */
 public class Entity extends EditorObject {
 	
+	public static String getExtension() {
+		return ".entity";
+	}
 	public String name;
 	/**
 	 * This entity's local position, relative to its parent entity.  DO NOT USE THIS
@@ -55,6 +58,7 @@ public class Entity extends EditorObject {
 	 */
 	public Material material;
 	public boolean repeatTex = false;
+	
 	public boolean linearScaling = false;
 	
 	private Texture slashTex;
@@ -62,11 +66,16 @@ public class Entity extends EditorObject {
 	private Vector2 oldPos;
 	
 	private static final String slashLoc = "/res/gui/slash.png";
-	
 	protected ArrayList<Entity> children;
 	protected ArrayList<Component> components;
-	protected Entity parent;
 		
+	protected Entity parent;
+	
+	public Entity(Map map)
+	{
+		this(map, "");
+	}
+	
 	public Entity(Map map, String name)
 	{
 		super(map,null);
@@ -95,76 +104,6 @@ public class Entity extends EditorObject {
 		dim = new Vector2(50,50);
 	}
 	
-	public Entity(Map map)
-	{
-		this(map, "");
-	}
-	
-	/**
-	 * Tells the entity (and more importantly its components) that they have spawned.
-	 * In other words, calls {@link Component#onEntitySpawn()} for all components.
-	 */
-	public void spawnEntityInWorld()
-	{
-		oldPos = pos.copy();
-		
-		for(int x=0;x<components.size();x++)
-			components.get(x).onEntitySpawn();
-	}
-	
-	/**
-	 * Removes this entity from its map's entity list.
-	 */
-	public void removeEntityFromWorld()
-	{
-		map.getEntityList().removeEntityFromList(this);
-	}
-	
-	/**
-	 * Gets a child entity at the specified index.
-	 * @param index The index of a child entity
-	 */
-	public Entity getChild(int index)
-	{
-		return children.get(index);
-	}
-	
-	/**
-	 * @param e Any entity
-	 * @return If <i>e</i> is a child of this entity.
-	 */
-	public boolean isChild(Entity e)
-	{
-		return children.contains(e);
-	}
-	
-	/**
-	 * How many children this entity has.
-	 */
-	public int getChildrenSize()
-	{
-		return children.size();
-	}
-	
-	/**
-	 * The position of this entity, given any interpolation value.
-	 */
-	public Vector2 getPosLocal(float interpolation)
-	{
-		return Interpolator.linearInterpolate(oldPos, pos, interpolation);
-	}
-	
-	/**
-	 * Adds a new component to this entity.
-	 * @param c The component
-	 */
-	public void addComponent(Component c)
-	{
-		Component cnew = c.clone();
-		cnew.setEntity(this);
-		components.add(cnew);
-	}
-	
 	/**
 	 * Adds a child to this entity
 	 * @param e The child
@@ -178,110 +117,42 @@ public class Entity extends EditorObject {
 	}
 	
 	/**
-	 * Removes a child from this entity
-	 * @param e The child to remove
+	 * Adds a new component to this entity.
+	 * @param c The component
 	 */
-	public void removeChild(Entity e)
+	public void addComponent(Component c)
 	{
-		if(children.contains(e))
-		{
-			children.remove(e);
-			e.parent = null;
-		}
+		Component cnew = c.clone();
+		cnew.setEntity(this);
+		components.add(cnew);
 	}
 	
-	/**
-	 * A list of all of the components of this entity
-	 */
-	public ArrayList<Component> getComponents()
-	{
-		return components;
+	@Override
+	public void apply() {
+		
 	}
 	
-	/**
-	 * A list of all colliders associated with this entity (through a ComponentCollider).
-	 */
-	public ArrayList<Collider> getColliders()
+	@Override
+	public Entity clone()
 	{
-		ArrayList<Collider> colliders = new ArrayList<Collider>();
+		R2DTypeCollection compile = new R2DTypeCollection("Entity Clone");
+		saveR2DFile(compile);
+		Entity clone = new Entity(map);
+		clone.loadR2DFile(compile);
+		
 		for(Component c : components)
 		{
-			if(c instanceof ComponentCollider)
-				colliders.add(((ComponentCollider)c).getCollider());
+			clone.addComponent(c.clone());
 		}
-		return colliders;
+		return clone;
 	}
 	
-	/**
-	 * Assuming this Entity is STATIC (not moving):
-	 * Calculates any potential colliders from this Entity that would collide with the given Collider
-	 * @param coll Any moving collider
-	 * @param movement The movement vector of said collider
-	 * @return If this Entity collides with coll, list of all colliders involved with this Entity.  Otherwise, null.
-	 */
-	public ArrayList<Collider> getPossibleColliders(Collider coll, Vector2 movement)
+	@Override
+	public boolean equals(Object o)
 	{
-		
-		Collider mainCollider = getBroadPhaseCollider();
-		if(mainCollider == null)
-			return null;
-		
-		mainCollider = mainCollider.getTransformedCollider(pos);
-		Collision mainColliderCollision = coll.getCollision(mainCollider, movement);
-		if(!mainColliderCollision.collides)
-			return null;
-		
-		ArrayList<Collider> colliders = getColliders();
-		ArrayList<Collider> retColliders = new ArrayList<Collider>();
-		for(int x=0;x<colliders.size();x++)
-		{
-			retColliders.add(colliders.get(x).getTransformedCollider(pos));
-		}
-		
-		return retColliders;
-	}
-	
-	/**
-	 * The parent of this entity.
-	 */
-	public Entity getParent()
-	{
-		return parent;
-	}
-	
-	/**
-	 * Calculates if a given Vector2 is inside this entity, using its colliders.
-	 * @param vec Any point
-	 */
-	public boolean isPointInside(Vector2 vec)
-	{
-		Collider mainCollider = getBroadPhaseCollider().getTransformedCollider(pos);
-		if(mainCollider.isPointInside(vec))
-		{
-			ArrayList<Collider> colliders = getColliders();
-			for(int x=0;x<colliders.size();x++)
-				if(colliders.get(x).isPointInside(vec))
-					return true;
-			
-			return false;
-		} else
-			return false;
-	}
-	
-	/**
-	 * Renders all of this entity's colliders for debugging purposes.
-	 */
-	public void renderColliders()
-	{
-		Collider mainCollider = getBroadPhaseCollider();
-		ArrayList<Collider> colliders = getColliders();
-		Renderer.pushMatrix();
-			Renderer.translate(new Vector2(pos.x,pos.y));
-			if(mainCollider != null)
-				mainCollider.drawCollider(0xffff00);
-			for(int x=0;x<colliders.size();x++)
-				colliders.get(x).drawCollider(0xffffff);
-		Renderer.popMatrix();
+		if(o instanceof Entity)
+			return ((Entity)o).getUUID().equals(getUUID());
+		return false;
 	}
 	
 	/**
@@ -321,12 +192,58 @@ public class Entity extends EditorObject {
 	}
 	
 	/**
-	 * A general collider that encompasses this Entity's rendered area.  NOT to be used
-	 * for collision detection.
+	 * Gets a child entity at the specified index.
+	 * @param index The index of a child entity
 	 */
-	public Collider getGeneralCollider()
+	public Entity getChild(int index)
 	{
-		return pos.getColliderWithDim(getDim());
+		return children.get(index);
+	}
+	
+	/**
+	 * How many children this entity has.
+	 */
+	public int getChildrenSize()
+	{
+		return children.size();
+	}
+	
+	/**
+	 * A list of all colliders associated with this entity (through a ComponentCollider).
+	 */
+	public ArrayList<Collider> getColliders()
+	{
+		ArrayList<Collider> colliders = new ArrayList<Collider>();
+		for(Component c : components)
+		{
+			if(c instanceof ComponentCollider)
+				colliders.add(((ComponentCollider)c).getCollider());
+		}
+		return colliders;
+	}
+	
+	/**
+	 * A list of all of the components of this entity
+	 */
+	public ArrayList<Component> getComponents()
+	{
+		return components;
+	}
+	
+	/**
+	 * Gets all components of this of a specific type
+	 * @param type Any Class that extends Component
+	 * @see Component
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends Component> ArrayList<T> getComponentsOfType(Class<T> type)
+	{
+		ArrayList<T> returnComponents = new ArrayList<T>();
+		for(int x=0;x<components.size();x++)
+			if(type.isInstance(components.get(x)))
+				returnComponents.add((T) components.get(x));
+		
+		return returnComponents;
 	}
 	
 	/**
@@ -338,19 +255,165 @@ public class Entity extends EditorObject {
 	}
 	
 	/**
-	 * Responsible for all logic.  This should only be called by {@link Remote2D#tick(int, int, int)}.
-	 * Also calls {@link Component#tick(int, int, int)} for all components.
-	 * 
-	 * @param i Mouse X
-	 * @param j Mouse Y
-	 * @param k Mouse Down (1 if left mouse, 2 if right mouse, 0 if no mouse)
+	 * A general collider that encompasses this Entity's rendered area.  NOT to be used
+	 * for collision detection.
 	 */
-	public void tick(int i, int j, int k)
+	public Collider getGeneralCollider()
 	{
-		oldPos = pos.copy();
+		return pos.getColliderWithDim(getDim());
+	}
+	
+	/**
+	 * The global rotation of this Entity. {@link #rotation} is local, so it does not
+	 * account for the rotation of its parents.  This does account for this.
+	 * 
+	 * @see #rotation
+	 */
+	public float getGlobalRotation()
+	{
+		if(parent == null)
+			return rotation;
+		return parent.getGlobalRotation() + rotation;
+	}
+	
+	/**
+	 * The parent of this entity.
+	 */
+	public Entity getParent()
+	{
+		return parent;
+	}
+	
+	/**
+	 * The global position of this Entity, given any interpolation value.
+	 * {@link #pos} is local, so it does not account for the position of
+	 * its parents.  This does account for this.
+	 * 
+	 * @see #pos
+	 */
+	public Vector2 getPosGlobal(float interpolation)
+	{
+		return Renderer.matrixMultiply(getPosLocal(interpolation), getTransformMatrix());
+	}
+	
+	/**
+	 * The global position of this Entity. {@link #pos} is local, so it does not
+	 * account for the position of its parents.  This does account for this.
+	 * 
+	 * @see #pos
+	 */
+	public Vector2 getPosGlobal()
+	{
+		return Renderer.matrixMultiply(pos, getTransformMatrix());
+	}
+	
+	/**
+	 * The local position of this entity, given any interpolation value.
+	 */
+	public Vector2 getPosLocal(float interpolation)
+	{
+		return Interpolator.linearInterpolate(oldPos, pos, interpolation);
+	}
+	
+	/**
+	 * The local position of this entity
+	 */
+	public Vector2 getPosLocal()
+	{
+		return pos.copy();
+	}
+	
+	/**
+	 * Assuming this Entity is STATIC (not moving):
+	 * Calculates any potential colliders from this Entity that would collide with the given Collider
+	 * @param coll Any moving collider
+	 * @param movement The movement vector of said collider
+	 * @return If this Entity collides with coll, list of all colliders involved with this Entity.  Otherwise, null.
+	 */
+	public ArrayList<Collider> getPossibleColliders(Collider coll, Vector2 movement)
+	{
 		
-		for(int x=0;x<components.size();x++)
-			components.get(x).tick(i, j, k);
+		Collider mainCollider = getBroadPhaseCollider();
+		if(mainCollider == null)
+			return null;
+		
+		mainCollider = mainCollider.getTransformedCollider(pos);
+		Collision mainColliderCollision = coll.getCollision(mainCollider, movement);
+		if(!mainColliderCollision.collides)
+			return null;
+		
+		ArrayList<Collider> colliders = getColliders();
+		ArrayList<Collider> retColliders = new ArrayList<Collider>();
+		for(int x=0;x<colliders.size();x++)
+		{
+			retColliders.add(colliders.get(x).getTransformedCollider(pos));
+		}
+		
+		return retColliders;
+	}
+	
+	/**
+	 * The final matrix made up of the matrices of the combined transformations
+	 * of this Entity and its parents.
+	 */
+	public Matrix4f getTransformMatrix()
+	{
+		Matrix4f mat = new Matrix4f();
+		Matrix4f.rotate((float)(rotation*Math.PI/180), new Vector3f(0,0,1), mat, mat);
+		Matrix4f.translate(new Vector2f(pos.x,pos.y), mat, mat);
+		if(parent == null)
+			return mat;
+		
+		return Matrix4f.mul(mat, parent.getTransformMatrix(), null);
+	}
+	
+	/**
+	 * @param e Any entity
+	 * @return If <i>e</i> is a child of this entity.
+	 */
+	public boolean isChild(Entity e)
+	{
+		return children.contains(e);
+	}
+	
+	/**
+	 * Calculates if a given Vector2 is inside this entity, using its colliders.
+	 * @param vec Any point
+	 */
+	public boolean isPointInside(Vector2 vec)
+	{
+		Collider mainCollider = getBroadPhaseCollider().getTransformedCollider(pos);
+		if(mainCollider.isPointInside(vec))
+		{
+			ArrayList<Collider> colliders = getColliders();
+			for(int x=0;x<colliders.size();x++)
+				if(colliders.get(x).isPointInside(vec))
+					return true;
+			
+			return false;
+		} else
+			return false;
+	}
+	
+	/**
+	 * Removes a child from this entity
+	 * @param e The child to remove
+	 */
+	public void removeChild(Entity e)
+	{
+		if(children.contains(e))
+		{
+			children.remove(e);
+			e.parent = null;
+		}
+	}
+	
+	/**
+	 * Removes this entity from its map's entity list.
+	 */
+	public void removeEntityFromWorld()
+	{
+		map.getEntityList().removeEntityFromList(this);
 	}
 	
 	/**
@@ -404,98 +467,21 @@ public class Entity extends EditorObject {
 	}
 	
 	/**
-	 * The global position of this Entity. {@link #pos} is local, so it does not
-	 * account for the position of its parents.  This does account for this.
-	 * 
-	 * @see #pos
+	 * Renders all of this entity's colliders for debugging purposes.
 	 */
-	public Vector2 getPosGlobal()
+	public void renderColliders()
 	{
-		return Renderer.matrixMultiply(pos);
-	}
-	
-	/**
-	 * The global rotation of this Entity. {@link #rotation} is local, so it does not
-	 * account for the rotation of its parents.  This does account for this.
-	 * 
-	 * @see #rotation
-	 */
-	public float getGlobalRotation()
-	{
-		if(parent == null)
-			return rotation;
-		return parent.getGlobalRotation() + rotation;
-	}
-	
-	/**
-	 * The final matrix made up of the matrices of the combined transformations
-	 * of this Entity and its parents.
-	 */
-	public Matrix4f getTransformMatrix()
-	{
-		Matrix4f mat = new Matrix4f();
-		Matrix4f.rotate((float)(rotation*Math.PI/180), new Vector3f(0,0,1), mat, mat);
-		Matrix4f.translate(new Vector2f(pos.x,pos.y), mat, mat);
-		if(parent == null)
-			return mat;
-		
-		return Matrix4f.mul(mat, parent.getTransformMatrix(), null);
-	}
-	
-	@Override
-	public Entity clone()
-	{
-		R2DTypeCollection compile = new R2DTypeCollection("Entity Clone");
-		saveR2DFile(compile);
-		Entity clone = new Entity(map);
-		clone.loadR2DFile(compile);
-		
-		for(Component c : components)
-		{
-			clone.addComponent(c.clone());
-		}
-		return clone;
-	}
-	
-	/**
-	 * Gets all components of this of a specific type
-	 * @param type Any Class that extends Component
-	 * @see Component
-	 */
-	@SuppressWarnings("unchecked")
-	public <T extends Component> ArrayList<T> getComponentsOfType(Class<T> type)
-	{
-		ArrayList<T> returnComponents = new ArrayList<T>();
-		for(int x=0;x<components.size();x++)
-			if(type.isInstance(components.get(x)))
-				returnComponents.add((T) components.get(x));
-		
-		return returnComponents;
-	}
-	
-	@Override
-	public boolean equals(Object o)
-	{
-		if(o instanceof Entity)
-			return ((Entity)o).getUUID().equals(getUUID());
-		return false;
+		Collider mainCollider = getBroadPhaseCollider();
+		ArrayList<Collider> colliders = getColliders();
+		Renderer.pushMatrix();
+			Renderer.translate(new Vector2(pos.x,pos.y));
+			if(mainCollider != null)
+				mainCollider.drawCollider(0xffff00);
+			for(int x=0;x<colliders.size();x++)
+				colliders.get(x).drawCollider(0xffffff);
+		Renderer.popMatrix();
 	}
 
-	@Override
-	public void apply() {
-		
-	}
-	
-	/**
-	 * Ignores interpolation for rendering this tick.  Useful after teleporting
-	 * an Entity; to not make it quickly move to its new position but rather
-	 * pop up right there.
-	 */
-	public void updatePos()
-	{
-		oldPos = pos.copy();
-	}
-	
 	/**
 	 * Renders a preview of this entity
 	 */
@@ -517,9 +503,43 @@ public class Entity extends EditorObject {
 		}
 		Renderer.popMatrix();
 	}
+	
+	/**
+	 * Tells the entity (and more importantly its components) that they have spawned.
+	 * In other words, calls {@link Component#onEntitySpawn()} for all components.
+	 */
+	public void spawnEntityInWorld()
+	{
+		oldPos = pos.copy();
+		
+		for(int x=0;x<components.size();x++)
+			components.get(x).onEntitySpawn();
+	}
+	
+	/**
+	 * Responsible for all logic.  This should only be called by {@link Remote2D#tick(int, int, int)}.
+	 * Also calls {@link Component#tick(int, int, int)} for all components.
+	 * 
+	 * @param i Mouse X
+	 * @param j Mouse Y
+	 * @param k Mouse Down (1 if left mouse, 2 if right mouse, 0 if no mouse)
+	 */
+	public void tick(int i, int j, int k)
+	{
+		oldPos = pos.copy();
+		
+		for(int x=0;x<components.size();x++)
+			components.get(x).tick(i, j, k);
+	}
 
-	public static String getExtension() {
-		return ".entity";
+	/**
+	 * Ignores interpolation for rendering this tick.  Useful after teleporting
+	 * an Entity; to not make it quickly move to its new position but rather
+	 * pop up right there.
+	 */
+	public void updatePos()
+	{
+		oldPos = pos.copy();
 	}
 		
 }

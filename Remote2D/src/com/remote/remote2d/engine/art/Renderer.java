@@ -656,10 +656,15 @@ public class Renderer {
 		return matrixStack.peek();
 	}
 	
-	public static Vector2 matrixMultiply(Vector2 vec)
+	public static Vector2 matrixMultiply(Vector2 vec, Matrix4f matrix)
 	{
 		Vector4f lwjglVec = new Vector4f(vec.x,vec.y,0,0);
-		Vector4f retVec = Matrix4f.transform(matrixStack.peek(), lwjglVec, null);
+		Vector4f retVec = Matrix4f.transform(matrix, lwjglVec, null);
 		return new Vector2(retVec.x, retVec.y);
+	}
+	
+	public static Vector2 matrixMultiply(Vector2 vec)
+	{
+		return matrixMultiply(vec,matrixStack.peek());
 	}
 }
