@@ -1,10 +1,10 @@
 package com.remote.remote2d.engine.world;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import com.remote.remote2d.engine.Remote2D;
+import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.logic.ColliderBox;
 import com.remote.remote2d.engine.logic.Interpolator;
@@ -42,14 +42,14 @@ public class Camera {
 	{
 		Vector2 pos = Interpolator.linearInterpolate(oldPos, this.pos, interpolation).subtract(Remote2D.displayHandler.getDimensions());		
 		Vector2 dim = getDimensions();
-		GL11.glPushMatrix();
-		GL11.glScalef(scale, scale, 0);
-		GL11.glTranslatef(-pos.x-dim.x/2, -pos.y-dim.y/2, 0);		
+		Renderer.pushMatrix();
+		Renderer.scale(scale);
+		Renderer.translate(new Vector2(-pos.x-dim.x/2, -pos.y-dim.y/2));		
 	}
 	
 	public void renderAfter(float interpolation)
 	{
-		GL11.glPopMatrix();
+		Renderer.popMatrix();
 	}
 	
 	public Vector2 getTruePos(float interpolation)

@@ -192,7 +192,7 @@ public class Remote2D {
 		if(stretch != displayHandler.getStretchType())
 			displayHandler.setStretchType(stretch);
 		
-		GL11.glLoadIdentity();
+		Renderer.loadIdentity();
 		
 		int color = guiList.peek().backgroundColor;
 		float r = ((color >> 16) & 0xff)/255f;
@@ -210,6 +210,8 @@ public class Remote2D {
 		guiList.peek().render(interpolation);
 		
 		CursorLoader.render(interpolation);
+		
+		Renderer.clear();
 	}
 	
 	private static void shutDown()

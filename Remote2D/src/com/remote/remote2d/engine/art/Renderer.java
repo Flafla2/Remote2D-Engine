@@ -1,6 +1,13 @@
 package com.remote.remote2d.engine.art;
 
+import java.nio.FloatBuffer;
+import java.util.Stack;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.gui.Gui;
@@ -18,6 +25,12 @@ import com.remote.remote2d.engine.logic.Vector2;
 public class Renderer {
 	
 	private static boolean wireframe = false;
+	private static Stack<Matrix4f> matrixStack = new Stack<Matrix4f>();
+	
+	static
+	{
+		matrixStack.push(new Matrix4f());
+	}
 	
 	/**
 	 * Draws an approximation of a circle out of lines (Wireframe) with the given amount of sides.
@@ -569,5 +582,84 @@ public class Renderer {
 		newPos = newPos.add(screenPos.pos);
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		GL11.glScissor((int)newPos.x, (int)newPos.y, (int)dim.x, (int)dim.y);
+	}
+	
+	private static void pushMatrixToGL()
+	{
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
+		matrixStack.peek().store(buffer);
+		GL11.glLoadMatrix(buffer);
+		buffer.clear();
+		buffer = null;
+	}
+	
+	public static void pushMatrix()
+	{
+		matrixStack.push(matrixStack.peek());
+	}
+	
+	public static void popMatrix()
+	{
+		if(matrixStack.size() > 1)
+		{
+			matrixStack.pop();
+			pushMatrixToGL();
+		}
+	}
+	
+	public static void rotate(float angle, boolean radians)
+	{
+		if(!radians)
+		{
+			angle *= Math.PI;
+			angle /= 180;
+		}
+		matrixStack.peek().rotate(angle, new Vector3f(0,0,1));
+		pushMatrixToGL();
+	}
+	
+	public static void rotate(float angle)
+	{
+		rotate(angle,false);
+	}
+	
+	public static void translate(Vector2 trans)
+	{
+		matrixStack.peek().translate(new Vector3f(trans.x,trans.y,0));
+		pushMatrixToGL();
+	}
+	
+	public static void scale(Vector2 scale)
+	{
+		matrixStack.peek().scale(new Vector3f(scale.x, scale.y, 1));
+		pushMatrixToGL();
+	}
+	
+	public static void scale(float scale)
+	{
+		matrixStack.peek().scale(new Vector3f(scale, scale, 1));
+		pushMatrixToGL();
+	}
+	
+	public static void loadIdentity()
+	{
+		matrixStack.peek().setIdentity();
+	}
+	
+	public static void clear()
+	{
+		matrixStack.clear();
+		matrixStack.push(new Matrix4f());
+	}
+
+	public static Matrix4f peekMatrix() {
+		return matrixStack.peek();
+	}
+	
+	public static Vector2 matrixMultiply(Vector2 vec)
+	{
+		Vector4f lwjglVec = new Vector4f(vec.x,vec.y,0,0);
+		Vector4f retVec = Matrix4f.transform(matrixStack.peek(), lwjglVec, null);
+		return new Vector2(retVec.x, retVec.y);
 	}
 }

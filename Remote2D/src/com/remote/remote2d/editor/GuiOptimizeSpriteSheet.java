@@ -10,7 +10,6 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.Remote2DException;
@@ -129,7 +128,6 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 				tex.removeTexture();
 				tex = new Texture(texturePath.text);
 			}
-			tex.bind();			
 			BufferedImage image = tex.getImage();
 			Vector2 dim = new Vector2(image.getWidth(),image.getHeight());
 			image.flush();
@@ -137,20 +135,11 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 			
 			Renderer.startScissor(new Vector2(300,0), new Vector2(screenWidth()-300,screenHeight()));
 			
-			GL11.glPushMatrix();
-				GL11.glTranslatef(iOffset.x, iOffset.y, 0);
-				GL11.glScalef(scale, scale, 1);
+			Renderer.pushMatrix();
+				Renderer.translate(new Vector2(iOffset.x, iOffset.y));
+				Renderer.scale(new Vector2(scale, scale));
 				
-				GL11.glBegin(GL11.GL_QUADS);
-					GL11.glTexCoord2f(0, 0);
-					GL11.glVertex2f(0, 0);
-					GL11.glTexCoord2f(1, 0);
-					GL11.glVertex2f(dim.x, 0);
-					GL11.glTexCoord2f(1, 1);
-					GL11.glVertex2f(dim.x,dim.y);
-					GL11.glTexCoord2f(0, 1);
-					GL11.glVertex2f(0, dim.y);
-				GL11.glEnd();
+				Renderer.drawRect(new Vector2(0,0), dim, tex, 0xffffff, 1.0f);
 				
 				for(int x=0;x<frameDefiners.size();x++)
 				{
@@ -160,23 +149,17 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 				}
 				if(activeDefiner != null)
 					activeDefiner.getCollider().drawCollider(0xff0000);
-	 		GL11.glPopMatrix();
+	 		Renderer.popMatrix();
 	 		
 	 		if(Mouse.getX() > 300)
 	 		{
-		 		GL11.glColor3f(1,0,0);
-				GL11.glBegin(GL11.GL_LINES);
-					int y = screenHeight()-Mouse.getY();
-					int x = Mouse.getX();
-					boolean right = ((x-offset.x)%scale)/(scale) >= 0.5;
-					boolean bottom = ((y-offset.y)%scale)/(scale) >= 0.5;
-					GL11.glVertex2f(0, y-(y-offset.y)%scale+(bottom?scale:0));
-					GL11.glVertex2f(screenWidth(), y-(y-offset.y)%scale+(bottom?scale:0));
-					
-					GL11.glVertex2f(x-(x-offset.x)%scale+(right?scale:0), 0);
-					GL11.glVertex2f(x-(x-offset.x)%scale+(right?scale:0), screenHeight());
-				GL11.glEnd();
-				GL11.glColor3f(1,1,1);
+				int y = screenHeight()-Mouse.getY();
+				int x = Mouse.getX();
+				boolean right = ((x-offset.x)%scale)/(scale) >= 0.5;
+				boolean bottom = ((y-offset.y)%scale)/(scale) >= 0.5;
+				Renderer.drawLine(new Vector2(0, y-(y-offset.y)%scale+(bottom?scale:0)),new Vector2(screenWidth(), y-(y-offset.y)%scale+(bottom?scale:0)),0xff0000,1.0f);
+				
+				Renderer.drawLine(new Vector2(x-(x-offset.x)%scale+(right?scale:0), 0), new Vector2(x-(x-offset.x)%scale+(right?scale:0), screenHeight()), 0xff0000, 1.0f);
 	 		}
 			Renderer.endScissor();
 		}

@@ -2,8 +2,6 @@ package com.remote.remote2d.editor.inspector;
 
 import java.util.ArrayList;
 
-import org.lwjgl.opengl.GL11;
-
 import com.remote.remote2d.editor.DraggableObject;
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.editor.operation.OperationEditEntity;
@@ -93,16 +91,16 @@ public class GuiEditorInspector extends GuiMenu {
 	public void render(float interpolation) {
 		super.render(interpolation);
 		
-		GL11.glPushMatrix();
+		Renderer.pushMatrix();
 		Renderer.startScissor(new Vector2(pos.x,pos.y), new Vector2(dim.x,dim.y));
-		GL11.glTranslatef(0, -(float)Interpolator.linearInterpolate(lastOffset, offset, interpolation), 0);
+		Renderer.translate(new Vector2(0, -(float)Interpolator.linearInterpolate(lastOffset, offset, interpolation)));
 		
 		for(int x=0;x<wizards.size();x++)
 		{
 			wizards.get(x).render(interpolation);
 		}
 		Renderer.endScissor();
-		GL11.glPopMatrix();
+		Renderer.popMatrix();
 	}
 	
 	public float getScrollOffset(float interpolation)

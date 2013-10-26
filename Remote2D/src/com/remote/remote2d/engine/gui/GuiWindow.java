@@ -2,8 +2,6 @@ package com.remote.remote2d.engine.gui;
 
 import java.util.ArrayList;
 
-import org.lwjgl.opengl.GL11;
-
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
@@ -179,33 +177,19 @@ public abstract class GuiWindow extends Gui {
 		Fonts.get("Arial").drawString(title, pos.x+10, pos.y+1, 20, 0xffffff);
 		Renderer.startScissor(new Vector2(pos.x,pos.y+20), dim);
 		
-		GL11.glPushMatrix();
-			GL11.glTranslatef(pos.x,pos.y+20,0);
+		Renderer.pushMatrix();
+			Renderer.translate(new Vector2(pos.x,pos.y+20));
 			renderContents(interpolation);
 			for(int x=0;x<buttonList.size();x++)
 				buttonList.get(x).render(interpolation);
-			GL11.glTranslatef(-pos.x,-pos.y-20,0);
-		GL11.glPopMatrix();
+			Renderer.translate(new Vector2(-pos.x,-pos.y-20));
+		Renderer.popMatrix();
 		
 		Renderer.endScissor();
 		
 		
 		Renderer.drawLineRect(pos, dim.add(new Vector2(0,20)), 0x000000, 1.0f);
-		
-		GL11.glColor3f(0.4f, 0.4f, 0.4f);
-		
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		
-		GL11.glBegin(GL11.GL_LINES);
-		
-			GL11.glVertex2f(pos.x, pos.y+20);
-			GL11.glVertex2f(pos.x+dim.x, pos.y+20);
-		
-		GL11.glEnd();
-		
-		GL11.glColor3f(1, 1, 1);
-		
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		Renderer.drawLine(new Vector2(pos.x, pos.y+20),new Vector2(pos.x+dim.x, pos.y+20),0.4f,0.4f,0.4f,1.0f);
 		
 		if(canResize())
 		{

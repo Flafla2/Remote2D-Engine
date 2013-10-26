@@ -6,6 +6,8 @@ import org.lwjgl.opengl.GL11;
 
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.StretchType;
+import com.remote.remote2d.engine.art.Renderer;
+import com.remote.remote2d.engine.logic.Vector2;
 
 public class GuiMenu extends Gui{
 	
@@ -46,36 +48,26 @@ public class GuiMenu extends Gui{
 		
 		backgroundColor = bgcolor;
 		
-		bindRGB(smallcolor);
-		drawGrid(25);
-		bindRGB(medcolor);
+		drawGrid(25,smallcolor);
 		GL11.glLineWidth(3);
-		drawGrid(100);
-		bindRGB(largecolor);
+		drawGrid(100,medcolor);
 		GL11.glLineWidth(5);
-		drawGrid(200);
+		drawGrid(200,largecolor);
 		GL11.glLineWidth(1);
-		GL11.glColor3f(1, 1, 1);
 		
 	}
 	
-	private void drawGrid(int distance)
+	private void drawGrid(int distance, int color)
 	{
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glBegin(GL11.GL_LINES);
-			for(int x=0;x<=screenWidth()/distance;x++)
-			{
-				GL11.glVertex2f(x*distance, 0);
-				GL11.glVertex2f(x*distance, screenHeight());
-			}
-			
-			for(int x=0;x<=screenHeight()/distance;x++)
-			{
-				GL11.glVertex2f(0, x*distance);
-				GL11.glVertex2f(screenWidth(), x*distance);
-			}
-		GL11.glEnd();
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		for(int x=0;x<=screenWidth()/distance;x++)
+		{
+			Renderer.drawLine(new Vector2(x*distance, 0),new Vector2(x*distance, screenHeight()),color,1.0f);
+		}
+		
+		for(int x=0;x<=screenHeight()/distance;x++)
+		{
+			Renderer.drawLine(new Vector2(0, x*distance),new Vector2(screenWidth(), x*distance),color,1.0f);
+		}
 	}
 
 	@Override

@@ -3,7 +3,6 @@ package com.remote.remote2d.editor;
 import java.awt.image.BufferedImage;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.StretchType;
@@ -162,7 +161,6 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 				tex.removeTexture();
 				tex = new Texture(texID.text);
 			}
-			tex.bind();	
 			BufferedImage image = tex.getImage();
 			Vector2 dim = new Vector2(image.getWidth(),image.getHeight());
 			image.flush();
@@ -170,27 +168,18 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 			
 			Renderer.startScissor(new Vector2(300,0), new Vector2(screenWidth()-300,screenHeight()));
 			
-			GL11.glPushMatrix();
-				GL11.glTranslatef(realOffset.x, realOffset.y, 0);
-				GL11.glScalef(scale, scale, 1);
-				GL11.glBegin(GL11.GL_QUADS);
-					GL11.glTexCoord2f(0, 0);
-					GL11.glVertex2f(0, 0);
-					GL11.glTexCoord2f(1, 0);
-					GL11.glVertex2f(dim.x, 0);
-					GL11.glTexCoord2f(1, 1);
-					GL11.glVertex2f(dim.x,dim.y);
-					GL11.glTexCoord2f(0, 1);
-					GL11.glVertex2f(0, dim.y);
-				GL11.glEnd();
-			GL11.glPopMatrix();
+			Renderer.pushMatrix();
+				Renderer.translate(realOffset);
+				Renderer.scale(scale);
+				Renderer.drawRect(new Vector2(0,0), dim, tex, 0xffffff, 1.0f);
+			Renderer.popMatrix();
 			if(animation != null)
 			{
-				GL11.glPushMatrix();
-					GL11.glTranslatef(realOffset.x, realOffset.y, 0);
-					GL11.glScalef(scale, scale, 1);
+				Renderer.pushMatrix();
+					Renderer.translate(realOffset);
+					Renderer.scale(scale);
 					animation.renderFrames();
-				GL11.glPopMatrix();
+				Renderer.popMatrix();
 				Renderer.endScissor();
 				
 				Vector2 spriteDim = animation.getSpriteDim();

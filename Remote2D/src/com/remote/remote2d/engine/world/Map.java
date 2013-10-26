@@ -56,7 +56,6 @@ public class Map implements R2DFileSaver {
 		Vector2 currentPos = new Vector2(0,0);
 		currentPos.x = pos.x-pos.x%gridSize-gridSize;
 		currentPos.y = pos.y-pos.y%gridSize-gridSize;
-		GL11.glColor4f(0,0,0,0.25f);
 		
 		for(int x=0;x<Gui.screenHeight()/camera.scale/gridSize+2;x++)
 		{
@@ -89,7 +88,7 @@ public class Map implements R2DFileSaver {
 			GL11.glLineWidth(1);
 		}
 		
-		GL11.glPopMatrix();
+		Renderer.popMatrix();
 	}
 	
 	public void spawn()

@@ -1,7 +1,5 @@
 package com.remote.remote2d.editor;
 
-import org.lwjgl.opengl.GL11;
-
 import com.remote.remote2d.editor.inspector.GuiEditorInspector;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
@@ -34,22 +32,19 @@ public class GuiEditorPreview extends Gui {
 		Renderer.drawRect(pos, dim, 0x000000, 0.5f);
 		
 		Fonts.get("Arial").drawString("Preview", pos.x, pos.y, 20, 0xffffff);
-		GL11.glBegin(GL11.GL_LINES);
-		GL11.glVertex2f(pos.x, pos.y+20);
-		GL11.glVertex2f(pos.x+dim.x, pos.y+20);
-		GL11.glEnd();
+		Renderer.drawLine(new Vector2(pos.x, pos.y+20),new Vector2(pos.x+dim.x, pos.y+20),0xffffff,1.0f);
 		
 		Renderer.startScissor(new Vector2(pos.x,pos.y+21), dim);
 		
 		if(inspector.currentEntity != null)
 		{
-			GL11.glPushMatrix();
+			Renderer.pushMatrix();
 			if(inspector.currentEntity instanceof Entity)
 			{
-				GL11.glTranslatef(pos.x+dim.x/2-inspector.currentEntity.getDim().x/2, pos.y+dim.y/2-inspector.currentEntity.getDim().y/2, 0);
+				Renderer.translate(new Vector2(pos.x+dim.x/2-inspector.currentEntity.getDim().x/2, pos.y+dim.y/2-inspector.currentEntity.getDim().y/2));
 				inspector.currentEntity.renderPreview(interpolation);
 			}
-			GL11.glPopMatrix();
+			Renderer.popMatrix();
 		}
 		
 		Renderer.endScissor();

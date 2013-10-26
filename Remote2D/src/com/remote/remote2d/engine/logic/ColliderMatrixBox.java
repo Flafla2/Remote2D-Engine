@@ -1,7 +1,5 @@
 package com.remote.remote2d.engine.logic;
 
-import org.lwjgl.opengl.GL11;
-
 import com.remote.remote2d.engine.art.Renderer;
 
 public class ColliderMatrixBox extends Collider {
@@ -97,19 +95,14 @@ public class ColliderMatrixBox extends Collider {
 	
 	@Override
 	public void drawCollider(int color) {
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		//GL11.glColor3f(0, 1, 0);
-		GL11.glTranslatef(pos.x,pos.y,0);
+		Renderer.translate(new Vector2(pos.x,pos.y));
 		Renderer.drawLinePoly(getPoints(), 0xffffff, 1.0f);
-		GL11.glTranslatef(-pos.x,-pos.y,0);
+		Renderer.translate(new Vector2(-pos.x,-pos.y));
 		
 		Renderer.drawLineRect(pos, dim, 0x00ff00, 1.0f);
 		
 		if(vec != null)
 			Renderer.drawRect(new Vector2(vec.x-3,vec.y-3), new Vector2(6), 0x000000, 1.0f);
-		
-		//GL11.glColor3f(1, 1, 1);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 	
 	public float getAngle() {

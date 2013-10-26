@@ -3,6 +3,9 @@ package com.remote.remote2d.engine.entity;
 import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.engine.Remote2D;
@@ -30,13 +33,17 @@ public class Entity extends EditorObject {
 	
 	public String name;
 	/**
-	 * This entity's position
+	 * This entity's local position, relative to its parent entity
 	 */
 	public Vector2 pos;
 	/**
 	 * This entity's dimensions
 	 */
 	public Vector2 dim;
+	/**
+	 * This entity's LOCAL rotation, in degrees.
+	 */
+	public float rotation;
 	/**
 	 * The material of this entity - what color, textures, etc. This entity uses.
 	 */
@@ -260,13 +267,13 @@ public class Entity extends EditorObject {
 	{
 		Collider mainCollider = getBroadPhaseCollider();
 		ArrayList<Collider> colliders = getColliders();
-		GL11.glPushMatrix();
-			GL11.glTranslatef(pos.x,pos.y,0);
+		Renderer.pushMatrix();
+			Renderer.translate(new Vector2(pos.x,pos.y));
 			if(mainCollider != null)
 				mainCollider.drawCollider(0xffff00);
 			for(int x=0;x<colliders.size();x++)
 				colliders.get(x).drawCollider(0xffffff);
-		GL11.glPopMatrix();
+		Renderer.popMatrix();
 	}
 	
 	/**
@@ -356,22 +363,69 @@ public class Entity extends EditorObject {
 			if(Remote2D.guiList.peek() instanceof GuiEditor)
 				if(((GuiEditor)Remote2D.guiList.peek()).getSelectedEntity() == this)
 					selected = true;
-		if(editor)
+		
+		Renderer.pushMatrix();
+			Renderer.translate(new Vector2(-pos.x, -pos.y));
+			Renderer.rotate(rotation);
+			Renderer.translate(new Vector2(pos.x, pos.y));
+			if(editor)
+			{
+				float maxX = (dim.x)/32f;
+				float maxY = (dim.y)/32f;
+				int color = 0xffffff;
+				if(selected)
+					color = 0xff0000;
+				else
+					color = 0xffaaaa;
+				Renderer.drawRect(pos, dim, new Vector2(0,0), new Vector2(maxX, maxY), slashTex, color, 1);
+			}
+			
+			material.render(pos, dim);
+			
+			if(editor && selected)
+				Renderer.drawLineRect(pos, dim, 1, 0, 0, 1);
+		Renderer.popMatrix();
+	}
+	
+	/**
+	 * The global position of this Entity. {@link #pos} is local, so it does not
+	 * account for the position of its parents.  This does account for this.
+	 * 
+	 * @see #pos
+	 */
+	public Vector2 getGlobalPos()
+	{
+		return Renderer.matrixMultiply(pos);
+	}
+	
+	/**
+	 * The global rotation of this Entity. {@link #rotation} is local, so it does not
+	 * account for the rotation of its parents.  This does account for this.
+	 * 
+	 * @see #rotation
+	 */
+	public float getGlobalRotation()
+	{
+		if(parent == null)
+			return rotation;
+		return parent.getGlobalRotation() + rotation;
+	}
+	
+	/**
+	 * The final matrix made up of the matrices of the combined transformations
+	 * of this Entity and its parents.
+	 */
+	public Matrix4f getTransformMatrix()
+	{
+		Matrix4f mat = new Matrix4f();
+		Matrix4f.rotate((float)(rotation*Math.PI/180), new Vector3f(0,0,1), mat, mat);
+		Matrix4f.translate(new Vector2f(pos.x,pos.y), mat, mat);
+		if(parent == null)
 		{
-			float maxX = (dim.x)/32f;
-			float maxY = (dim.y)/32f;
-			int color = 0xffffff;
-			if(selected)
-				color = 0xff0000;
-			else
-				color = 0xffaaaa;
-			Renderer.drawRect(pos, dim, new Vector2(0,0), new Vector2(maxX, maxY), slashTex, color, 1);
+			return mat;
 		}
 		
-		material.render(pos, dim);
-		
-		if(editor && selected)
-			Renderer.drawLineRect(pos, dim, 1, 0, 0, 1);
+		return Matrix4f.mul(mat, parent.getTransformMatrix(), null);
 	}
 	
 	@Override
@@ -432,8 +486,8 @@ public class Entity extends EditorObject {
 	 * Renders a preview of this entity
 	 */
 	public void renderPreview(float interpolation) {
-		GL11.glPushMatrix();
-		GL11.glTranslatef(-pos.x, -pos.y, 0);
+		Renderer.pushMatrix();
+		Renderer.translate(new Vector2(-pos.x, -pos.y));
 		try
 		{
 			for(int x=0;x<getComponents().size();x++)
@@ -447,7 +501,7 @@ public class Entity extends EditorObject {
 			Renderer.drawCrossRect(pos, dim, 0xffffff, 1.0f);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		}
-		GL11.glPopMatrix();
+		Renderer.popMatrix();
 	}
 
 	public static String getExtension() {

@@ -2,8 +2,6 @@ package com.remote.remote2d.editor;
 
 import java.util.ArrayList;
 
-import org.lwjgl.opengl.GL11;
-
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.gui.GuiWindow;
@@ -30,8 +28,8 @@ public class GuiWindowConsole extends GuiWindow {
 	@Override
 	public void renderContents(float interpolation) {
 		float offset = (float) Interpolator.linearInterpolate(oldOffset, this.offset, interpolation);
-		GL11.glPushMatrix();
-		GL11.glTranslatef(0, -offset, 0);
+		Renderer.pushMatrix();
+		Renderer.translate(new Vector2(0, -offset));
 		int yPos = 0;
 		for(ConsoleMessage message : messages)
 		{
@@ -39,7 +37,7 @@ public class GuiWindowConsole extends GuiWindow {
 				message.render(new Vector2(0,yPos),interpolation);
 			yPos += message.dim.y;
 		}
-		GL11.glPopMatrix();
+		Renderer.popMatrix();
 	}
 	
 	@Override
