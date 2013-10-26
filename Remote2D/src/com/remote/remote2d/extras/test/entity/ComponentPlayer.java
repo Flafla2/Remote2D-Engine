@@ -178,8 +178,8 @@ public class ComponentPlayer extends Component {
 		if(anim != null)
 		{
 			Vector2 posVec = new Vector2(0,0);
-			posVec.x = entity.getPos(interpolation).x+entity.getDim().x/2-anim.getSpriteDim().x/2;
-			posVec.y = entity.getPos(interpolation).y+entity.getDim().y/2-anim.getSpriteDim().y/2;
+			posVec.x = entity.getPosLocal(interpolation).x+entity.getDim().x/2-anim.getSpriteDim().x/2;
+			posVec.y = entity.getPosLocal(interpolation).y+entity.getDim().y/2-anim.getSpriteDim().y/2;
 			anim.render(posVec, new Vector2(anim.getSpriteDim().getElements()));
 		}
 		

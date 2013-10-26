@@ -33,7 +33,11 @@ public class Entity extends EditorObject {
 	
 	public String name;
 	/**
-	 * This entity's local position, relative to its parent entity
+	 * This entity's local position, relative to its parent entity.  DO NOT USE THIS
+	 * for calculating the global position of an entity (for rendering, etc.) use
+	 * {@link #getGlobalPos()}.
+	 * 
+	 * @see #getGlobalPos()
 	 */
 	public Vector2 pos;
 	/**
@@ -41,7 +45,9 @@ public class Entity extends EditorObject {
 	 */
 	public Vector2 dim;
 	/**
-	 * This entity's LOCAL rotation, in degrees.
+	 * This entity's, rotation, local to its parent entity, in degrees.  DO NOT USE THIS
+	 * for calculating the global rotation of an entity (for rendering, etc.) use
+	 * {@link #getGlobalRotation()}.
 	 */
 	public float rotation;
 	/**
@@ -143,7 +149,7 @@ public class Entity extends EditorObject {
 	/**
 	 * The position of this entity, given any interpolation value.
 	 */
-	public Vector2 getPos(float interpolation)
+	public Vector2 getPosLocal(float interpolation)
 	{
 		return Interpolator.linearInterpolate(oldPos, pos, interpolation);
 	}
@@ -165,6 +171,8 @@ public class Entity extends EditorObject {
 	 */
 	public void addChild(Entity e)
 	{
+		if(e.getParent() != null)
+			e.parent.removeChild(this);
 		e.parent = this;
 		children.add(e);
 	}
@@ -364,6 +372,9 @@ public class Entity extends EditorObject {
 				if(((GuiEditor)Remote2D.guiList.peek()).getSelectedEntity() == this)
 					selected = true;
 		
+		for(int x=0;x<components.size();x++)
+			components.get(x).renderBefore(editor, interpolation);
+		
 		Renderer.pushMatrix();
 			Renderer.translate(new Vector2(-pos.x, -pos.y));
 			Renderer.rotate(rotation);
@@ -385,6 +396,11 @@ public class Entity extends EditorObject {
 			if(editor && selected)
 				Renderer.drawLineRect(pos, dim, 1, 0, 0, 1);
 		Renderer.popMatrix();
+		
+		
+		
+		for(int x=components.size()-1;x>=0;x--)
+			components.get(x).renderAfter(editor, interpolation);
 	}
 	
 	/**
@@ -393,7 +409,7 @@ public class Entity extends EditorObject {
 	 * 
 	 * @see #pos
 	 */
-	public Vector2 getGlobalPos()
+	public Vector2 getPosGlobal()
 	{
 		return Renderer.matrixMultiply(pos);
 	}
@@ -421,9 +437,7 @@ public class Entity extends EditorObject {
 		Matrix4f.rotate((float)(rotation*Math.PI/180), new Vector3f(0,0,1), mat, mat);
 		Matrix4f.translate(new Vector2f(pos.x,pos.y), mat, mat);
 		if(parent == null)
-		{
 			return mat;
-		}
 		
 		return Matrix4f.mul(mat, parent.getTransformMatrix(), null);
 	}

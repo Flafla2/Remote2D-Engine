@@ -97,7 +97,7 @@ public class EntityList {
 		{
 			try
 			{
-				renderEntity(entityList.get(i),editor,interpolation);
+				entityList.get(i).render(editor,interpolation);
 			} catch(Exception e)
 			{
 				if(editor)
@@ -110,21 +110,6 @@ public class EntityList {
 					throw new Remote2DException(e);
 			}
 		}
-	}
-	
-	/**
-	 * Renders a specific entity in this list, including components.
-	 * @param e Entity to render
-	 * @see Entity#render(boolean, float)
-	 */
-	private void renderEntity(Entity e, boolean editor, float interpolation)
-	{
-		ArrayList<Component> components = e.getComponents();
-		for(int x=0;x<components.size();x++)
-			components.get(x).renderBefore(editor, interpolation);
-		e.render(editor,interpolation);
-		for(int x=components.size()-1;x>=0;x--)
-			components.get(x).renderAfter(editor, interpolation);
 	}
 	
 	/**
