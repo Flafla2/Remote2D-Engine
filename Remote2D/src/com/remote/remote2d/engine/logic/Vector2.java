@@ -103,5 +103,13 @@ public class Vector2 extends Vector1 {
 	{
 		return new Vector2(-y,x);
 	}
+
+	public Vector2 mod(float mod) {
+		return new Vector2(x%mod,y%mod);
+	}
+	
+	public Vector2 mod(Vector2 mod) {
+		return new Vector2(x%mod.x,y%mod.y);
+	}
 	
 }

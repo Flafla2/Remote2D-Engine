@@ -46,6 +46,11 @@ public class Vector1 {
 		return x*vec.x;
 	}
 	
+	public float mod(Vector1 vec)
+	{
+		return x%vec.x;
+	}
+	
 	public float[] getElements()
 	{
 		return new float[]{x};

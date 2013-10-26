@@ -52,7 +52,7 @@ public class Map implements R2DFileSaver {
 	public void drawGrid(float interpolation)
 	{		
 		camera.renderBefore(interpolation);
-		Vector2 pos = camera.pos.subtract(new Vector2(Gui.screenWidth()/2,Gui.screenHeight()/2));
+		Vector2 pos = camera.getTruePos(interpolation).subtract(new Vector2(Gui.screenWidth()/2,Gui.screenHeight()/2));
 		Vector2 currentPos = new Vector2(0,0);
 		currentPos.x = pos.x-pos.x%gridSize-gridSize;
 		currentPos.y = pos.y-pos.y%gridSize-gridSize;

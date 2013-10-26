@@ -540,6 +540,146 @@ public class Renderer {
 	}
 	
 	/**
+	 * Draws a triangle
+	 * @param v1 First vertex
+	 * @param v2 Second vertex
+	 * @param v3 Third vertex
+	 * @param u1 First UV vertex (0.0-1.0)
+	 * @param u2 Second UV vertex (0.0-1.0)
+	 * @param u3 Third UV vertex (0.0-1.0)
+	 * @param tex Texture to use
+	 * @param red Red value, (0.0-1.0)
+	 * @param green Green value, (0.0-1.0)
+	 * @param blue Blue value, (0.0-1.0)
+	 * @param alpha Alpha (opaque) value, (0.0-1.0).
+	 */
+	public static void drawTri(Vector2 v1, Vector2 v2, Vector2 v3, Vector2 u1, Vector2 u2, Vector2 u3, Texture tex, float red, float green, float blue, float alpha)
+	{
+		if(wireframe)
+		{
+			drawTri(v1,v2,v3,red,green,blue,alpha);
+			return;
+		}
+		tex.bind();
+		GL11.glColor4f(red, green, blue, alpha);
+		GL11.glBegin(GL11.GL_TRIANGLES);
+			GL11.glTexCoord2f(u1.x, u1.y);
+			GL11.glVertex2f(v1.x, v1.y);
+			GL11.glTexCoord2f(u2.x, u2.y);
+			GL11.glVertex2f(v2.x, v2.y);
+			GL11.glTexCoord2f(u3.x, u3.y);
+			GL11.glVertex2f(v3.x, v3.y);
+		GL11.glEnd();
+		GL11.glColor4f(1, 1, 1, 1);
+	}
+	
+	/**
+	 * Draws a triangle
+	 * @param v1 First vertex
+	 * @param v2 Second vertex
+	 * @param v3 Third vertex
+	 * @param u1 First UV vertex (0.0-1.0)
+	 * @param u2 Second UV vertex (0.0-1.0)
+	 * @param u3 Third UV vertex (0.0-1.0)
+	 * @param tex Texture to use
+	 * @param color Color in hex (0x000000-0xffffff)
+	 * @param alpha Alpha (opaque) value, (0.0-1.0).
+	 */
+	public static void drawTri(Vector2 v1, Vector2 v2, Vector2 v3, Vector2 u1, Vector2 u2, Vector2 u3, Texture tex, int color, float alpha)
+	{
+		float r = ((color >> 16) & 0xff)/255f;
+		float g = ((color >> 8) & 0xff)/255f;
+		float b = (color & 0xff)/255f;
+		drawTri(v1,v2,v3,u1,u2,u3,tex,r,g,b,alpha);
+	}
+	
+	/**
+	 * Draws a triangle
+	 * @param v1 First vertex
+	 * @param v2 Second vertex
+	 * @param v3 Third vertex
+	 * @param red Red value, (0.0-1.0)
+	 * @param green Green value, (0.0-1.0)
+	 * @param blue Blue value, (0.0-1.0)
+	 * @param alpha Alpha (opaque) value, (0.0-1.0).
+	 */
+	public static void drawTri(Vector2 v1, Vector2 v2, Vector2 v3, float red, float green, float blue, float alpha)
+	{
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glColor4f(red, green, blue, alpha);
+		if(wireframe)
+			GL11.glBegin(GL11.GL_LINE_STRIP);
+		else
+			GL11.glBegin(GL11.GL_TRIANGLES);
+		
+			GL11.glVertex2f(v1.x, v1.y);
+			GL11.glVertex2f(v2.x, v2.y);
+			GL11.glVertex2f(v3.x, v3.y);
+			if(wireframe)
+				GL11.glVertex2f(v1.x, v1.y);
+		GL11.glEnd();
+		GL11.glColor4f(1, 1, 1, 1);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	}
+	
+	/**
+	 * Draws a triangle
+	 * @param v1 First vertex
+	 * @param v2 Second vertex
+	 * @param v3 Third vertex
+	 * @param color Color in hex (0x000000-0xffffff)
+	 * @param alpha Alpha (opaque) value, (0.0-1.0).
+	 */
+	public static void drawTri(Vector2 v1, Vector2 v2, Vector2 v3, int color, float alpha)
+	{
+		float r = ((color >> 16) & 0xff)/255f;
+		float g = ((color >> 8) & 0xff)/255f;
+		float b = (color & 0xff)/255f;
+		drawTri(v1,v2,v3,r,g,b,alpha);
+	}
+	
+	/**
+	 * Draws an arrow.
+	 * @param pos Position of the middle of the end of the arrow (opposite end of the tip)
+	 * @param length Length of the arrow (usually the long side)
+	 * @param width Width of the arrow (usually the short side)
+	 * @param angle Angle of the arrow in degrees (0 degrees = faces right)
+	 * @param tipDim Dimensions of the arrow tip
+	 * @param red Red value, (0.0-1.0)
+	 * @param green Green value, (0.0-1.0)
+	 * @param blue Blue value, (0.0-1.0)
+	 * @param alpha Alpha (opaque) value, (0.0-1.0).
+	 */
+	public static void drawArrow(Vector2 pos, int length, int width, float angle, Vector2 tipDim, float red, float green, float blue, float alpha)
+	{
+		pushMatrix();
+			translate(pos);
+			rotate(angle);
+			translate(pos.multiply(new Vector2(-1)));
+			drawRect(new Vector2(pos.x,pos.y-width/2),new Vector2(length-tipDim.x,width),red,green,blue,alpha);
+			drawTri(new Vector2(pos.x+length-tipDim.x,pos.y-tipDim.y/2),new Vector2(pos.x+length,pos.y),new Vector2(pos.x+length-tipDim.x,pos.y+tipDim.y/2),red,green,blue,alpha);
+		popMatrix();
+	}
+	
+	/**
+	 * Draws an arrow.
+	 * @param pos Position of the middle of the end of the arrow (opposite end of the tip)
+	 * @param length Length of the arrow (usually the long side)
+	 * @param width Width of the arrow (usually the short side)
+	 * @param angle Angle of the arrow in degrees (0 degrees = faces right)
+	 * @param tipDim Dimensions of the arrow tip
+	 * @param color Color in hex (0x000000-0xffffff)
+	 * @param alpha Alpha (opaque) value, (0.0-1.0).
+	 */
+	public static void drawArrow(Vector2 pos, int length, int width, float angle, Vector2 tipDim, int color, float alpha)
+	{
+		float r = ((color >> 16) & 0xff)/255f;
+		float g = ((color >> 8) & 0xff)/255f;
+		float b = (color & 0xff)/255f;
+		drawArrow(pos,length,width,angle,tipDim,r,g,b,alpha);
+	}
+	
+	/**
 	 * Ends any current scissor.  In its current this is identical to
 	 * <code>GL11.glDisable(GL11.GL_SCISSOR_TEST);</code>, however it is
 	 * reccommended to use this instead for more control over rendering.

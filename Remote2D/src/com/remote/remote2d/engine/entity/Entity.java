@@ -489,7 +489,7 @@ public class Entity extends EditorObject {
 		Renderer.translate(new Vector2(-pos.x, -pos.y));
 		try
 		{
-			render(false,interpolation);
+			render(false,1);
 		} catch(Exception e)
 		{
 			GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR);

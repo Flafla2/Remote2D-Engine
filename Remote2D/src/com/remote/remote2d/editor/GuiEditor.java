@@ -30,6 +30,7 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 	public Vector2 posOffset = new Vector2(0,0);
 	public boolean grid = false;
 	public DraggableObject dragObject;
+	public Handle handle;
 	
 	private GuiEditorTopMenu menu;
 	private GuiEditorInspector inspector;
@@ -52,6 +53,7 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 		undoList = new Stack<Operation>();
 		redoList = new ArrayList<Operation>();
 		menu = new GuiEditorTopMenu(this);
+		handle = new HandlePosition(this,null);
 	}
 	
 	@Override
@@ -138,6 +140,9 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 				map.drawGrid(interpolation);
 			
 			map.render(true,interpolation);
+			
+			if(handle != null)
+				handle.render(interpolation);
 		}
 		
 		if(map != null)
@@ -215,6 +220,15 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 			
 			map.tick(i, j, k, true);
 			backgroundColor = map.backgroundColor;
+			if(handle != null)
+			{
+				if(selectedEntity == null)
+					handle.setEntityUUID(null);
+				else if(!selectedEntity.getUUID().equals(handle.getEntityUUID()))
+					handle.setEntityUUID(selectedEntity.getUUID());
+				
+				handle.tick(i, j, k);
+			}
 		}
 		if(windowStack.size() == 0)
 		{
@@ -232,7 +246,7 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 		
 		if(Remote2D.hasMouseBeenPressed() && !(getMouseInWindow(i,j) || menu.isMenuHovered(i,j)))
 		{
-			if(map != null && !isWidgetHovered(i,j))
+			if(map != null && !isWidgetHovered(i,j) && (handle == null || !handle.isSelected()))
 				setSelectedEntity(map.getEntityList().indexOf(map.getTopEntityAtPoint(getMapMousePos())));
 		}
 		
