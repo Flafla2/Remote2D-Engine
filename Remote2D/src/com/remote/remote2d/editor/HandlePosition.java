@@ -83,6 +83,10 @@ public class HandlePosition extends Handle {
 			entity.pos.x = scrToWorld.x;
 		if(clickMode == 2 || clickMode == 3)
 			entity.pos.y = scrToWorld.y;
+		
+		entity.updatePos();
+		
+		pos = map.worldToScreenCoords(entity.getPosGlobal());
 			
 	}
 
