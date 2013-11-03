@@ -4,6 +4,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import nu.xom.Element;
+
 public class R2DTypeLong extends R2DType {
 	
 	public long data;
@@ -25,6 +27,16 @@ public class R2DTypeLong extends R2DType {
 	@Override
 	public void write(DataOutput d) throws IOException {
 		d.writeLong(data);
+	}
+	
+	@Override
+	public void read(Element e) {
+		data = Long.parseLong(e.getValue());
+	}
+
+	@Override
+	public void write(Element e) {
+		e.appendChild(Long.toString(data));
 	}
 
 	@Override

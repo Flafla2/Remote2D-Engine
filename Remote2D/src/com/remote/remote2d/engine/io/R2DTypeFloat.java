@@ -4,6 +4,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import nu.xom.Element;
+
 public class R2DTypeFloat extends R2DType {
 	
 	public float data;
@@ -25,6 +27,16 @@ public class R2DTypeFloat extends R2DType {
 	@Override
 	public void write(DataOutput d) throws IOException {
 		d.writeFloat(data);
+	}
+	
+	@Override
+	public void read(Element e) {
+		data = Float.parseFloat(e.getValue());
+	}
+
+	@Override
+	public void write(Element e) {
+		e.appendChild(Float.toString(data));
 	}
 
 	@Override

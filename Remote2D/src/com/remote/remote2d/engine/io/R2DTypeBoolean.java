@@ -4,6 +4,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import nu.xom.Element;
+
 public class R2DTypeBoolean extends R2DType {
 	
 	public boolean data;
@@ -27,6 +29,16 @@ public class R2DTypeBoolean extends R2DType {
 	@Override
 	public void write(DataOutput d) throws IOException {
 		d.writeBoolean(data);
+	}
+	
+	@Override
+	public void read(Element e) {
+		data = Boolean.parseBoolean(e.getValue());
+	}
+
+	@Override
+	public void write(Element e) {
+		e.appendChild(Boolean.toString(data));
 	}
 
 	@Override

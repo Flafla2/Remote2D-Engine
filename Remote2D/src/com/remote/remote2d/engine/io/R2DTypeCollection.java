@@ -8,6 +8,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import nu.xom.Attribute;
+import nu.xom.Element;
+import nu.xom.Elements;
+
 import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.logic.Vector2;
 
@@ -41,6 +45,22 @@ public class R2DTypeCollection extends R2DType {
 			}
 		}
 	}
+	
+	@Override
+	public void read(Element e) {
+		if(!e.getAttribute("id").getValue().equals(getId()+""))
+			throw new Remote2DException(null,"XML file doesn't begin with a Collection!"+e.getAttribute("id").getValue());
+		
+		name = e.getAttributeValue("name");
+		
+		data.clear();
+		Elements elements = e.getChildElements("type");
+		for(int x=0; x<elements.size(); x++)
+		{
+			R2DType type = readNamedType(elements.get(x));
+			data.put(type.getName(), type);
+		}
+	}
 
 	@Override
 	public void write(DataOutput d) throws IOException {
@@ -54,6 +74,21 @@ public class R2DTypeCollection extends R2DType {
 			writeNamedType(pairs.getValue(),d);
 		}
 		d.writeByte(0);
+	}
+
+	@Override
+	public void write(Element e) {
+		e.addAttribute(new Attribute("id",getId()+""));
+		e.addAttribute(new Attribute("name",name));
+		
+		Iterator<Entry<String, R2DType>> dataIterator = data.entrySet().iterator();
+		while(dataIterator.hasNext())
+		{
+			Map.Entry<String, R2DType> pairs = dataIterator.next();
+			Element typeElement = new Element("type");
+			writeNamedType(pairs.getValue(),typeElement);
+			e.appendChild(typeElement);
+		}
 	}
 	
 	public Iterator<Entry<String, R2DType>> getDataIterator()

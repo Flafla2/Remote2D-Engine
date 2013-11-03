@@ -4,6 +4,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import nu.xom.Element;
+
 public class R2DTypeDouble extends R2DType {
 	
 	public double data;
@@ -25,6 +27,16 @@ public class R2DTypeDouble extends R2DType {
 	@Override
 	public void write(DataOutput d) throws IOException {
 		d.writeDouble(data);
+	}
+	
+	@Override
+	public void read(Element e) {
+		data = Double.parseDouble(e.getValue());
+	}
+
+	@Override
+	public void write(Element e) {
+		e.appendChild(Double.toString(data));
 	}
 
 	@Override

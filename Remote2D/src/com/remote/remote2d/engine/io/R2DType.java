@@ -4,6 +4,9 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import nu.xom.Attribute;
+import nu.xom.Element;
+
 public abstract class R2DType {
 	
 	protected String name;
@@ -15,6 +18,8 @@ public abstract class R2DType {
 	
 	public abstract void read(DataInput d) throws IOException;
 	public abstract void write(DataOutput d) throws IOException;
+	public abstract void read(Element e);
+	public abstract void write(Element e);
 	
 	public abstract byte getId();
 	
@@ -50,6 +55,21 @@ public abstract class R2DType {
 		}
 	}
 	
+	public static R2DType readNamedType(Element e)
+	{
+		byte startByte = Byte.parseByte(e.getAttributeValue("id"));
+		
+		if(startByte == 0)
+			return new R2DTypeEnd();
+		else
+		{
+			String name = e.getAttributeValue("name");
+			R2DType type = createType(startByte,name);
+			type.read(e);
+			return type;
+		}
+	}
+	
 	public static void writeNamedType(R2DType type, DataOutput d) throws IOException
 	{
 		if(type.getId() == 0)
@@ -57,6 +77,15 @@ public abstract class R2DType {
 		d.writeByte(type.getId());
 		d.writeUTF(type.getName());
 		type.write(d);
+	}
+	
+	public static void writeNamedType(R2DType type, Element e)
+	{
+		if(type.getId() == 0)
+			return;
+		e.addAttribute(new Attribute("id",type.getId()+""));
+		e.addAttribute(new Attribute("name",type.name));
+		type.write(e);
 	}
 	
 	public static R2DType createType(byte id, String name)

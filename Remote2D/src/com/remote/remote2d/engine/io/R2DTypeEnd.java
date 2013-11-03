@@ -4,6 +4,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import nu.xom.Element;
+
 public class R2DTypeEnd extends R2DType {
 
 	public R2DTypeEnd() {
@@ -12,14 +14,22 @@ public class R2DTypeEnd extends R2DType {
 
 	@Override
 	public void read(DataInput d) throws IOException {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void write(DataOutput d) throws IOException {
-		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void read(Element e) {
+		
+	}
 
+	@Override
+	public void write(Element e) {
+		
 	}
 
 	@Override
