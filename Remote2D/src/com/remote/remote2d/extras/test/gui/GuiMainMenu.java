@@ -17,8 +17,9 @@ public class GuiMainMenu extends GuiMenu {
 	public void initGui()
 	{
 		buttonList.clear();
-		buttonList.add(new GuiButton(0,new Vector2(screenWidth()/2-125,150),new Vector2(250,40),"Open Editor"));
-		buttonList.add(new GuiButton(1,new Vector2(screenWidth()/2-125,200),new Vector2(250,40),"Quit"));
+		buttonList.add(new GuiButton(0, new Vector2(screenWidth() / 2 - 125, 150), new Vector2(250, 40), "Run Game"));
+		buttonList.add(new GuiButton(1, new Vector2(screenWidth() / 2 - 125, 200), new Vector2(250, 40), "Open Editor"));
+		buttonList.add(new GuiButton(2, new Vector2(screenWidth() / 2 - 125, 250), new Vector2(250, 40), "Quit"));
 	}
 	
 	@Override
@@ -39,13 +40,14 @@ public class GuiMainMenu extends GuiMenu {
 	@Override
 	public void actionPerformed(GuiButton button)
 	{
-		if(button.id == 0)
-		{
-			Remote2D.guiList.add(new GuiEditor());
-		} else if(button.id == 1)
-		{
-			Remote2D.running = false;
+		if (button.id == 0) {
+			Map newMap = new Map();
+			R2DFileManager mapManager = new R2DFileManager("/res/maps/map.r2d", newMap);
+			mapManager.read();
+			Remote2D.guiList.push(new GuiInGame(newMap)); // start game
 		}
+		else if (button.id == 1) Remote2D.guiList.add(new GuiEditor());
+		else if (button.id == 2) Remote2D.running = false;
 	}
 	
 }
