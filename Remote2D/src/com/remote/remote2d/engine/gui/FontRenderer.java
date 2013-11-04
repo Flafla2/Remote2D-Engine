@@ -18,6 +18,7 @@ import com.remote.remote2d.engine.logic.Vector2;
 public class FontRenderer {
 	private Font font;
 	private Map<RenderData,Texture> cache;
+	
 	public final boolean useAntiAliasing;
 	
 	public FontRenderer(Font f, boolean useAntiAliasing)
@@ -30,13 +31,14 @@ public class FontRenderer {
 
 			@Override
 	    	protected boolean removeEldestEntry(Map.Entry<RenderData,Texture> eldest) {
-				if(size() > 16)
+				boolean delete = System.currentTimeMillis()-eldest.getValue().getLastBindTime() > 5000 && eldest.getValue().getLastBindTime() != -1;
+				if(delete)
 				{
 					eldest.getValue().removeTexture();
 					eldest.getValue().removeImage();
 				}
-				return size() > 16;
-	    	}
+				return delete;
+			}
 	    };
 	}
 	
@@ -165,7 +167,7 @@ public class FontRenderer {
 		public String s;
 		public float size;
 		public int color;
-		
+				
 		public RenderData(String s, float size, int color)
 		{
 			this.s = s;

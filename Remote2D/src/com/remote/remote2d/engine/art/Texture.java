@@ -38,6 +38,7 @@ public class Texture {
 	private String textureLocation;
 	private BufferedImage image;
 	private int glId;
+	private long lastBindTime = -1;
 	
 	/**
 	 * Loads a new texture from a file.
@@ -97,6 +98,7 @@ public class Texture {
 		if(lastReload < Remote2D.displayHandler.getLastTexReload())
 			reload();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, glId);
+		lastBindTime = System.currentTimeMillis();
 	}
 	
 	/**
@@ -148,5 +150,14 @@ public class Texture {
 			GL11.glDeleteTextures(glId);
 		glId = TextureLoader.loadTexture(image,linearScaling,repeat);
 		lastReload = System.currentTimeMillis();
+	}
+	
+	/**
+	 * The last time that this texture has been bound to OpenGL.
+	 * @return The last time that this texture has been bound to OpenGL, or -1 if it hasn't been bound.
+	 */
+	public long getLastBindTime()
+	{
+		return lastBindTime;
 	}
 }
