@@ -87,7 +87,7 @@ public class HandlePosition extends Handle {
 		entity.updatePos();
 		
 		pos = map.worldToScreenCoords(entity.getPosGlobal());
-			
+		editor.getInspector().setCurrentEntity(entity);
 	}
 
 	@Override
