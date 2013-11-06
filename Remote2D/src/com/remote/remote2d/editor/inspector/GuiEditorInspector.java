@@ -92,7 +92,7 @@ public class GuiEditorInspector extends GuiMenu {
 		super.render(interpolation);
 		
 		Renderer.pushMatrix();
-		Renderer.startScissor(new Vector2(pos.x,pos.y), new Vector2(dim.x,dim.y));
+		Renderer.startScissor(new Vector2(pos.x,pos.y), new Vector2(dim.x,dim.y-20));
 		Renderer.translate(new Vector2(0, -(float)Interpolator.linearInterpolate(lastOffset, offset, interpolation)));
 		
 		for(int x=0;x<wizards.size();x++)
