@@ -46,7 +46,7 @@ public class R2DFileManager {
 		
 		if(read)
 		{
-			Log.debug("File Manager Reading file -- file exists!");
+			Log.debug("File Manager","Reading file "+file.getName()+" file exists!");
 			try {
 				File file = this.file;
 				if(xml && !file.getName().endsWith(".xml"))
@@ -83,11 +83,13 @@ public class R2DFileManager {
 				path = path+".xml";
 			else if(!xml && file.getName().endsWith(".xml"))
 				path = path.substring(0,file.getPath().length()-4);
-			doWriteOperation(new File(Remote2D.getJarPath()+path),xml);
 			
+			Log.debug("File Manager","Writing to file "+path);
+			
+			doWriteOperation(new File(Remote2D.getJarPath()+path),xml);
 			if("true".equalsIgnoreCase(System.getProperty("runInEclipse")))
 			{
-				Log.debug("We are running in eclipse, saving file in src!");
+				Log.debug("File Manager","We are running in eclipse, saving file in src!");
 				File file2 = new File("src"+path);
 				doWriteOperation(file2,xml);
 			}
@@ -149,7 +151,7 @@ public class R2DFileManager {
 		} else
 		{
 			if(xml)
-				Log.warn("Couldn't find xml file "+this.file.getName()+", using "+file.getName()+" instead!");
+				Log.warn("File Manager","Couldn't find xml file "+this.file.getName()+", using "+file.getName()+" instead!");
 			collection.read(d);
 		}
 		

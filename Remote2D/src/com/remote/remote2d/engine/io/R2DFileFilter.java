@@ -26,6 +26,12 @@ public class R2DFileFilter implements FilenameFilter {
 	 * </ul>
 	 */
 	public static ArrayList<String> extensions = new ArrayList<String>();
+	
+	static
+	{
+		extensions.add(".anim");
+		extensions.add(".r2d");
+	}
 
 	@Override
 	public boolean accept(File dir, String name) {
