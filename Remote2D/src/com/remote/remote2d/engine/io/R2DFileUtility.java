@@ -35,7 +35,8 @@ public class R2DFileUtility {
 							continue;
 				}
 				
-				R2DFileManager manager = new R2DFileManager(dir.substring(0,dir.length()-4),null);
+				R2DFileManager manager = new R2DFileManager(f.getPath().substring(Remote2D.getJarPath().getPath().length(),f.getPath().length()-4),null);
+				System.out.println("Converting file: "+manager.getPath());
 				manager.read(false);
 				manager.write(true);
 				if(delete)
@@ -70,8 +71,8 @@ public class R2DFileUtility {
 				}
 				
 				R2DFileManager manager = new R2DFileManager(dir.substring(0,dir.length()-4),null);
-				manager.read(false);
-				manager.write(true);
+				manager.read(true);
+				manager.write(false);
 				if(delete)
 					f.delete();
 			} else if(f.isDirectory() && recursive)

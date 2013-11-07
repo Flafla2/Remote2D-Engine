@@ -51,11 +51,12 @@ public class GuiOptions extends GuiMenu {
 				@Override
 				public void run()
 				{
+					message = "Loading...";
 					R2DFileUtility.convertFolderToXML("/res", false, true, true);
+					message = "Finished converting all Remote2D files to XML";
+					lastMessageTime = System.currentTimeMillis();
 				}
 			}).run();
-			message = "Finished converting all Remote2D files to XML";
-			lastMessageTime = System.currentTimeMillis();
 		}
 		else if(button.id == 2)
 		{
@@ -63,11 +64,12 @@ public class GuiOptions extends GuiMenu {
 				@Override
 				public void run()
 				{
+					message = "Loading...";
 					R2DFileUtility.convertFolderToBinary("/res", false, true, true);
+					message = "Finished converting all Remote2D files to Binary";
+					lastMessageTime = System.currentTimeMillis();
 				}
 			}).run();
-			message = "Finished converting all Remote2D files to Binary";
-			lastMessageTime = System.currentTimeMillis();
 		}
 	}
 	
