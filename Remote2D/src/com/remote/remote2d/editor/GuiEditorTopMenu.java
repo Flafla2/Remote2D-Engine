@@ -199,7 +199,7 @@ public class GuiEditorTopMenu extends Gui {
 			{
 				Log.info("Opening!");
 				Map newMap = new Map();
-				R2DFileManager mapManager = new R2DFileManager("/res/maps/map.r2d", newMap);
+				R2DFileManager mapManager = new R2DFileManager("res/maps/map.r2d", newMap);
 				mapManager.read();
 				if(editor.getMap() != null)
 					editor.confirmOperation(new OperationOpenMap(editor,newMap));

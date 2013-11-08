@@ -13,7 +13,7 @@ public class OperationSaveMap extends Operation {
 	@Override
 	public void execute() {
 		Map map = editor.getMap();
-		R2DFileManager mapManager = new R2DFileManager("/res/maps/map.r2d", map);
+		R2DFileManager mapManager = new R2DFileManager("res/maps/map.r2d", map);
 		mapManager.write();
 		editor.setMap(map);
 	}

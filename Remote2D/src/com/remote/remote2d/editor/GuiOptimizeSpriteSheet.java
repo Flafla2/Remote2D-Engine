@@ -367,7 +367,7 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 			 
 			 try
 			 {
-				 File saveFile = new File(Remote2D.getJarPath()+savePath.text);
+				 File saveFile = new File(savePath.text);
 				 saveFile.getParentFile().mkdirs();
 				 saveFile.createNewFile();
 				 ImageIO.write(image, "png", saveFile);

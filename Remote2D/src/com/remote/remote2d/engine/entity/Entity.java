@@ -65,7 +65,7 @@ public class Entity extends EditorObject {
 	
 	private Vector2 oldPos;
 	
-	private static final String slashLoc = "/res/gui/slash.png";
+	private static final String slashLoc = "res/gui/slash.png";
 	protected ArrayList<Entity> children;
 	protected ArrayList<Component> components;
 		

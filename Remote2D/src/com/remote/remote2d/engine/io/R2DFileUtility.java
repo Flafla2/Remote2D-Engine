@@ -20,7 +20,7 @@ public class R2DFileUtility {
 	 */
 	public static void convertFolderToXML(String dir, boolean delete, boolean useLatest, boolean recursive)
 	{
-		File file = new File(Remote2D.getJarPath(),dir);
+		File file = new File(dir);
 		if(!file.exists() || !file.isDirectory())
 			return;
 		R2DFileFilter filter = new R2DFileFilter();
@@ -35,14 +35,14 @@ public class R2DFileUtility {
 							continue;
 				}
 				
-				String localPath = f.getPath().substring(Remote2D.getJarPath().getPath().length());
+				String localPath = f.toURI().relativize(Remote2D.getJarPath().toURI()).getPath();
 				R2DFileManager manager = new R2DFileManager(localPath,null);
 				manager.read(false);
 				manager.write(true);
 				if(delete)
 					f.delete();
 			} else if(f.isDirectory() && recursive)
-				convertFolderToXML(f.getPath().substring(Remote2D.getJarPath().getPath().length()),delete,useLatest,recursive);
+				convertFolderToXML(f.toURI().relativize(Remote2D.getJarPath().toURI()).getPath(),delete,useLatest,recursive);
 		}
 	}
 	
@@ -55,7 +55,7 @@ public class R2DFileUtility {
 	 */
 	public static void convertFolderToBinary(String dir, boolean delete, boolean useLatest, boolean recursive)
 	{
-		File file = new File(Remote2D.getJarPath(),dir);
+		File file = new File(dir);
 		if(!file.exists() || !file.isDirectory())
 			return;
 		R2DFileFilter filter = new R2DFileFilter();
@@ -70,14 +70,15 @@ public class R2DFileUtility {
 							continue;
 				}
 				
-				String localPath = f.getPath().substring(Remote2D.getJarPath().getPath().length(),f.getPath().length()-4);
+				String localPath = f.toURI().relativize(Remote2D.getJarPath().toURI()).getPath();
+				localPath = localPath.substring(0,localPath.length()-4);
 				R2DFileManager manager = new R2DFileManager(localPath,null);
 				manager.read(true);
 				manager.write(false);
 				if(delete)
 					f.delete();
 			} else if(f.isDirectory() && recursive)
-				convertFolderToXML(f.getPath().substring(Remote2D.getJarPath().getPath().length()),delete,useLatest,recursive);
+				convertFolderToXML(f.toURI().relativize(Remote2D.getJarPath().toURI()).getPath(),delete,useLatest,recursive);
 		}
 	}
 

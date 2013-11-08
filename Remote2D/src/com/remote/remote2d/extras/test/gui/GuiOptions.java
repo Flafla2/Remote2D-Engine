@@ -32,7 +32,7 @@ public class GuiOptions extends GuiMenu {
 		buttonList.add(new GuiButton(6, new Vector2(screenWidth()/2+200,	320),				new Vector2(50,40),">"));
 		
 		if(regginator == null)
-			regginator = new Texture("/res/art/ready.png",true,false);
+			regginator = new Texture("res/art/ready.png",true,false);
 	}
 	
 	@Override
@@ -89,7 +89,7 @@ public class GuiOptions extends GuiMenu {
 			}).run();
 		} else if(button.id == 4)
 		{
-			AudioHandler.playSound("/res/sounds/regginator.wav", true, false);
+			AudioHandler.playSound("res/sounds/regginator.wav", true, false);
 			lastReggie = System.currentTimeMillis();
 		} else if(button.id == 5 && AudioHandler.getVolume() >= 0.1f)
 		{

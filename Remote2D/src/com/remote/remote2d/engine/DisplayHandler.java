@@ -216,7 +216,7 @@ public class DisplayHandler {
 		
 		lastTexReload = System.currentTimeMillis();
 		
-		//CursorLoader.setCursor(new Texture("/res/gui/mouse.png"), new Vector2D(22,22));
+		//CursorLoader.setCursor(new Texture("res/gui/mouse.png"), new Vector2D(22,22));
 	}
 	
 	/**

@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.HashMap;
 
 import com.esotericsoftware.minlog.Log;
-import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.particles.ParticleSystem;
 import com.remote.remote2d.engine.world.Map;
@@ -39,8 +38,7 @@ public class ArtLoader {
 	
 	public boolean textureExists(String s)
 	{
-		String x = Remote2D.getJarPath().getPath().toString()+s;
-		File f = new File(x);
+		File f = new File(s);
 
 		if(f.exists() && f.isFile() && f.getName().endsWith(".png"))
 			return true;
@@ -50,8 +48,7 @@ public class ArtLoader {
 	
 	public boolean R2DExists(String s)
 	{
-		String x = Remote2D.getJarPath().getPath().toString()+s;
-		File f = new File(x);
+		File f = new File(s);
 
 		if(f.exists() && f.isFile() && (f.getName().endsWith(Entity.getExtension()) || f.getName().endsWith(Animation.getExtension()) || f.getName().endsWith(ParticleSystem.getExtension()) || f.getName().endsWith(Map.getExtension())))
 			return true;

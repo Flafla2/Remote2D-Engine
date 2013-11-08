@@ -26,7 +26,6 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.Remote2DException;
 
 public class TextureLoader {
@@ -86,10 +85,11 @@ public class TextureLoader {
 	   
 	   public static BufferedImage loadImage(String loc)
 	   {
-		    try {
-			   return ImageIO.read(new File(Remote2D.getJarPath().getPath()+loc));
-			} catch (IOException e) {
-				throw new Remote2DException(e,"Failed to load image: "+Remote2D.getJarPath().getPath()+loc+"!");
+		   File f = new File(loc).getAbsoluteFile();
+		   try{
+			  return ImageIO.read(f);
+		   } catch (IOException e) {
+			   throw new Remote2DException(e,"Failed to load image: "+f.getPath()+" "+f.exists()+"!");
 			}
 	   }
 }

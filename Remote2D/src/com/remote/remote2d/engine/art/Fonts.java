@@ -1,9 +1,10 @@
 package com.remote.remote2d.engine.art;
 
 import java.awt.Font;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.HashMap;
 
-import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.gui.FontRenderer;
 
@@ -22,16 +23,16 @@ public class Fonts {
 		
 		try
 		{
-			Font arial = Font.createFont(Font.TRUETYPE_FONT, Remote2D.class.getResourceAsStream("/res/fonts/Arial.ttf"));
-			fontTable.put("Arial", new FontRenderer(arial, true));
-			Font pixelarial = Font.createFont(Font.TRUETYPE_FONT, Remote2D.class.getResourceAsStream("/res/fonts/pixel_arial.ttf"));
-			fontTable.put("Pixel_Arial", new FontRenderer(pixelarial, false));
-			Font tahoma = Font.createFont(Font.TRUETYPE_FONT, Remote2D.class.getResourceAsStream("/res/fonts/tahoma.ttf"));
-			fontTable.put("Tahoma", new FontRenderer(tahoma, false));
-			Font verdana = Font.createFont(Font.TRUETYPE_FONT, Remote2D.class.getResourceAsStream("/res/fonts/Verdana.ttf"));
-			fontTable.put("Verdana", new FontRenderer(verdana, true));
-			Font logo = Font.createFont(Font.TRUETYPE_FONT, Remote2D.class.getResourceAsStream("/res/fonts/logo.ttf"));
-			fontTable.put("Logo", new FontRenderer(logo, false));
+			String arial = "res/fonts/Arial.ttf";
+			add("Arial", arial, true);
+			String pixelarial = "res/fonts/pixel_arial.ttf";
+			add("Pixel_Arial", pixelarial, false);
+			String tahoma = "res/fonts/tahoma.ttf";
+			add("Tahoma", tahoma, false);
+			String verdana = "res/fonts/Verdana.ttf";
+			add("Verdana", verdana, true);
+			String logo = "res/fonts/logo.ttf";
+			add("Logo", logo, false);
 		} catch(Exception e)
 		{
 			throw new Remote2DException(e,"Error initializing fonts!");
@@ -51,13 +52,16 @@ public class Fonts {
 	 * Adds a font to the font list.  This only needs to be done once.
 	 * @param fontName Name of the font to use in {@link #get(String)}
 	 * @param path Path to the font in relation to the jar path
+	 * @param useAntiAliasing Whether or not to use anti aliasing
 	 */
-	public static void add(String fontName, String path)
+	public static void add(String fontName, String path, boolean useAntiAliasing)
 	{
 		Font font;
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, Remote2D.class.getResourceAsStream(path));
-			fontTable.put(fontName, new FontRenderer(font, true));
+			FileInputStream is = new FileInputStream(new File(path));
+			font = Font.createFont(Font.TRUETYPE_FONT, is);
+			is.close();
+			fontTable.put(fontName, new FontRenderer(font, useAntiAliasing));
 		} catch(Exception e)
 		{
 			throw new Remote2DException(e,"Failed adding font to Font list!");

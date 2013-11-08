@@ -323,7 +323,7 @@ public class Remote2D {
 	
 	public static File getJarPath()
 	{
-		return new File(Remote2D.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+		return new File(Remote2D.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
 	}
 	
 	/**

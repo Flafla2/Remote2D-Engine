@@ -16,7 +16,6 @@ import nu.xom.Serializer;
 import nu.xom.ValidityException;
 
 import com.esotericsoftware.minlog.Log;
-import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.Remote2DException;
 
 public class R2DFileManager {
@@ -35,7 +34,7 @@ public class R2DFileManager {
 	public R2DFileManager(String path, R2DFileSaver saverClass)
 	{
 		this.path = path;
-		file = new File(Remote2D.getJarPath()+path);
+		file = new File(path);
 		collection = new R2DTypeCollection(file.getName());
 		this.saverClass = saverClass;
 	}
@@ -86,13 +85,7 @@ public class R2DFileManager {
 			
 			Log.debug("File Manager","Writing to file "+path);
 			
-			doWriteOperation(new File(Remote2D.getJarPath()+path),xml);
-			if("true".equalsIgnoreCase(System.getProperty("runInEclipse")))
-			{
-				Log.debug("File Manager","We are running in eclipse, saving file in src!");
-				File file2 = new File("src"+path);
-				doWriteOperation(file2,xml);
-			}
+			doWriteOperation(new File(path),xml);
 		} catch (IOException e) {
 			throw new Remote2DException(e,"Error writing R2D file!");
 		}

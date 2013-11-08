@@ -63,7 +63,7 @@ public class AudioHandler {
 	 */
 	public static String playSound(String localPath, Vector2 pos, boolean priority, boolean loop, int attmodel, float distOrRoll)
 	{
-		File f = new File(Remote2D.getJarPath()+localPath);
+		File f = new File(localPath);
 		try {
 			return soundSystem.quickPlay(priority, f.getCanonicalFile().toURI().toURL(), f.getName(), loop, pos.x, pos.y, 0, attmodel, distOrRoll);
 		} catch (IOException e) {
