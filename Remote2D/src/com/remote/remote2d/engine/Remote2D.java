@@ -21,6 +21,7 @@ import com.remote.remote2d.engine.art.TextureLoader;
 import com.remote.remote2d.engine.entity.InsertableComponentList;
 import com.remote.remote2d.engine.entity.component.ComponentCamera;
 import com.remote.remote2d.engine.entity.component.ComponentColliderBox;
+import com.remote.remote2d.engine.entity.component.ComponentListener;
 import com.remote.remote2d.engine.gui.GuiMenu;
 import com.remote.remote2d.engine.gui.MapHolder;
 import com.remote.remote2d.engine.logic.ColliderBox;
@@ -178,8 +179,11 @@ public class Remote2D {
 		componentList = new InsertableComponentList();
 		componentList.addInsertableComponent("Box Collider", ComponentColliderBox.class);
 		componentList.addInsertableComponent("Camera", ComponentCamera.class);
+		componentList.addInsertableComponent("Audio Listener", ComponentListener.class);
 				
 		artLoader = new ArtLoader();
+		
+		AudioHandler.init();
 		
 		game.initGame();
 	}
@@ -217,6 +221,7 @@ public class Remote2D {
 	private static void shutDown()
 	{
 		Log.info("Remote2D Engine Shutting Down");
+		AudioHandler.shutDown();
 	}
 	
 	private static void start()
