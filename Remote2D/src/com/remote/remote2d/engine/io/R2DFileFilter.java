@@ -14,13 +14,11 @@ public class R2DFileFilter implements FilenameFilter {
 	/**
 	 * A list of all extensions supported by the engine.  You can add to this list
 	 * at startup if desired.  To add to the list, use the format <code>.xxx</code>
-	 * if you want to support the ".xxx" file format.  Do NOT include XML extensions
-	 * such as <code>.xxx.xml</code>.  These are handled by the engine.<br />
+	 * if you want to support the ".xxx" file format.<br />
 	 * 
 	 * Also, do not add the following extensions as they are already used in the
 	 * engine (you probably shouldn't save to these formats as well):
 	 * <ul>
-	 * <li>.xml</li>
 	 * <li>.anim</li>
 	 * <li>.r2d</li>
 	 * </ul>
@@ -36,8 +34,10 @@ public class R2DFileFilter implements FilenameFilter {
 	@Override
 	public boolean accept(File dir, String name) {
 		for(String s : extensions)
-			if(name.endsWith(s) || name.endsWith(s+".xml"))
+		{
+			if(name.endsWith(s) && new File(dir,name).exists())
 				return true;
+		}
 		
 		return false;
 	}

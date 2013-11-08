@@ -327,6 +327,38 @@ public class Remote2D {
 	}
 	
 	/**
+	 * Gets a file using paths relative to the jar location.
+	 * @param loc Location relative to the jar file.
+	 */
+	public static File getResource(String loc)
+	{
+		if(loc.startsWith("/") || loc.startsWith("\\"))
+			loc = loc.substring(1);
+		
+		return new File(loc);
+	}
+	
+	/**
+	 * Returns a relative file to the jar path, based on an absolute file.
+	 * @param absolute An absolute file; in other words a file that is not relative to the jar path.
+	 * @return A relative file to the game's jar folder.
+	 */
+	public static File getRelativeFile(File absolute)
+	{
+		return new File(getRelativePath(absolute,getJarPath()));
+	}
+	
+	public static String getRelativePath(File file, File folder) {
+	    String filePath = file.getAbsolutePath();
+	    String folderPath = folder.getAbsolutePath();
+	    if (filePath.startsWith(folderPath)) {
+	        return filePath.substring(folderPath.length() + 1);
+	    } else {
+	        return null;
+	    }
+	}
+	
+	/**
 	 * A list of all keys that have been pressed this tick.
 	 * 
 	 * NOTE: This does NOT include keys that are held down.  Use {@link Keyboard#isKeyDown(int)}

@@ -1,11 +1,11 @@
 package com.remote.remote2d.editor;
 
-import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.gui.GuiButton;
 import com.remote.remote2d.engine.gui.GuiTextField;
 import com.remote.remote2d.engine.gui.GuiWindow;
 import com.remote.remote2d.engine.gui.WindowHolder;
+import com.remote.remote2d.engine.io.R2DFileUtility;
 import com.remote.remote2d.engine.logic.ColliderBox;
 import com.remote.remote2d.engine.logic.Vector2;
 
@@ -40,7 +40,7 @@ public class GuiWindowViewArtAsset extends GuiWindow {
 	
 	public void reloadTex()
 	{
-		if(Remote2D.artLoader.textureExists(field.text))
+		if(R2DFileUtility.textureExists(field.text))
 		{
 			if(tex != null)
 				tex.removeTexture();

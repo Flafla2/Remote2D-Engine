@@ -94,8 +94,6 @@ public class GuiEditorInspectorSectionString extends GuiEditorInspectorSection {
 			if(fileobj.file != null)
 			{
 				textField.text = fileobj.file.getPath();
-				if(textField.text.startsWith(Remote2D.getJarPath().getAbsolutePath()))
-					textField.text = textField.text.substring(Remote2D.getJarPath().getAbsolutePath().length());
 				textField.text.replace('\\', '/');
 			}
 		}

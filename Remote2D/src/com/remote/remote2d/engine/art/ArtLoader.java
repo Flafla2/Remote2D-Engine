@@ -1,12 +1,9 @@
 package com.remote.remote2d.engine.art;
 
-import java.io.File;
 import java.util.HashMap;
 
 import com.esotericsoftware.minlog.Log;
-import com.remote.remote2d.engine.entity.Entity;
-import com.remote.remote2d.engine.particles.ParticleSystem;
-import com.remote.remote2d.engine.world.Map;
+import com.remote.remote2d.engine.io.R2DFileUtility;
 
 /**
  * Loads textures and animations for you, and also caches animations in case
@@ -25,7 +22,7 @@ public class ArtLoader {
 	
 	public Animation getAnimation(String s)
 	{
-		if(!R2DExists(s))
+		if(!R2DFileUtility.R2DExists(s))
 			return null;
 		if(!animList.containsKey(s))
 		{
@@ -34,26 +31,6 @@ public class ArtLoader {
 			animList.put(s, animation);
 		}
 		return animList.get(s);
-	}
-	
-	public boolean textureExists(String s)
-	{
-		File f = new File(s);
-
-		if(f.exists() && f.isFile() && f.getName().endsWith(".png"))
-			return true;
-		else
-			return false;
-	}
-	
-	public boolean R2DExists(String s)
-	{
-		File f = new File(s);
-
-		if(f.exists() && f.isFile() && (f.getName().endsWith(Entity.getExtension()) || f.getName().endsWith(Animation.getExtension()) || f.getName().endsWith(ParticleSystem.getExtension()) || f.getName().endsWith(Map.getExtension())))
-			return true;
-		else
-			return false;
 	}
 	
 }

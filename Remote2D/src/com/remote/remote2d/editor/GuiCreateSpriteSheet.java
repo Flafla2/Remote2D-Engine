@@ -15,6 +15,7 @@ import com.remote.remote2d.engine.gui.GuiMenu;
 import com.remote.remote2d.engine.gui.GuiTextField;
 import com.remote.remote2d.engine.gui.TextLimiter;
 import com.remote.remote2d.engine.io.R2DFileManager;
+import com.remote.remote2d.engine.io.R2DFileUtility;
 import com.remote.remote2d.engine.logic.Interpolator;
 import com.remote.remote2d.engine.logic.Vector2;
 
@@ -154,7 +155,7 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 		Vector2 realOffset = Interpolator.linearInterpolate(oldOffset, offset, interpolation);
 		
 		drawBlueprintBackground();
-		if(Remote2D.artLoader.textureExists(texID.text) && tex != null)
+		if(R2DFileUtility.textureExists(texID.text) && tex != null)
 		{
 			if(!tex.getTextureLocation().equals(texID.text))
 			{
@@ -215,7 +216,7 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 		else if(Remote2D.getKeyboardList().contains(']'))
 			scale *= 2;
 
-		if(Remote2D.artLoader.textureExists(texID.text) )
+		if(R2DFileUtility.textureExists(texID.text) )
 		{
 			reloadTex();
 			boolean up = Keyboard.isKeyDown(Keyboard.KEY_UP);
@@ -287,7 +288,7 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 	
 	private boolean isReady()
 	{
-		boolean containsKey = Remote2D.artLoader.textureExists(texID.text);
+		boolean containsKey = R2DFileUtility.textureExists(texID.text);
 		boolean total = texID.hasText() && startX.hasText() && startY.hasText() 
 				&& dimX.hasText() && dimY.hasText() && framesX.hasText() &&
 				framesY.hasText() && paddingX.hasText() && paddingY.hasText()

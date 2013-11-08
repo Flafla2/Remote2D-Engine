@@ -9,6 +9,7 @@ import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.gui.GuiTextField;
+import com.remote.remote2d.engine.io.R2DFileUtility;
 import com.remote.remote2d.engine.logic.Vector2;
 
 public class GuiEditorInspectorSectionTexture extends GuiEditorInspectorSection {
@@ -27,7 +28,7 @@ public class GuiEditorInspectorSectionTexture extends GuiEditorInspectorSection 
 
 	@Override
 	public Object getData() {
-		if(Remote2D.artLoader.textureExists(textField.text))
+		if(R2DFileUtility.textureExists(textField.text))
 			return new Texture(textField.text);
 		else
 			return null;
@@ -69,7 +70,7 @@ public class GuiEditorInspectorSectionTexture extends GuiEditorInspectorSection 
 
 	@Override
 	public boolean isComplete() {
-		return Remote2D.artLoader.textureExists(textField.text);
+		return R2DFileUtility.textureExists(textField.text);
 	}
 	
 	@Override
@@ -103,8 +104,6 @@ public class GuiEditorInspectorSectionTexture extends GuiEditorInspectorSection 
 				if(fileobj.file.getName().endsWith(".png"))
 				{
 					textField.text = fileobj.file.getPath();
-					if(textField.text.startsWith(Remote2D.getJarPath().getAbsolutePath()))
-						textField.text = textField.text.substring(Remote2D.getJarPath().getAbsolutePath().length());
 					textField.text.replace('\\', '/');
 				}
 			}

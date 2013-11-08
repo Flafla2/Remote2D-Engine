@@ -9,6 +9,7 @@ import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Animation;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.gui.GuiTextField;
+import com.remote.remote2d.engine.io.R2DFileUtility;
 import com.remote.remote2d.engine.logic.Vector2;
 
 public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSection {
@@ -27,7 +28,7 @@ public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSectio
 
 	@Override
 	public Object getData() {
-		if(Remote2D.artLoader.R2DExists(textField.text))
+		if(R2DFileUtility.R2DExists(textField.text))
 			return Remote2D.artLoader.getAnimation(textField.text);
 		return null;
 	}
@@ -54,7 +55,7 @@ public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSectio
 		{
 			textField.text = ((Animation)o).getPath();
 		} else if(o instanceof String)
-			if(Remote2D.artLoader.R2DExists((String)o))
+			if(R2DFileUtility.R2DExists((String)o))
 				textField.text = (String)o;
 	}
 
@@ -70,7 +71,7 @@ public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSectio
 
 	@Override
 	public boolean isComplete() {
-		return Remote2D.artLoader.R2DExists(textField.text);
+		return R2DFileUtility.R2DExists(textField.text);
 	}
 
 	@Override
@@ -86,7 +87,7 @@ public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSectio
 			DraggableObjectFile fileobj = ((DraggableObjectFile)object);
 			if(fileobj.file != null)
 			{
-				if(fileobj.file.getName().endsWith(Animation.getExtension()))
+				if(fileobj.file.getName().endsWith(Animation.getExtension()) || fileobj.file.getName().endsWith(Animation.getExtension()+".xml"))
 					return true;
 			}
 		}
@@ -101,13 +102,11 @@ public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSectio
 			DraggableObjectFile fileobj = ((DraggableObjectFile)object);
 			if(fileobj.file != null)
 			{
-				if(fileobj.file.getName().endsWith(Animation.getExtension()))
+				if(fileobj.file.getName().endsWith(Animation.getExtension()) || fileobj.file.getName().endsWith(Animation.getExtension()+".xml"))
 				{
 					textField.text = fileobj.file.getPath();
-					if(textField.text.startsWith(Remote2D.getJarPath().getAbsolutePath()))
-						textField.text = textField.text.substring(Remote2D.getJarPath().getAbsolutePath().length());
 					textField.text.replace('\\', '/');
-				}
+				} 
 			}
 		}
 	}

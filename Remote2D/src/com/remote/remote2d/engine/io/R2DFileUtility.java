@@ -2,6 +2,7 @@ package com.remote.remote2d.engine.io;
 
 import java.io.File;
 
+import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
 
 /**
@@ -14,11 +15,9 @@ public class R2DFileUtility {
 	/**
 	 * Converts a folder's R2D files from binary to XML.
 	 * @param dir Directory to start at in relation to the jar path
-	 * @param delete If true, deletes binary files when it is done converting.
-	 * @param useLatest If an XML file already exists, use the latest file (if true) and don't convert if necessary.  Otherwise, always convert from binary to XML.
 	 * @param recursive If true, recursively searches any subdirectories for files to convert.
 	 */
-	public static void convertFolderToXML(String dir, boolean delete, boolean useLatest, boolean recursive)
+	public static void convertFolderToXML(String dir, boolean recursive)
 	{
 		File file = new File(dir);
 		if(!file.exists() || !file.isDirectory())
@@ -26,34 +25,25 @@ public class R2DFileUtility {
 		R2DFileFilter filter = new R2DFileFilter();
 		for(File f : file.listFiles())
 		{
-			if(f.isFile() && filter.accept(file, f.getName()) && !f.getName().endsWith(".xml"))
+			Log.debug(f.isFile()+" "+filter.accept(file, f.getName()));
+			if(f.isFile() && filter.accept(file, f.getName()))
 			{
-				if(useLatest)
-				{
-					File possibleCurrent = new File(f.getPath()+".xml");
-					if(possibleCurrent.exists() && possibleCurrent.lastModified() > f.lastModified())
-							continue;
-				}
-				
-				String localPath = f.toURI().relativize(Remote2D.getJarPath().toURI()).getPath();
+				String localPath = Remote2D.getRelativeFile(f).getPath();
 				R2DFileManager manager = new R2DFileManager(localPath,null);
-				manager.read(false);
+				manager.read();
+				f.renameTo(new File(f.getAbsolutePath()+".orig"));
 				manager.write(true);
-				if(delete)
-					f.delete();
 			} else if(f.isDirectory() && recursive)
-				convertFolderToXML(f.toURI().relativize(Remote2D.getJarPath().toURI()).getPath(),delete,useLatest,recursive);
+				convertFolderToXML(Remote2D.getRelativeFile(f).getPath(),recursive);
 		}
 	}
 	
 	/**
 	 * Converts a folder's R2D files from XML to Binary.
 	 * @param dir Directory to start at in relation to the jar path
-	 * @param delete If true, deletes XML files when it is done converting.
-	 * @param useLatest If a binary file already exists, use the latest file (if true) and don't convert if necessary.  Otherwise, always convert from XML to binary.
 	 * @param recursive If true, recursively searches any subdirectories for files to convert.
 	 */
-	public static void convertFolderToBinary(String dir, boolean delete, boolean useLatest, boolean recursive)
+	public static void convertFolderToBinary(String dir, boolean recursive)
 	{
 		File file = new File(dir);
 		if(!file.exists() || !file.isDirectory())
@@ -61,25 +51,38 @@ public class R2DFileUtility {
 		R2DFileFilter filter = new R2DFileFilter();
 		for(File f : file.listFiles())
 		{
-			if(f.isFile() && filter.accept(file, f.getName()) && f.getName().endsWith(".xml"))
+			if(f.isFile() && filter.accept(file, f.getName()))
 			{
-				if(useLatest)
-				{
-					File possibleCurrent = new File(f.getPath().substring(0, f.getPath().length()-4));
-					if(possibleCurrent.exists() && possibleCurrent.lastModified() > f.lastModified())
-							continue;
-				}
 				
-				String localPath = f.toURI().relativize(Remote2D.getJarPath().toURI()).getPath();
+				String localPath = Remote2D.getRelativeFile(f).getPath();
 				localPath = localPath.substring(0,localPath.length()-4);
 				R2DFileManager manager = new R2DFileManager(localPath,null);
-				manager.read(true);
+				manager.read();
+				f.renameTo(new File(f.getAbsolutePath()+".orig"));
 				manager.write(false);
-				if(delete)
-					f.delete();
 			} else if(f.isDirectory() && recursive)
-				convertFolderToXML(f.toURI().relativize(Remote2D.getJarPath().toURI()).getPath(),delete,useLatest,recursive);
+				convertFolderToXML(Remote2D.getRelativeFile(f).getPath(),recursive);
 		}
+	}
+	
+	public static boolean textureExists(String s)
+	{
+		File f = new File(s);
+
+		if(f.exists() && f.isFile() && f.getName().endsWith(".png"))
+			return true;
+		else
+			return false;
+	}
+	
+	public static boolean R2DExists(String s)
+	{
+		File f = new File(s);
+				
+		if(new R2DFileFilter().accept(f.getParentFile(), f.getName()) || new R2DFileFilter().accept(f.getParentFile(), f.getName()+".xml"))
+			return true;
+		else
+			return false;
 	}
 
 }

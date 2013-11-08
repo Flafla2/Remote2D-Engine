@@ -122,8 +122,10 @@ public class GuiTextField extends Gui {
 			}
 		}
 		
-		float yPos = pos.y+dim.y/2-Fonts.get("Arial").getStringDim(text, fontsize)[1]/2;
-		Fonts.get("Arial").drawString(s+((isSelected && blink) ? "|" : "")+" ", pos.x+10, yPos, fontsize, 0xffffff);
+		s = s+((isSelected && blink) ? "|" : "")+" ";
+		int fh = Fonts.get("Arial").getStringDim(s, fontsize)[1];
+		float yPos = pos.y+dim.y/2-fh/2;
+		Fonts.get("Arial").drawString(s, pos.x+10, yPos, fontsize, 0xffffff);
 		if(text.equals("") && !isSelected)
 			Fonts.get("Arial").drawString(defaultText, pos.x+10, yPos, fontsize, 0x777777);
 	}

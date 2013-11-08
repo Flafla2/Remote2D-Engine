@@ -6,6 +6,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.UserDefinedFileAttributeView;
 
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -26,8 +32,7 @@ public class R2DFileManager {
 	private R2DFileSaver saverClass;
 	
 	/**
-	 * Whether or not to use XML for reading or writing files, unless otherwise
-	 * specified.
+	 * Whether or not to use XML for writing files, unless otherwise specified.
 	 */
 	public static boolean USE_XML = false;
 	
@@ -39,25 +44,31 @@ public class R2DFileManager {
 		this.saverClass = saverClass;
 	}
 	
-	public void read(boolean xml)
+	public void read()
 	{
 		boolean read = file.exists();
+		boolean xml = USE_XML;
+		try
+		{
+			Path path = Paths.get(file.getAbsolutePath());
+			UserDefinedFileAttributeView view = Files.getFileAttributeView(path,UserDefinedFileAttributeView.class);
+			String name = "user.xml";
+			ByteBuffer buf = ByteBuffer.allocate(view.size(name));
+			view.read(name, buf);
+			buf.flip();
+			String value = Charset.defaultCharset().decode(buf).toString();
+			xml = Boolean.parseBoolean(value);
+			buf.clear();
+			buf = null;
+		} catch(Exception e)
+		{
+			Log.warn("Unable to read R2D file metadata: "+file.getName());
+		}
 		
 		if(read)
 		{
-			Log.debug("File Manager","Reading file "+file.getName()+" file exists!");
+			Log.debug("File Manager","Reading file "+file.getName()+"; file exists!");
 			try {
-				File file = this.file;
-				if(xml && !file.getName().endsWith(".xml"))
-				{
-					File newFile = new File(file.getPath()+".xml");
-					file = newFile.exists() ? newFile : file;
-				} else if(!xml && file.getName().endsWith(".xml"))
-				{
-					File newFile = new File(file.getPath().substring(0,file.getPath().length()-4));
-					file = newFile.exists() ? newFile : file;
-				}
-				
 				doReadOperation(file,xml);
 			} catch (IOException e) {
 				throw new Remote2DException(e,"Error reading R2D file!");
@@ -69,23 +80,19 @@ public class R2DFileManager {
 		}
 	}
 	
-	public void read()
-	{
-		read(USE_XML);
-	}
-	
 	public void write(boolean xml)
 	{
 		try {
-			String path = this.path;
-			if(xml && !file.getName().endsWith(".xml"))
-				path = path+".xml";
-			else if(!xml && file.getName().endsWith(".xml"))
-				path = path.substring(0,file.getPath().length()-4);
+			File file = new File(this.path);
 			
-			Log.debug("File Manager","Writing to file "+path);
+			Log.debug("File Manager","Writing to file "+file.getName());
 			
-			doWriteOperation(new File(path),xml);
+			doWriteOperation(file,xml);
+			
+			Path path = Paths.get(file.getAbsolutePath());
+			UserDefinedFileAttributeView view = Files.getFileAttributeView(path, UserDefinedFileAttributeView.class);
+			view.write("user.xml", Charset.defaultCharset().encode(Boolean.toString(xml)));
+			view.write("user.mimetype", Charset.defaultCharset().encode("application/xml"));
 		} catch (IOException e) {
 			throw new Remote2DException(e,"Error writing R2D file!");
 		}
@@ -118,11 +125,8 @@ public class R2DFileManager {
 	
 	private void read(File file, DataInputStream d, boolean xml) throws IOException
 	{
-		if(file.getName().endsWith(".xml"))
+		if(xml)
 		{
-			if(!xml)
-				Log.warn("Couldn't find binary file "+this.file.getName()+", using "+file.getName()+" instead!");
-			
 			Builder parser = new Builder();
 			try {
 				Document doc = parser.build(d);
@@ -140,16 +144,8 @@ public class R2DFileManager {
 			} catch (ParsingException e) {
 				throw new Remote2DException(e,"Failed to parse XML for file: "+file.getName()+"!");
 			}
-			
-		} else
-		{
-			if(xml)
-				Log.warn("File Manager","Couldn't find xml file "+this.file.getName()+", using "+file.getName()+" instead!");
-			collection.read(d);
-		}
+		} else collection.read(d);
 		
-//		if(Log.DEBUG)
-//			collection.printContents();
 		if(saverClass != null)
 			saverClass.loadR2DFile(collection);
 	}
@@ -162,7 +158,6 @@ public class R2DFileManager {
 		if(xml)
 		{
 			Element root = new Element("r2dxml");
-			//root.addAttribute(new Attribute("version","1.0"));
 			Element coll = new Element("type");
 			collection.write(coll);
 			root.appendChild(coll);
@@ -173,9 +168,6 @@ public class R2DFileManager {
 			serializer.write(doc);  
 		} else
 			collection.write(d);
-		
-//		if(Log.DEBUG)
-//			collection.printContents();
 	}
 	
 	public File getFile()

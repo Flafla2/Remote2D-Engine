@@ -21,6 +21,7 @@ import com.remote.remote2d.engine.gui.GuiButton;
 import com.remote.remote2d.engine.gui.GuiMenu;
 import com.remote.remote2d.engine.gui.GuiTextField;
 import com.remote.remote2d.engine.gui.TextLimiter;
+import com.remote.remote2d.engine.io.R2DFileUtility;
 import com.remote.remote2d.engine.logic.ColliderBox;
 import com.remote.remote2d.engine.logic.Interpolator;
 import com.remote.remote2d.engine.logic.Vector2;
@@ -121,7 +122,7 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 		Vector2 iOffset = Interpolator.linearInterpolate(oldOffset, offset, interpolation);
 		
 		drawBlueprintBackground();
-		if(Remote2D.artLoader.textureExists(texturePath.text))
+		if(R2DFileUtility.textureExists(texturePath.text))
 		{
 			if(!tex.getTextureLocation().equals(texturePath.text))
 			{
@@ -223,7 +224,7 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 		else if(Remote2D.getKeyboardList().contains(']'))
 			scale *= 2;
 		
-		if(!Remote2D.artLoader.textureExists(texturePath.text) || !savePath.text.startsWith("/") || !savePath.text.endsWith(".png") || savePath.text.endsWith("/.png"))
+		if(!R2DFileUtility.textureExists(texturePath.text) || !savePath.text.startsWith("/") || !savePath.text.endsWith(".png") || savePath.text.endsWith("/.png"))
 			button.setDisabled(true);
 		else
 		{
@@ -231,7 +232,7 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 				button.setDisabled(false);
 		}
 		
-		if(!Remote2D.artLoader.textureExists(texturePath.text))
+		if(!R2DFileUtility.textureExists(texturePath.text))
 			bgButton.setDisabled(true);
 		else
 		{
@@ -240,7 +241,7 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 		}
 			
 		
-		if(Remote2D.artLoader.textureExists(texturePath.text) )
+		if(R2DFileUtility.textureExists(texturePath.text) )
 		{
 			if(!tex.getTextureLocation().equals(texturePath.text))
 			{

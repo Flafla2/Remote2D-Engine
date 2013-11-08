@@ -85,7 +85,7 @@ public class TextureLoader {
 	   
 	   public static BufferedImage loadImage(String loc)
 	   {
-		   File f = new File(loc).getAbsoluteFile();
+		   File f = new File(loc);
 		   try{
 			  return ImageIO.read(f);
 		   } catch (IOException e) {
