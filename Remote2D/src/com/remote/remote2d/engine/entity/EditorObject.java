@@ -190,6 +190,9 @@ public abstract class EditorObject implements R2DFileSaver {
 		}
 	}
 	
+	/**
+	 * The map that this EditorObject belongs to.
+	 */
 	public Map getMap() {
 		return map;
 	}	

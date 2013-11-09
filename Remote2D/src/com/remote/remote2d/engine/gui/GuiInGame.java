@@ -13,6 +13,10 @@ public class GuiInGame extends GuiMenu implements MapHolder {
 	protected Map map;
 	protected String mapPath;
 	
+	/**
+	 * Creates a new in-game gui by loading a map with the given path.
+	 * @param mapPath Local path to the map (relative to the game's jar file).
+	 */
 	public GuiInGame(String mapPath)
 	{
 		Log.info("Loading Map...");
@@ -23,6 +27,10 @@ public class GuiInGame extends GuiMenu implements MapHolder {
 		map.spawn();
 	}
 	
+	/**
+	 * Creates a new in-game gui with the given (already loaded) map
+	 * @param map Map to use
+	 */
 	public GuiInGame(Map map) {
 		this.map = map;
 		Log.info("Loading Map...");

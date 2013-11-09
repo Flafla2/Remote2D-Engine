@@ -1,6 +1,7 @@
 package com.remote.remote2d.engine.gui;
 
 import com.remote.remote2d.engine.art.Fonts;
+import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.logic.Vector2;
 
@@ -65,24 +66,30 @@ public class GuiButton extends Gui {
 	{
 		Vector2[] coords = getControlImageCoords(color,size);
 		
-		renderTextureWithCoords(
-				tex,
+		Renderer.drawRect(
 				pos,
 				new Vector2(5,dim.y),
 				coords[0],
-				coords[1]);
-		renderTextureWithCoords(
+				coords[1],
 				tex,
+				0xffffff,
+				1.0f);
+		Renderer.drawRect(
 				new Vector2(pos.x+5,pos.y),
 				new Vector2(dim.x-10,dim.y),
 				coords[2],
-				coords[3]);
-		renderTextureWithCoords(
+				coords[3],
 				tex,
+				0xffffff,
+				1.0f);
+		Renderer.drawRect(
 				new Vector2(pos.x+dim.x-5,pos.y),
 				new Vector2(5,dim.y),
 				coords[4],
-				coords[5]);
+				coords[5],
+				tex,
+				0xffffff,
+				1.0f);
 	}
 	
 	public static Vector2[] getControlImageCoords(int color, int size)

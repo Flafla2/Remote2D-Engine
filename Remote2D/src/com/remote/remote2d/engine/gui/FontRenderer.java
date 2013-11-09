@@ -15,12 +15,29 @@ import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.logic.Vector2;
 
+/**
+ * Relatively low-level Font rendering class.  This uses Java's existing font rendering system and acts as an interface between LWJGL
+ * and Java AWT.
+ * 
+ * Because generating new images for strings to render is expensive, Remote2D caches renders of fonts for you.  Remote2D will automatically
+ * delete prerendered text if it isn't used for more than 5 seconds (5000ms).  For this reason drawing text is actually pretty inexpensive,
+ * however it does depend heavily on your system's VRAM, due to the fact that the FontRenderer creates a new OpenGL texture every render.
+ * This can be contrasted with a bitmap system which only stores one texture in memory.
+ * 
+ * @author Flafla2
+ */
 public class FontRenderer {
 	private Font font;
 	private Map<RenderData,Texture> cache;
 	
 	public final boolean useAntiAliasing;
 	
+	/**
+	 * Creates a new FontRenderer
+	 * @param f Font to use in this renderer
+	 * @param useAntiAliasing Whether or not to use anti aliasing.  Most fonts should have this at true, 
+	 * except for some pixel fonts which would look better with this off.
+	 */
 	public FontRenderer(Font f, boolean useAntiAliasing)
 	{
 		font = f;
@@ -42,6 +59,12 @@ public class FontRenderer {
 	    };
 	}
 	
+	/**
+	 * Generates a BufferedImage of this fontrenderer's font with the given size and color.
+	 * @param s String to generate
+	 * @param size Size of the text to generate
+	 * @param color Color of the text to generate
+	 */
 	public BufferedImage createImageFromString(String s, float size, int color)
 	{
 		if(s.length() == 0)
@@ -80,6 +103,11 @@ public class FontRenderer {
 		return image;
 	}
 	
+	/**
+	 * The dimensions of the given String, if it were rendered
+	 * @param s String to measure
+	 * @param size Size of the string to measure
+	 */
 	public int[] getStringDim(String s, float size)
 	{
 		RenderData data = new RenderData(s,size,0xffffff);
@@ -111,6 +139,14 @@ public class FontRenderer {
 		*/
 	}
 	
+	/**
+	 * Draws the given string at the given coordinates.
+	 * @param s String to render
+	 * @param x Left side of the rendered string
+	 * @param y Top of the rendered string
+	 * @param size Size of the text to render (line height)
+	 * @param color Color of the text to render
+	 */
 	public void drawString(String s, float x, float y, float size, int color)
 	{
 		if(s.trim().equals(""))
@@ -134,12 +170,25 @@ public class FontRenderer {
 		image = null;
 	}
 	
+	/**
+	 * Draws a string centered in the middle of the screen.
+	 * @param s String to render
+	 * @param y Top of the rendered string
+	 * @param size Size of the string to render (line height)
+	 * @param color Color of the text to render
+	 */
 	public void drawCenteredString(String s, int y, float size, int color)
 	{
 		int[] stringDim = getStringDim(s,size);
 		drawString(s,Remote2D.displayHandler.getDimensions().x/2-stringDim[0]/2,y,size,color);
 	}
 	
+	/**
+	 * Divides the given string into multiple lines using a given width to render in.
+	 * @param s String to measure
+	 * @param size Size of the text to measure (line height)
+	 * @param width Maximum width that one line can be
+	 */
 	public ArrayList<String> getStringSet(String s, float size, float width)
 	{
 		ArrayList<String> trueContents = new ArrayList<String>();
