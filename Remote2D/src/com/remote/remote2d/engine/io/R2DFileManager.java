@@ -38,6 +38,8 @@ public class R2DFileManager {
 	
 	public R2DFileManager(String path, R2DFileSaver saverClass)
 	{
+		path = path.replace('/', File.separatorChar);
+		path = path.replace('\\', File.separatorChar);
 		this.path = path;
 		file = new File(path);
 		collection = new R2DTypeCollection(file.getName());
@@ -76,7 +78,6 @@ public class R2DFileManager {
 		} else
 		{
 			collection = new R2DTypeCollection(collection.getName());
-			Log.warn("File "+file.getName()+" does not exist!");
 		}
 	}
 	

@@ -461,6 +461,7 @@ public class Remote2D {
 		{
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
 			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Remote2D");
+			System.setProperty("apple.awt.UIElement", "false");
 			Application application = new DefaultApplication();
 			application.addApplicationListener(new MacUIHandler());
 			application.setEnabledPreferencesMenu(false);
