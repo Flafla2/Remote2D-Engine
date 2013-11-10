@@ -62,7 +62,7 @@ public class GuiButton extends Gui {
 		return selectState == 0;
 	}
 	
-	public static void renderControlElement(Texture tex, Vector2 pos, Vector2 dim, int color, int size)
+	public void renderControlElement(Texture tex, Vector2 pos, Vector2 dim, int color, int size)
 	{
 		Vector2[] coords = getControlImageCoords(color,size);
 		
@@ -92,7 +92,7 @@ public class GuiButton extends Gui {
 				1.0f);
 	}
 	
-	public static Vector2[] getControlImageCoords(int color, int size)
+	public Vector2[] getControlImageCoords(int color, int size)
 	{
 		Vector2[] coords = new Vector2[6];
 		
@@ -122,6 +122,12 @@ public class GuiButton extends Gui {
 		
 		coords[4] = new Vector2(posX+15,posY);
 		coords[5] = new Vector2(5,dimY);
+		
+		for(Vector2 vec : coords)
+		{
+			vec.x /= tex.getImage().getWidth();
+			vec.y /= tex.getImage().getHeight();
+		}
 		
 		return coords;
 	}
