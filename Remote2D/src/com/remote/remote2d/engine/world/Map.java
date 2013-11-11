@@ -7,10 +7,10 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
-import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.entity.EntityList;
+import com.remote.remote2d.engine.entity.InsertableComponentList;
 import com.remote.remote2d.engine.entity.component.Component;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.io.R2DFileSaver;
@@ -219,7 +219,7 @@ public class Map implements R2DFileSaver {
 			for(int y=0;y<components.size();y++)
 			{
 				R2DTypeCollection cComp = new R2DTypeCollection("component_"+y);
-				cComp.setString("className", Remote2D.componentList.getComponentID(components.get(y)));
+				cComp.setString("className", InsertableComponentList.getComponentID(components.get(y)));
 				components.get(y).saveR2DFile(cComp);
 				c.setCollection(cComp);
 			}
@@ -245,7 +245,7 @@ public class Map implements R2DFileSaver {
 			for(int y=0;y<componentCount;y++)
 			{
 				R2DTypeCollection cComp = c.getCollection("component_"+y);
-				Component comp = Remote2D.componentList.getComponentWithEntity(cComp.getString("className"),e);
+				Component comp = InsertableComponentList.getComponentWithEntity(cComp.getString("className"),e);
 				comp.loadR2DFile(cComp);
 				comp.apply();
 				e.addComponent(comp);

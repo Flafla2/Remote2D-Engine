@@ -16,6 +16,7 @@ import com.remote.remote2d.editor.operation.OperationSaveMap;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
+import com.remote.remote2d.engine.entity.InsertableComponentList;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.gui.GuiInGame;
 import com.remote.remote2d.engine.gui.KeyShortcut;
@@ -79,7 +80,7 @@ public class GuiEditorTopMenu extends Gui {
 		
 		world.reloadSubWidth();
 		
-		Iterator<Entry<String,Class<?>>> iterator = Remote2D.componentList.getIterator();
+		Iterator<Entry<String,Class<?>>> iterator = InsertableComponentList.getIterator();
 		ArrayList<String> contents = new ArrayList<String>();
 		while(iterator.hasNext())
 			contents.add(iterator.next().getKey());
@@ -310,7 +311,7 @@ public class GuiEditorTopMenu extends Gui {
 		{
 			if(editor.getSelectedEntity() != null)
 			{
-				editor.getSelectedEntity().addComponent(Remote2D.componentList.getComponentWithEntity(secSubTitle,editor.getSelectedEntity()));
+				editor.getSelectedEntity().addComponent(InsertableComponentList.getComponentWithEntity(secSubTitle,editor.getSelectedEntity()));
 				editor.getInspector().setCurrentEntity(editor.getSelectedEntity());
 			}
 		}

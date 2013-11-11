@@ -15,9 +15,9 @@ import com.remote.remote2d.engine.entity.component.Component;
  */
 public class InsertableComponentList {
 	
-	private HashMap<String,Class<?>> insertableComponents;
+	private static HashMap<String,Class<?>> insertableComponents;
 	
-	public InsertableComponentList()
+	static
 	{
 		insertableComponents = new HashMap<String,Class<?>>();
 	}
@@ -28,7 +28,7 @@ public class InsertableComponentList {
 	 * @param c Class to add to the list.  Class MUST extend {@link com.remote.remote2d.engine.entity.component.Component}.
 	 * @throws java.lang.IllegalArgumentException.IllegalArgumentException if <i>e</i> does not extend {@link com.remote.remote2d.engine.entity.component.Component}
 	 */
-	public void addInsertableComponent(String s, Class<?> c)
+	public static void addInsertableComponent(String s, Class<?> c)
 	{
 		if(Component.class.isAssignableFrom(c))
 			insertableComponents.put(s, c);
@@ -42,7 +42,7 @@ public class InsertableComponentList {
 	 * @param entity Entity to add this component to
 	 * @return A new instance of the class associated with <i>s</i>.
 	 */
-	public Component getComponentWithEntity(String s,Entity entity)
+	public static Component getComponentWithEntity(String s,Entity entity)
 	{
 		return Component.newInstanceWithEntity(insertableComponents.get(s), entity);
 	}
@@ -51,7 +51,7 @@ public class InsertableComponentList {
 	 * Whether or not the given identifier is in the component list.
 	 * @param s possible identifier
 	 */
-	public boolean containsComponent(String s)
+	public static boolean containsComponent(String s)
 	{
 		return insertableComponents.containsKey(s);
 	}
@@ -60,7 +60,7 @@ public class InsertableComponentList {
 	 * The identifier of the given Component on the list.
 	 * @param c Component to test.
 	 */
-	public String getComponentID(Component c)
+	public static String getComponentID(Component c)
 	{
 		return getComponentID(c.getClass());
 	}
@@ -69,7 +69,7 @@ public class InsertableComponentList {
 	 * The identifier of the given class
 	 * @param c Any class that extends {@link com.remote.remote2d.engine.entity.component.Component}.
 	 */
-	public String getComponentID(Class<?> c)
+	public static String getComponentID(Class<?> c)
 	{
 		Iterator<Entry<String, Class<?>>> iterator = insertableComponents.entrySet().iterator();
 		while(iterator.hasNext())
@@ -84,7 +84,7 @@ public class InsertableComponentList {
 	/**
 	 * An instance of {@link java.util.Iterator} for each Class/ID pair in the list
 	 */
-	public Iterator<Entry<String,Class<?>>> getIterator()
+	public static Iterator<Entry<String,Class<?>>> getIterator()
 	{
 		return insertableComponents.entrySet().iterator();
 	}

@@ -74,7 +74,6 @@ public class Remote2D {
 	 */
 	public static Stack<GuiMenu> guiList;
 	public static ArtLoader artLoader;	
-	public static InsertableComponentList componentList;
 	
 	private static boolean mousePressed = false;
 	private static boolean mouseReleased = false;
@@ -175,10 +174,9 @@ public class Remote2D {
 		charListLimited = new ArrayList<Character>();
 		keyboardList = new ArrayList<Integer>();
 		
-		componentList = new InsertableComponentList();
-		componentList.addInsertableComponent("Box Collider", ComponentColliderBox.class);
-		componentList.addInsertableComponent("Camera", ComponentCamera.class);
-		componentList.addInsertableComponent("Audio Listener", ComponentListener.class);
+		InsertableComponentList.addInsertableComponent("Box Collider", ComponentColliderBox.class);
+		InsertableComponentList.addInsertableComponent("Camera", ComponentCamera.class);
+		InsertableComponentList.addInsertableComponent("Audio Listener", ComponentListener.class);
 				
 		artLoader = new ArtLoader();
 		
