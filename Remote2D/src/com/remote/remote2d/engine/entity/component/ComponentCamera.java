@@ -1,6 +1,6 @@
 package com.remote.remote2d.engine.entity.component;
 
-import com.remote.remote2d.engine.Remote2D;
+import com.remote.remote2d.engine.DisplayHandler;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.logic.Vector2;
@@ -39,7 +39,7 @@ public class ComponentCamera extends Component {
 		if(editor)
 		{
 			Vector2 entityPos = entity.getPosGlobal(interpolation);
-			Vector2 dim = Remote2D.displayHandler.getDefaultDimensions();
+			Vector2 dim = DisplayHandler.getDefaultDimensions();
 			Renderer.drawLineRect(new Vector2(entityPos.x-dim.x/2,entityPos.y-dim.y/2), dim, 0, 0, 1, 1);
 		}
 	}

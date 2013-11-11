@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 import org.lwjgl.opengl.GL11;
 
-import com.remote.remote2d.engine.Remote2D;
+import com.remote.remote2d.engine.DisplayHandler;
 
 /**
  * Low-level texture holder.  Acts as a direct interface between Java, Remote2D,
@@ -95,7 +95,7 @@ public class Texture {
 	 */
 	public void bind()
 	{
-		if(lastReload < Remote2D.displayHandler.getLastTexReload())
+		if(lastReload < DisplayHandler.getLastTexReload())
 			reload();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, glId);
 		lastBindTime = System.currentTimeMillis();
@@ -146,7 +146,7 @@ public class Texture {
 	 * Reloads this texture in OpenGL - useful after reinitializing OpenGL.
 	 */
 	public void reload() {
-		if(lastReload >= Remote2D.displayHandler.getLastTexReload())
+		if(lastReload >= DisplayHandler.getLastTexReload())
 			GL11.glDeleteTextures(glId);
 		glId = TextureLoader.loadTexture(image,linearScaling,repeat);
 		lastReload = System.currentTimeMillis();

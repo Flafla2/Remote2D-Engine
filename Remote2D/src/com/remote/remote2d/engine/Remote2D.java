@@ -29,7 +29,6 @@ import com.remote.remote2d.engine.world.Map;
 public class Remote2D {
 	
 	/*----------CORE VARIABLES--------------*/
-	public static DisplayHandler displayHandler;
 	private static Remote2DGame game;
 	public static final boolean RESIZING_ENABLED = true;
 	
@@ -186,8 +185,8 @@ public class Remote2D {
 		StretchType stretch = guiList.peek().getOverrideStretchType();
 		if(stretch == null)
 			stretch = game.getDefaultStretchType();
-		if(stretch != displayHandler.getStretchType())
-			displayHandler.setStretchType(stretch);
+		if(stretch != DisplayHandler.getStretchType())
+			DisplayHandler.setStretchType(stretch);
 		
 		Renderer.loadIdentity();
 		
@@ -199,10 +198,10 @@ public class Remote2D {
 		GL11.glClearColor(0, 0, 0, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		
-		Renderer.drawRect(new Vector2(0,0), displayHandler.getDimensions(), r, g, b, 1.0f);
+		Renderer.drawRect(new Vector2(0,0), DisplayHandler.getDimensions(), r, g, b, 1.0f);
 		
 		if(RESIZING_ENABLED)
-			displayHandler.checkDisplayResolution();
+			DisplayHandler.checkDisplayResolution();
 				
 		guiList.peek().render(interpolation);
 		
@@ -221,14 +220,14 @@ public class Remote2D {
 	{
 		Vector2 gameDim = game.getDefaultResolution();
 		Vector2 winDim = game.getDefaultScreenResolution();
-		displayHandler = new DisplayHandler((int)winDim.x,(int)winDim.y,(int)gameDim.x,(int)gameDim.y,game.getDefaultStretchType(),false,false);
+		DisplayHandler.init((int)winDim.x,(int)winDim.y,(int)gameDim.x,(int)gameDim.y,game.getDefaultStretchType(),false,false);
 		
 		initGame();
 		
 		gameLoop();
 		
 		shutDown();
-		displayHandler.setDisplayMode(1024,576,false,false);
+		DisplayHandler.setDisplayMode(1024,576,false,false);
 		Display.destroy();
 		System.exit(0);
 		
@@ -365,14 +364,14 @@ public class Remote2D {
 	 */
 	public static Vector2 getMouseCoords()
 	{
-		Vector2 scale = displayHandler.getRenderScale();
-		ColliderBox renderArea = displayHandler.getScreenRenderArea();
+		Vector2 scale = DisplayHandler.getRenderScale();
+		ColliderBox renderArea = DisplayHandler.getScreenRenderArea();
 		Vector2 r = new Vector2(Mouse.getX(),Mouse.getY());
 		r.x -= renderArea.pos.x;
 		r.y -= renderArea.pos.y;
 		r.x /= scale.x;
 		r.y /= scale.y;
-		r.y = (int) (displayHandler.getDimensions().y-r.y);
+		r.y = (int) (DisplayHandler.getDimensions().y-r.y);
 		return r;
 	}
 	

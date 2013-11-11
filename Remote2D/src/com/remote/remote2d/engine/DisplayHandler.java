@@ -23,24 +23,24 @@ import com.remote.remote2d.engine.logic.Vector2;
  */
 public class DisplayHandler {
 	
-	private int screenWidth;
-	private int screenHeight;
-	private int gameWidth;
-	private int gameHeight;
-	private boolean fullscreen;
-	private boolean borderless;
-	private StretchType type;
-	private long lastTexReload;
+	private static int screenWidth;
+	private static int screenHeight;
+	private static int gameWidth;
+	private static int gameHeight;
+	private static boolean fullscreen;
+	private static boolean borderless;
+	private static StretchType type;
+	private static long lastTexReload;
 	
-	public DisplayHandler(int width, int height, int gameWidth, int gameHeight, StretchType type, boolean fullscreen, boolean borderless)
+	public static void init(int width, int height, int gameWidth, int gameHeight, StretchType type, boolean fullscreen, boolean borderless)
 	{
-		this.screenWidth = borderless ? Display.getDesktopDisplayMode().getWidth() : width;
-		this.screenHeight = borderless ? Display.getDesktopDisplayMode().getHeight() : height;
-		this.fullscreen = fullscreen;
-		this.borderless = borderless;
-		this.gameWidth = gameWidth;
-		this.gameHeight = gameHeight;
-		this.type = type;
+		DisplayHandler.screenWidth = borderless ? Display.getDesktopDisplayMode().getWidth() : width;
+		DisplayHandler.screenHeight = borderless ? Display.getDesktopDisplayMode().getHeight() : height;
+		DisplayHandler.fullscreen = fullscreen;
+		DisplayHandler.borderless = borderless;
+		DisplayHandler.gameWidth = gameWidth;
+		DisplayHandler.gameHeight = gameHeight;
+		DisplayHandler.type = type;
 		
 		try {
 			Display.setDisplayMode(new DisplayMode(width,height));
@@ -59,7 +59,7 @@ public class DisplayHandler {
 		initGL();
 	}
 	
-	public void setIcons(String[] icons)
+	public static void setIcons(String[] icons)
 	{
 		if(icons == null)
 			return;
@@ -73,7 +73,7 @@ public class DisplayHandler {
 	/**
 	 * The renderable dimensions of the game right now (in pixels).
 	 */
-	public Vector2 getDimensions()
+	public static Vector2 getDimensions()
 	{
 		if(type != StretchType.NONE)
 			return new Vector2(gameWidth,gameHeight);
@@ -85,7 +85,7 @@ public class DisplayHandler {
 	 * The default renderable dimensions of the game (in pixels).  In
 	 * other words this ignores any Gui overrides to the StretchType.
 	 */
-	public Vector2 getDefaultDimensions()
+	public static Vector2 getDefaultDimensions()
 	{
 		if(Remote2D.getGame().getDefaultStretchType() != StretchType.NONE)
 			return new Vector2(gameWidth,gameHeight);
@@ -98,7 +98,7 @@ public class DisplayHandler {
 	 * this includes the black bars/box around the game when the
 	 * StretchType isn't {@link StretchType#NONE}.
 	 */
-	public Vector2 getScreenDimensions()
+	public static Vector2 getScreenDimensions()
 	{
 		return new Vector2(screenWidth,screenHeight);
 	}
@@ -106,7 +106,7 @@ public class DisplayHandler {
 	/**
 	 * If the game is in full screen
 	 */
-	public boolean getFullscreen()
+	public static boolean getFullscreen()
 	{
 		return fullscreen;
 	}
@@ -115,7 +115,7 @@ public class DisplayHandler {
 	 * The current StretchType of the game.
 	 * @see StretchType
 	 */
-	public StretchType getStretchType()
+	public static StretchType getStretchType()
 	{
 		return type;
 	}
@@ -126,7 +126,7 @@ public class DisplayHandler {
 	 * NOTE: Borderless doesn't work on Macs, and it doesn't work
 	 * when fullscreen mode is on at the same time!
 	 */
-	public boolean getBorderless()
+	public static boolean getBorderless()
 	{
 		return borderless;
 	}
@@ -137,7 +137,7 @@ public class DisplayHandler {
 	 * @param image Image to convert
 	 * @param BYTES_PER_PIXEL How many bytes in 1 pixel - 4 for RGBA, 3 for RGB
 	 */
-	public ByteBuffer getBufferFromImage(BufferedImage image, int BYTES_PER_PIXEL)
+	public static ByteBuffer getBufferFromImage(BufferedImage image, int BYTES_PER_PIXEL)
 	{
 		int[] pixels = new int[image.getWidth() * image.getHeight()];
         image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
@@ -163,7 +163,7 @@ public class DisplayHandler {
 	 * Checks to see if the display has been resized.  If it has, reinitializes
 	 * OpenGL.
 	 */
-	public void checkDisplayResolution()
+	public static void checkDisplayResolution()
 	{
 		if(Display.getWidth() != screenWidth || Display.getHeight() != screenHeight)
 		{
@@ -180,7 +180,7 @@ public class DisplayHandler {
 	/**
 	 * The ratio of the OpenGL camera size and the window size.
 	 */
-	public Vector2 getRenderScale()
+	public static Vector2 getRenderScale()
 	{
 		ColliderBox renderArea = getScreenRenderArea();
 		return renderArea.dim.divide(getDimensions());
@@ -191,7 +191,7 @@ public class DisplayHandler {
 	 * (when it is resized, toggled into fullscreen, etc.) as well as when the game
 	 * first launches.
 	 */
-	public void initGL()
+	public static void initGL()
 	{
 		Log.debug("Initializing OpenGL");
 		Log.info("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
@@ -223,7 +223,7 @@ public class DisplayHandler {
 	 * A {@link ColliderBox} representing the renderable area of the game, in window
 	 * coordinates (NOT OpenGL/game coordinates).
 	 */
-	public ColliderBox getScreenRenderArea()
+	public static ColliderBox getScreenRenderArea()
 	{
 		if(type == StretchType.NONE || type == StretchType.STRETCH)
 			return new Vector2(0,0).getColliderWithDim(new Vector2(screenWidth,screenHeight));
@@ -271,7 +271,7 @@ public class DisplayHandler {
 	 * @param stretch Sets the stretch mode of the game
 	 * @see StretchType
 	 */
-	public void setGameResolution(int resx, int resy, StretchType stretch)
+	public static void setGameResolution(int resx, int resy, StretchType stretch)
 	{
 		gameWidth = resx;
 		gameHeight = resy;
@@ -288,7 +288,7 @@ public class DisplayHandler {
 	 * NOTE: DO NOT use this unless you have to!  Usually you can
 	 * use {@link com.remote.remote2d.engine.gui.GuiMenu#getOverrideStretchType()}!
 	 */
-	public void setStretchType(StretchType stretch)
+	public static void setStretchType(StretchType stretch)
 	{
 		type = stretch;
 		initGL();
@@ -305,7 +305,7 @@ public class DisplayHandler {
 	 * @param fullscreen If we want fullscreen mode
 	 * @param borderless If we want the window to be borderless
 	 */
-	public void setDisplayMode(int width, int height, boolean fullscreen, boolean borderless) {
+	public static void setDisplayMode(int width, int height, boolean fullscreen, boolean borderless) {
 		int posX = Display.getX();
 		int posY = Display.getY();
 		
@@ -322,7 +322,7 @@ public class DisplayHandler {
 	    if ((Display.getDisplayMode().getWidth() == width) && 
 	        (Display.getDisplayMode().getHeight() == height) && 
 	        (Display.isFullscreen() == fullscreen) &&
-	        this.borderless == borderless)
+	        DisplayHandler.borderless == borderless)
 	    {
 		    return;
 	    }
@@ -364,9 +364,9 @@ public class DisplayHandler {
 	            return;
 	        }
 	        	        
-	        this.screenWidth = targetDisplayMode.getWidth();
-	        this.screenHeight = targetDisplayMode.getHeight();
-	        this.fullscreen = fullscreen;
+	        DisplayHandler.screenWidth = targetDisplayMode.getWidth();
+	        DisplayHandler.screenHeight = targetDisplayMode.getHeight();
+	        DisplayHandler.fullscreen = fullscreen;
 	        
 	        if(fullscreen == true)
 	        	Display.destroy();
@@ -395,7 +395,7 @@ public class DisplayHandler {
 	 * all textures clear and must be reloaded.
 	 * @return The time in milliseconds.
 	 */
-	public long getLastTexReload()
+	public static long getLastTexReload()
 	{
 		return lastTexReload;
 	}

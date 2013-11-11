@@ -13,6 +13,7 @@ import com.remote.remote2d.editor.operation.OperationNewEntity;
 import com.remote.remote2d.editor.operation.OperationNewMap;
 import com.remote.remote2d.editor.operation.OperationOpenMap;
 import com.remote.remote2d.editor.operation.OperationSaveMap;
+import com.remote.remote2d.engine.DisplayHandler;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
@@ -161,7 +162,7 @@ public class GuiEditorTopMenu extends Gui {
 		
 		String fps = "FPS: "+Remote2D.getFPS();
 		int width = Fonts.get("Arial").getStringDim(fps, 20)[0];
-		Fonts.get("Arial").drawString(fps, Remote2D.displayHandler.getDimensions().x-width, 0, 20, 0xffffff);
+		Fonts.get("Arial").drawString(fps, DisplayHandler.getDimensions().x-width, 0, 20, 0xffffff);
 	}
 
 	@Override
@@ -229,7 +230,7 @@ public class GuiEditorTopMenu extends Gui {
 		{
 			if(secSubTitle.equalsIgnoreCase("Toggle Fullscreen"))
 			{
-				Remote2D.displayHandler.setDisplayMode(Display.getDesktopDisplayMode().getWidth(),
+				DisplayHandler.setDisplayMode(Display.getDesktopDisplayMode().getWidth(),
 						Display.getDesktopDisplayMode().getHeight(), !Display.isFullscreen(), 
 						false);
 			} else if(secSubTitle.equalsIgnoreCase("Console"))

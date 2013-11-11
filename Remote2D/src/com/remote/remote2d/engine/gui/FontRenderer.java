@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.remote.remote2d.engine.Remote2D;
+import com.remote.remote2d.engine.DisplayHandler;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.logic.Vector2;
@@ -180,7 +180,7 @@ public class FontRenderer {
 	public void drawCenteredString(String s, int y, float size, int color)
 	{
 		int[] stringDim = getStringDim(s,size);
-		drawString(s,Remote2D.displayHandler.getDimensions().x/2-stringDim[0]/2,y,size,color);
+		drawString(s,DisplayHandler.getDimensions().x/2-stringDim[0]/2,y,size,color);
 	}
 	
 	/**

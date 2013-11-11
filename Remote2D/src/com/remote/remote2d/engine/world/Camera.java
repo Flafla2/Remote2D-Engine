@@ -3,7 +3,7 @@ package com.remote.remote2d.engine.world;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import com.remote.remote2d.engine.Remote2D;
+import com.remote.remote2d.engine.DisplayHandler;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.logic.ColliderBox;
@@ -40,7 +40,7 @@ public class Camera {
 	
 	public void renderBefore(float interpolation)
 	{
-		Vector2 pos = Interpolator.linearInterpolate(oldPos, this.pos, interpolation).subtract(Remote2D.displayHandler.getDimensions());		
+		Vector2 pos = Interpolator.linearInterpolate(oldPos, this.pos, interpolation).subtract(DisplayHandler.getDimensions());		
 		Vector2 dim = getDimensions();
 		Renderer.pushMatrix();
 		Renderer.scale(scale);
@@ -64,7 +64,7 @@ public class Camera {
 	
 	public Vector2 getDimensions()
 	{
-		return Remote2D.displayHandler.getDimensions();
+		return DisplayHandler.getDimensions();
 	}
 
 	public Camera copy() {

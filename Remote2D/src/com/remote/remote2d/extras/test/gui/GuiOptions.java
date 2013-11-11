@@ -3,6 +3,7 @@ package com.remote.remote2d.extras.test.gui;
 import org.lwjgl.opengl.Display;
 
 import com.remote.remote2d.engine.AudioHandler;
+import com.remote.remote2d.engine.DisplayHandler;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
@@ -59,7 +60,7 @@ public class GuiOptions extends GuiMenu {
 			Remote2D.guiList.pop();
 		else if(button.id == 1)
 		{
-			Remote2D.displayHandler.setDisplayMode(Display.getDesktopDisplayMode().getWidth(),
+			DisplayHandler.setDisplayMode(Display.getDesktopDisplayMode().getWidth(),
 					Display.getDesktopDisplayMode().getHeight(), !Display.isFullscreen(), 
 					false);
 		} else if(button.id == 2)

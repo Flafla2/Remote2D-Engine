@@ -2,7 +2,7 @@ package com.remote.remote2d.engine.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import com.remote.remote2d.engine.Remote2D;
+import com.remote.remote2d.engine.DisplayHandler;
 import com.remote.remote2d.engine.logic.Vector2;
 
 /**
@@ -59,17 +59,17 @@ public abstract class Gui {
 	
 	public static int screenWidth()
 	{
-		return (int)Remote2D.displayHandler.getDimensions().x;
+		return (int)DisplayHandler.getDimensions().x;
 	}
 	
 	public static int screenHeight()
 	{
-		return (int)Remote2D.displayHandler.getDimensions().y;
+		return (int)DisplayHandler.getDimensions().y;
 	}
 	
 	public static Vector2 screenDim()
 	{
-		return Remote2D.displayHandler.getDimensions();
+		return DisplayHandler.getDimensions();
 	}
 	
 }

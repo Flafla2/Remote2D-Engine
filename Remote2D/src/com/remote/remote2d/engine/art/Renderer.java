@@ -9,7 +9,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import com.remote.remote2d.engine.Remote2D;
+import com.remote.remote2d.engine.DisplayHandler;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.logic.ColliderBox;
 import com.remote.remote2d.engine.logic.Vector2;
@@ -716,7 +716,7 @@ public class Renderer {
 	public static void startScissor(Vector2 pos, Vector2 dim)
 	{
 		Vector2 newPos = pos.copy();
-		ColliderBox screenPos = Remote2D.displayHandler.getScreenRenderArea();
+		ColliderBox screenPos = DisplayHandler.getScreenRenderArea();
 		newPos.y += dim.y;//bottom left
 		newPos.y = Gui.screenHeight()-newPos.y;//translate into GL coordinates
 		newPos = newPos.add(screenPos.pos);
