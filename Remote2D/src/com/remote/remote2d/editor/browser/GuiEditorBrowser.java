@@ -13,6 +13,7 @@ import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.io.R2DFileManager;
+import com.remote.remote2d.engine.io.R2DFileUtility;
 import com.remote.remote2d.engine.logic.Vector2;
 import com.remote.remote2d.engine.world.Map;
 
@@ -33,7 +34,7 @@ public class GuiEditorBrowser extends Gui {
 		
 		folderStack = new Stack<Folder>();
 		sections = new ArrayList<GuiEditorBrowserSection>();
-		pushFolder(new Folder(Remote2D.getJarPath().getPath()));
+		pushFolder(new Folder(R2DFileUtility.getJarPath().getPath()));
 	}
 	
 	public void pushFolder(Folder f)
@@ -83,7 +84,7 @@ public class GuiEditorBrowser extends Gui {
 			pushFolder(new Folder(file.getPath()));
 		else if(file.isFile())
 		{
-			String localPath = Remote2D.getRelativeFile(file).getPath();
+			String localPath = R2DFileUtility.getRelativeFile(file).getPath();
 			if(localPath.endsWith(Animation.getExtension()))
 				Remote2D.guiList.push(new GuiCreateSpriteSheet(new Animation(localPath)));
 			else if(localPath.endsWith(Entity.getExtension()))

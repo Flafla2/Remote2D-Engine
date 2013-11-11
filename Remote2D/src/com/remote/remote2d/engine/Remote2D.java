@@ -1,6 +1,5 @@
 package com.remote.remote2d.engine;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -319,43 +318,6 @@ public class Remote2D {
 	public static ArrayList<Integer> getIntegerKeyboardList()
 	{
 		return keyboardList;
-	}
-	
-	public static File getJarPath()
-	{
-		return new File(Remote2D.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
-	}
-	
-	/**
-	 * Gets a file using paths relative to the jar location.
-	 * @param loc Location relative to the jar file.
-	 */
-	public static File getResource(String loc)
-	{
-		if(loc.startsWith("/") || loc.startsWith("\\"))
-			loc = loc.substring(1);
-		
-		return new File(loc);
-	}
-	
-	/**
-	 * Returns a relative file to the jar path, based on an absolute file.
-	 * @param absolute An absolute file; in other words a file that is not relative to the jar path.
-	 * @return A relative file to the game's jar folder.
-	 */
-	public static File getRelativeFile(File absolute)
-	{
-		return new File(getRelativePath(absolute,getJarPath()));
-	}
-	
-	public static String getRelativePath(File file, File folder) {
-	    String filePath = file.getAbsolutePath();
-	    String folderPath = folder.getAbsolutePath();
-	    if (filePath.startsWith(folderPath)) {
-	        return filePath.substring(folderPath.length() + 1);
-	    } else {
-	        return null;
-	    }
 	}
 	
 	/**

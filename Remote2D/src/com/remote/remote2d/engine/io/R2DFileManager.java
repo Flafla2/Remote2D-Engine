@@ -41,7 +41,7 @@ public class R2DFileManager {
 		path = path.replace('/', File.separatorChar);
 		path = path.replace('\\', File.separatorChar);
 		this.path = path;
-		file = new File(path);
+		file = R2DFileUtility.getResource(path);
 		collection = new R2DTypeCollection(file.getName());
 		this.saverClass = saverClass;
 	}
@@ -84,7 +84,7 @@ public class R2DFileManager {
 	public void write(boolean xml)
 	{
 		try {
-			File file = new File(this.path);
+			File file = R2DFileUtility.getResource(this.path);
 			
 			Log.debug("File Manager","Writing to file "+file.getName());
 			

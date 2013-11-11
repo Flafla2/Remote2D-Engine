@@ -27,6 +27,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import com.remote.remote2d.engine.Remote2DException;
+import com.remote.remote2d.engine.io.R2DFileUtility;
 
 public class TextureLoader {
 	/**
@@ -85,7 +86,7 @@ public class TextureLoader {
 	   
 	   public static BufferedImage loadImage(String loc)
 	   {
-		   File f = new File(loc);
+		   File f = R2DFileUtility.getResource(loc);
 		   try{
 			  return ImageIO.read(f);
 		   } catch (IOException e) {

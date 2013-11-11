@@ -1,12 +1,12 @@
 package com.remote.remote2d.engine.art;
 
 import java.awt.Font;
-import java.io.File;
 import java.io.FileInputStream;
 import java.util.HashMap;
 
 import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.gui.FontRenderer;
+import com.remote.remote2d.engine.io.R2DFileUtility;
 
 /**
  * A holder class which holds all {@link FontRenderer} instances.
@@ -58,7 +58,7 @@ public class Fonts {
 	{
 		Font font;
 		try {
-			FileInputStream is = new FileInputStream(new File(path));
+			FileInputStream is = new FileInputStream(R2DFileUtility.getResource(path));
 			font = Font.createFont(Font.TRUETYPE_FONT, is);
 			is.close();
 			fontTable.put(fontName, new FontRenderer(font, useAntiAliasing));

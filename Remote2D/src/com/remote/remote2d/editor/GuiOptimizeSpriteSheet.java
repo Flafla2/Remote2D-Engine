@@ -241,8 +241,10 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 		}
 			
 		
-		if(R2DFileUtility.textureExists(texturePath.text) )
+		if(R2DFileUtility.textureExists(texturePath.text))
 		{
+			if(tex == null)
+				tex = new Texture(texturePath.text);
 			if(!tex.getTextureLocation().equals(texturePath.text))
 			{
 				tex.removeTexture();
@@ -368,7 +370,7 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 			 
 			 try
 			 {
-				 File saveFile = new File(savePath.text);
+				 File saveFile = R2DFileUtility.getResource(savePath.text);
 				 saveFile.getParentFile().mkdirs();
 				 saveFile.createNewFile();
 				 ImageIO.write(image, "png", saveFile);

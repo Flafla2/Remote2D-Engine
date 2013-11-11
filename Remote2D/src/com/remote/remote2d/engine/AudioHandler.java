@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.esotericsoftware.minlog.Log;
+import com.remote.remote2d.engine.io.R2DFileUtility;
 import com.remote.remote2d.engine.logic.Vector2;
 
 import paulscode.sound.Library;
@@ -63,7 +64,7 @@ public class AudioHandler {
 	 */
 	public static String playSound(String localPath, Vector2 pos, boolean priority, boolean loop, int attmodel, float distOrRoll)
 	{
-		File f = new File(localPath);
+		File f = R2DFileUtility.getResource(localPath);
 		try {
 			return soundSystem.quickPlay(priority, f.getCanonicalFile().toURI().toURL(), f.getName(), loop, pos.x, pos.y, 0, attmodel, distOrRoll);
 		} catch (IOException e) {

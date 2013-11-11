@@ -19,7 +19,7 @@ public class R2DFileUtility {
 	 */
 	public static void convertFolderToXML(String dir, boolean recursive)
 	{
-		File file = new File(dir);
+		File file = R2DFileUtility.getResource(dir);
 		if(!file.exists() || !file.isDirectory())
 			return;
 		R2DFileFilter filter = new R2DFileFilter();
@@ -28,13 +28,13 @@ public class R2DFileUtility {
 			Log.debug(f.isFile()+" "+filter.accept(file, f.getName()));
 			if(f.isFile() && filter.accept(file, f.getName()))
 			{
-				String localPath = Remote2D.getRelativeFile(f).getPath();
+				String localPath = R2DFileUtility.getRelativeFile(f).getPath();
 				R2DFileManager manager = new R2DFileManager(localPath,null);
 				manager.read();
 				f.renameTo(new File(f.getAbsolutePath()+".orig"));
 				manager.write(true);
 			} else if(f.isDirectory() && recursive)
-				convertFolderToXML(Remote2D.getRelativeFile(f).getPath(),recursive);
+				convertFolderToXML(R2DFileUtility.getRelativeFile(f).getPath(),recursive);
 		}
 	}
 	
@@ -45,7 +45,7 @@ public class R2DFileUtility {
 	 */
 	public static void convertFolderToBinary(String dir, boolean recursive)
 	{
-		File file = new File(dir);
+		File file = R2DFileUtility.getResource(dir);
 		if(!file.exists() || !file.isDirectory())
 			return;
 		R2DFileFilter filter = new R2DFileFilter();
@@ -54,20 +54,35 @@ public class R2DFileUtility {
 			if(f.isFile() && filter.accept(file, f.getName()))
 			{
 				
-				String localPath = Remote2D.getRelativeFile(f).getPath();
+				String localPath = R2DFileUtility.getRelativeFile(f).getPath();
 				localPath = localPath.substring(0,localPath.length()-4);
 				R2DFileManager manager = new R2DFileManager(localPath,null);
 				manager.read();
 				f.renameTo(new File(f.getAbsolutePath()+".orig"));
 				manager.write(false);
 			} else if(f.isDirectory() && recursive)
-				convertFolderToXML(Remote2D.getRelativeFile(f).getPath(),recursive);
+				convertFolderToXML(R2DFileUtility.getRelativeFile(f).getPath(),recursive);
 		}
+	}
+	
+	/**
+	 * Converts a local path to a File.
+	 * @param s Path to convert to a file
+	 */
+	public static File getResource(String s)
+	{
+		s = s.replace('\\', File.separatorChar);
+		s = s.replace('/', File.separatorChar);
+		
+		if(s.startsWith(File.separator))
+			s = s.substring(1);
+		
+		return new File(s);
 	}
 	
 	public static boolean textureExists(String s)
 	{
-		File f = new File(s);
+		File f = R2DFileUtility.getResource(s);
 
 		if(f.exists() && f.isFile() && f.getName().endsWith(".png"))
 			return true;
@@ -77,12 +92,37 @@ public class R2DFileUtility {
 	
 	public static boolean R2DExists(String s)
 	{
-		File f = new File(s);
+		File f = R2DFileUtility.getResource(s);
 				
-		if(new R2DFileFilter().accept(f.getParentFile(), f.getName()) || new R2DFileFilter().accept(f.getParentFile(), f.getName()+".xml"))
+		if(new R2DFileFilter().accept(f.getParentFile(), f.getName()))
 			return true;
 		else
 			return false;
+	}
+
+	public static File getJarPath()
+	{
+		return new File(Remote2D.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
+	}
+
+	public static String getRelativePath(File file, File folder) {
+	    String filePath = file.getAbsolutePath();
+	    String folderPath = folder.getAbsolutePath();
+	    if (filePath.startsWith(folderPath)) {
+	        return filePath.substring(folderPath.length() + 1);
+	    } else {
+	        return null;
+	    }
+	}
+
+	/**
+	 * Returns a relative file to the jar path, based on an absolute file.
+	 * @param absolute An absolute file; in other words a file that is not relative to the jar path.
+	 * @return A relative file to the game's jar folder.
+	 */
+	public static File getRelativeFile(File absolute)
+	{
+		return new File(getRelativePath(absolute,getJarPath()));
 	}
 
 }
