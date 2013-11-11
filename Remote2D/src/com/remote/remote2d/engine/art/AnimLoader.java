@@ -6,21 +6,21 @@ import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.io.R2DFileUtility;
 
 /**
- * Loads textures and animations for you, and also caches animations in case
- * it is used a lot.
+ * Extremely simple class that caches animations so they don't
+ * need to be reloaded all the time.
  * 
  * @author Flafla2
  */
-public class ArtLoader {
+public class AnimLoader {
 	
-	private HashMap<String,Animation> animList;
+	private static HashMap<String,Animation> animList;
 	
-	public ArtLoader()
+	static
 	{
 		animList = new HashMap<String,Animation>();
 	}
 	
-	public Animation getAnimation(String s)
+	public static Animation getAnimation(String s)
 	{
 		if(!R2DFileUtility.R2DExists(s))
 			return null;

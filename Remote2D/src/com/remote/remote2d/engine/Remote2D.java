@@ -13,7 +13,6 @@ import org.simplericity.macify.eawt.DefaultApplication;
 import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.editor.GuiWindowConsole;
-import com.remote.remote2d.engine.art.ArtLoader;
 import com.remote.remote2d.engine.art.CursorLoader;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.art.TextureLoader;
@@ -73,7 +72,6 @@ public class Remote2D {
 	 * ALL rendering and ticking, besides REALLY basic stuff goes through here.  Even in-game!
 	 */
 	public static Stack<GuiMenu> guiList;
-	public static ArtLoader artLoader;	
 	
 	private static boolean mousePressed = false;
 	private static boolean mouseReleased = false;
@@ -178,8 +176,6 @@ public class Remote2D {
 		InsertableComponentList.addInsertableComponent("Camera", ComponentCamera.class);
 		InsertableComponentList.addInsertableComponent("Audio Listener", ComponentListener.class);
 				
-		artLoader = new ArtLoader();
-		
 		AudioHandler.init();
 		
 		game.initGame();
