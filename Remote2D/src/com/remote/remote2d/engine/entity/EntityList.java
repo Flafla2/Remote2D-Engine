@@ -73,8 +73,17 @@ public class EntityList {
 	public void removeEntityFromList(Entity e)
 	{
 		for(int i=0;i<entityList.size();i++)
+		{
 			if(entityList.get(i).equals(e))
 				entityList.remove(i);
+			else
+			{
+				for(int j=0;j<entityList.get(i).getChildrenSize();j++)
+					if(entityList.get(i).getChild(j).equals(e))
+						entityList.get(i).removeChild(e);
+			}
+		}
+		
 	}
 	
 	/**
@@ -125,7 +134,8 @@ public class EntityList {
 	}
 	
 	/**
-	 * Sets the entity at the given index to the given entity
+	 * Sets the entity at the given index to the given entity.  Keep in mind this
+	 * does not count child entities.
 	 * @param i Index to set
 	 * @param e Entity to set at the given index
 	 */
@@ -152,6 +162,84 @@ public class EntityList {
 	}
 	
 	/**
+	 * Replaces one entity with another entity.  Accounts for child entities.
+	 * @param e1 Entity to replace
+	 * @param e2 Entity to replace <i>e1</i> with
+	 */
+	public void replace(Entity e1, Entity e2)
+	{
+		replace(e1.getUUID(),e2);
+	}
+	
+	/**
+	 * Replaces the entity with the given UUID with the given entity.  Accounts for child entities.
+	 * @param uuidRep UUID of the entity to replace
+	 * @param e Entity to replace with
+	 */
+	public void replace(String uuidRep, Entity e)
+	{
+		for(int x=0;x<entityList.size();x++)
+		{
+			Entity ent = entityList.get(x);
+			if(ent.getUUID().equals(uuidRep))
+				entityList.set(x, e);
+			else
+			{
+				for(int y=0;y<ent.getChildrenSize();y++)
+				{
+					Entity child = ent.getChild(x);
+					if(child.getUUID().equals(uuidRep))
+					{
+						e.parent = ent;
+						ent.children.set(y, e);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Adds the given entity just before the entity with the given UUID.  Accounts for child entities.
+	 * @param e1 Entity to add to (<i>e2</i> will be added just before this entity)
+	 * @param e2 Entity to add
+	 */
+	public void add(Entity e1, Entity e2)
+	{
+		add(e1.getUUID(),e2);
+	}
+	
+	/**
+	 * Adds the given entity just before the entity with the given UUID.  Accounts for child entities.
+	 * @param uuidRep UUID of the entity to add before
+	 * @param e Entity to add
+	 */
+	public void add(String uuidRep, Entity e)
+	{
+		for(int x=0;x<entityList.size();x++)
+		{
+			Entity ent = entityList.get(x);
+			if(ent.getUUID().equals(uuidRep))
+			{
+				entityList.add(x, e);
+				x++; // Otherwise would go into an infinite loop
+			}
+			else
+			{
+				for(int y=0;y<ent.getChildrenSize();y++)
+				{
+					Entity child = ent.getChild(y);
+					if(child.getUUID().equals(uuidRep))
+					{
+						e.parent = ent;
+						ent.children.add(y, e);
+						y++;
+					}
+				}
+			}
+		}
+	}
+	
+	/**
 	 * @param index Index to get from
 	 * @return The Entity at the given index of the list.
 	 */
@@ -175,6 +263,7 @@ public class EntityList {
 	 * @param uuid The UUID that is being searched for.
 	 * @param mapLoad This is used by the map loader to automatically create new Entities when none can be found.
 	 * @return An entity with the given UUID
+	 * @see #getEntityWithUUID(String)
 	 */
 	public Entity getEntityWithUUID(String uuid, boolean mapLoad)
 	{
@@ -182,6 +271,12 @@ public class EntityList {
 		{
 			if(e.getUUID().equals(uuid))
 				return e;
+			else
+			{
+				for(int x=0;x<e.getChildrenSize();x++)
+					if(e.getChild(x).getUUID().equals(uuid))
+						return e;
+			}
 		}
 		if(mapLoad)
 		{

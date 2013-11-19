@@ -68,11 +68,11 @@ public class GuiEditorHeirarchy extends GuiMenu {
 				if(sections.get(x).pos.getColliderWithDim(sections.get(x).dim).isPointInside(mouse))
 				{
 					float localY = mouse.y-sections.get(x).pos.y;
-					if(localY >=0 && localY <=5 && x > 0 && x != getSelected()+1 && x != getSelected())
+					if(localY >=0 && localY <=5)
 						Renderer.drawRect(new Vector2(pos.x,sections.get(x).pos.y-2.5f), new Vector2(dim.x,5), 0xaaaaff, 0.5f);
-					else if(localY > 5 && localY < 15 && x != getSelected())
+					else if(localY > 5 && localY < 15)
 						Renderer.drawRect(new Vector2(pos.x,sections.get(x).pos.y), new Vector2(dim.x,sections.get(x).dim.y), 0xaaaaff, 0.5f);
-					else if(localY >= 15 && localY < 20 && x < sections.size()-1 && x != getSelected()-1 && x != getSelected())
+					else if(localY >= 15 && localY < 20)
 						Renderer.drawRect(new Vector2(pos.x,sections.get(x).pos.y+17.5f), new Vector2(dim.x,5), 0xaaaaff, 0.5f);
 				}
 			}
@@ -83,7 +83,7 @@ public class GuiEditorHeirarchy extends GuiMenu {
 	{
 		for(int x=0;x<sections.size();x++)
 			if(sections.get(x).selected)
-				getEditor().setSelectedEntity(x);
+				getEditor().setSelectedEntity(sections.get(x).uuid);
 	}
 	
 	public void animateSections()
@@ -151,20 +151,31 @@ public class GuiEditorHeirarchy extends GuiMenu {
 			return;
 		
 		float currentYPos = pos.y;
-		int selected = getEditor().getMap().getEntityList().indexOf(getEditor().getSelectedEntity());
+		String selected = getEditor().getSelectedEntity();
 		for(int x=0;x<getEditor().getMap().getEntityList().size();x++)
 		{
-			String name = getEditor().getMap().getEntityList().get(x).name;
-			if(name.equals(""))
-				name = "Untitled";
-			GuiEditorHeirarchySection sec = new GuiEditorHeirarchySection(this,name, new Vector2(pos.x,currentYPos),new Vector2(dim.x,20));
-			if(selected == x)
-				sec.selected = true;
-			sections.add(sec);
-			
-			currentYPos += 20;
+			Entity ent = getEditor().getMap().getEntityList().get(x);
+			currentYPos = addEntity(ent,ent.getUUID().equals(selected),currentYPos,0);
 		}
 		
+	}
+	
+	private float addEntity(Entity e, boolean selected, float currentYPos, int level)
+	{
+		String name = e.name;
+		if(name.equals(""))
+			name = "Untitled";
+		GuiEditorHeirarchySection sec = new GuiEditorHeirarchySection(this,name,e.getUUID(),new Vector2(pos.x,currentYPos),new Vector2(dim.x,20),level);
+		currentYPos += 20;
+		if(selected)
+			sec.selected = true;
+		
+		for(int x=0;x<e.getChildrenSize();x++)
+			currentYPos = addEntity(e.getChild(x),false,currentYPos,level+1);
+		
+		sections.add(sec);
+		
+		return currentYPos;
 	}
 	
 	public Entity getEntityForSec(GuiEditorHeirarchySection section)
@@ -190,42 +201,44 @@ public class GuiEditorHeirarchy extends GuiMenu {
 			{
 				DraggableObjectEntity drag = (DraggableObjectEntity)object;
 				Entity e = editor.getMap().getEntityList().getEntityWithUUID(drag.uuid);
-				int index = editor.getMap().getEntityList().indexOf(e);
 				if(sections.get(x).pos.getColliderWithDim(sections.get(x).dim).isPointInside(mouse))
 				{
 					float localY = mouse.y-sections.get(x).pos.y;
-					if(localY >=0 && localY <=5 && x > 0 && x != getSelected()+1 && x != getSelected())
+					if(localY >=0 && localY <= 5)
 					{
-						int placeToGo = x;
-						if(index < x)
-							placeToGo -= 1;
-						editor.getMap().getEntityList().removeEntityFromList(index);
-						editor.getMap().getEntityList().addEntityToList(e,placeToGo);
+						moveEntity(e,sections.get(x).uuid);
 						return true;
 					}
-					else if(localY > 5 && localY < 15 && x != getSelected())
+					else if(localY > 5 && localY < 15)
 					{
 						//TODO: Add children
 						return true;
 					}
-					else if(localY >= 15 && localY < 20 && x != getSelected()-1 && x != getSelected())
+					else if(localY >= 15 && localY < 20)
 					{
-						int placeToGo = x;
-						if(index > x)
-							placeToGo += 1;
-						editor.getMap().getEntityList().removeEntityFromList(index);
-						editor.getMap().getEntityList().addEntityToList(e,placeToGo);
+						if(x == sections.size()-1)
+						{
+							editor.getMap().getEntityList().removeEntityFromList(e);
+							editor.getMap().getEntityList().addEntityToList(e,x);
+						}else
+							moveEntity(e,sections.get(x+1).uuid);
 						return true;
 					}
 				} else if (x == sections.size()-1 && pos.getColliderWithDim(dim).isPointInside(mouse) && mouse.y > sections.get(x).pos.y+sections.get(x).dim.y)
 				{
-					editor.getMap().getEntityList().removeEntityFromList(index);
+					editor.getMap().getEntityList().removeEntityFromList(e);
 					editor.getMap().getEntityList().addEntityToList(e,x);
 					return true;
 				}
 			}
 		}
 		return false;
+	}
+	
+	private void moveEntity(Entity before, String after)
+	{
+		editor.getMap().getEntityList().removeEntityFromList(before);
+		editor.getMap().getEntityList().add(after, before);
 	}
 	
 }

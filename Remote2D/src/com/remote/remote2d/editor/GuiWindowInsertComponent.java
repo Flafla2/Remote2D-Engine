@@ -60,7 +60,7 @@ public class GuiWindowInsertComponent extends GuiWindow {
 			editor.getInspector().apply();
 			Component c = InsertableComponentList.getComponentWithEntity(textField.text.trim(),entity);
 			entity.addComponent(c.clone());
-			editor.getInspector().setCurrentEntity(entity);
+			editor.getInspector().setCurrentEntity(entity.getUUID());
 		}
 		holder.closeWindow(this);
 	}

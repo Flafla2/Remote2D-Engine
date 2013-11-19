@@ -7,21 +7,33 @@ public class OperationDeleteEntity extends Operation {
 	
 	Entity entity;
 	int position;
+	Entity parent;
 
 	public OperationDeleteEntity(GuiEditor editor) {
 		super(editor);
-		this.entity = editor.getSelectedEntity();
+		this.entity = editor.getMap().getEntityList().getEntityWithUUID(editor.getSelectedEntity());
 	}
 
 	@Override
 	public void execute() {
-		position = editor.getMap().getEntityList().indexOf(entity);
-		editor.getMap().getEntityList().removeEntityFromList(entity);
+		parent = entity.getParent();
+		if(entity.getParent() != null)
+		{
+			position = editor.getMap().getEntityList().indexOf(entity);
+			editor.getMap().getEntityList().removeEntityFromList(entity);
+		} else
+		{
+			position = entity.getParent().indexOfChild(entity);
+			entity.getParent().removeChild(entity);
+		}
 	}
 
 	@Override
 	public void undo() {
-		editor.getMap().getEntityList().addEntityToList(entity,position);
+		if(parent == null)
+			editor.getMap().getEntityList().addEntityToList(entity,position);
+		else
+			parent.addChild(position,entity);
 	}
 
 	@Override

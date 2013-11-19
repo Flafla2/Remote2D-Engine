@@ -285,6 +285,15 @@ public class Entity extends EditorObject {
 	}
 	
 	/**
+	 * Returns the index of the given child of this entity (such as with an ArrayList)
+	 * @param e Entity to evaluate
+	 */
+	public int indexOfChild(Entity e)
+	{
+		return children.indexOf(e);
+	}
+	
+	/**
 	 * The global position of this Entity, given any interpolation value.
 	 * {@link #pos} is local, so it does not account for the position of
 	 * its parents.  This does account for this.
@@ -293,7 +302,9 @@ public class Entity extends EditorObject {
 	 */
 	public Vector2 getPosGlobal(float interpolation)
 	{
-		return Renderer.matrixMultiply(getPosLocal(interpolation), getTransformMatrix());
+		if(parent == null)
+			return getPosLocal(interpolation);
+		return Renderer.matrixMultiply(getPosLocal(interpolation), parent.getTransformMatrix());
 	}
 	
 	/**
@@ -304,7 +315,9 @@ public class Entity extends EditorObject {
 	 */
 	public Vector2 getPosGlobal()
 	{
-		return Renderer.matrixMultiply(pos, getTransformMatrix());
+		if(parent == null)
+			return getPosLocal();
+		return Renderer.matrixMultiply(getPosLocal(), getTransformMatrix());
 	}
 	
 	/**
@@ -359,6 +372,7 @@ public class Entity extends EditorObject {
 	public Matrix4f getTransformMatrix()
 	{
 		Matrix4f mat = new Matrix4f();
+		//Matrix4f.translate(new Vector2f(-pos.x,-pos.y), mat, mat);
 		Matrix4f.rotate((float)(rotation*Math.PI/180), new Vector3f(0,0,1), mat, mat);
 		Matrix4f.translate(new Vector2f(pos.x,pos.y), mat, mat);
 		if(parent == null)
@@ -408,6 +422,18 @@ public class Entity extends EditorObject {
 		}
 	}
 	
+	public void removeChild(String uuid)
+	{
+		for(Entity e : children)
+		{
+			if(e.getUUID().equals(uuid))
+			{
+				e.parent = null;
+				children.remove(e);
+			}
+		}
+	}
+	
 	/**
 	 * Removes this entity from its map's entity list.
 	 */
@@ -433,16 +459,16 @@ public class Entity extends EditorObject {
 		boolean selected = false;
 		if(editor)
 			if(Remote2D.guiList.peek() instanceof GuiEditor)
-				if(((GuiEditor)Remote2D.guiList.peek()).getSelectedEntity() == this)
+				if(getUUID().equals(((GuiEditor)Remote2D.guiList.peek()).getSelectedEntity()))
 					selected = true;
 		
 		for(int x=0;x<components.size();x++)
 			components.get(x).renderBefore(editor, interpolation);
 		
 		Renderer.pushMatrix();
-			Renderer.translate(new Vector2(-globalPos.x, -globalPos.y));
-			Renderer.rotate(rotation);
 			Renderer.translate(new Vector2(globalPos.x, globalPos.y));
+			Renderer.rotate(rotation);
+			Renderer.translate(new Vector2(-globalPos.x, -globalPos.y));
 			if(editor)
 			{
 				float maxX = (dim.x)/32f;
@@ -535,6 +561,15 @@ public class Entity extends EditorObject {
 	public void updatePos()
 	{
 		oldPos = pos.copy();
+	}
+	
+	/**
+	 * Adds a child to this entity
+	 * @param entity Child to add
+	 * @param position Position in the child array to add this child to
+	 */
+	public void addChild(int position, Entity entity) {
+		children.add(position, entity);
 	}
 		
 }
