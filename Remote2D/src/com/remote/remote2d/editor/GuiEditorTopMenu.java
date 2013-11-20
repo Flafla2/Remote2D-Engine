@@ -17,7 +17,6 @@ import com.remote.remote2d.engine.DisplayHandler;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
-import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.entity.InsertableComponentList;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.gui.GuiInGame;
@@ -313,8 +312,7 @@ public class GuiEditorTopMenu extends Gui {
 		{
 			if(editor.getSelectedEntity() != null)
 			{
-				Entity e = editor.getMap().getEntityList().getEntityWithUUID(editor.getSelectedEntity());
-				e.addComponent(InsertableComponentList.getComponentWithEntity(secSubTitle,e));
+				editor.getSelectedEntity().addComponent(InsertableComponentList.getComponentWithEntity(secSubTitle,editor.getSelectedEntity()));
 				editor.getInspector().setCurrentEntity(editor.getSelectedEntity());
 			}
 		}

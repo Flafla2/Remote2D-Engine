@@ -739,24 +739,13 @@ public class Renderer {
 		matrixStack.push(new Matrix4f(matrixStack.peek()));
 	}
 	
-	public static void pushMatrix(Matrix4f mat)
-	{
-		if(mat != null)
-		{
-			matrixStack.push(mat);
-			pushMatrixToGL();
-		}
-	}
-	
-	public static Matrix4f popMatrix()
+	public static void popMatrix()
 	{
 		if(matrixStack.size() > 1)
 		{
-			Matrix4f mat = matrixStack.pop();
+			matrixStack.pop();
 			pushMatrixToGL();
-			return mat;
 		}
-		return matrixStack.peek();
 	}
 	
 	public static void rotate(float angle, boolean radians)

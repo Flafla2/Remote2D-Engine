@@ -15,25 +15,21 @@ public class GuiEditorHeirarchySection {
 	private long animLength;
 	private long lastClickEvent = -1;
 	private Vector2 oldPos;
-	private int level = 0;
 	public Vector2 pos;
 	public Vector2 dim;
 	
 	public String content;
-	public String uuid;
 	public boolean selected = false;
 	public boolean dragSelected = false;
 	public GuiEditorHeirarchy heirarchy;
 	
 	
-	public GuiEditorHeirarchySection(GuiEditorHeirarchy heirarchy, String content, String uuid, Vector2 pos, Vector2 dim, int level)
+	public GuiEditorHeirarchySection(GuiEditorHeirarchy heirarchy, String content, Vector2 pos, Vector2 dim)
 	{
 		this.heirarchy = heirarchy;
 		this.content = content;
 		this.pos = pos;
 		this.dim = dim;
-		this.level = level;
-		this.uuid = uuid;
 	}
 	
 
@@ -82,7 +78,7 @@ public class GuiEditorHeirarchySection {
 		Vector2 truePos = Interpolator.linearInterpolate(oldPos, pos, interpolation);
 		if(selected || dragSelected)
 			Renderer.drawRect(truePos, dim, 0xffffff, 0.5f);
-		Fonts.get("Arial").drawString(content, truePos.x+level*20, truePos.y, 20, 0xffffff);
+		Fonts.get("Arial").drawString(content, truePos.x, truePos.y, 20, 0xffffff);
 	}
 	
 	public boolean isAnimating()

@@ -42,7 +42,7 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 	private ArrayList<Operation> redoList;
 	
 	private Map map;
-	private String selectedEntity = null;
+	private Entity selectedEntity = null;
 	
 	private Vector2 dragPoint = null;
 	
@@ -75,7 +75,7 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 		
 		if(preview == null)
 		{
-			preview = new GuiEditorPreview(this,new Vector2(0,screenHeight()-previewHeight),new Vector2(300,previewHeight));
+			preview = new GuiEditorPreview(inspector,new Vector2(0,screenHeight()-previewHeight),new Vector2(300,previewHeight));
 		} else
 		{
 			preview.pos.y = screenHeight()-previewHeight;
@@ -118,7 +118,9 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 	
 	public void replaceSelectedEntity(Entity e)
 	{
-		map.getEntityList().replace(selectedEntity, e);
+		int index = map.getEntityList().indexOf(selectedEntity);
+		map.getEntityList().set(index, e);
+		selectedEntity = map.getEntityList().get(index);
 	}
 	
 	@Override
@@ -222,8 +224,8 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 			{
 				if(selectedEntity == null)
 					handle.setEntityUUID(null);
-				else if(!selectedEntity.equals(handle.getEntityUUID()))
-					handle.setEntityUUID(selectedEntity);
+				else if(!selectedEntity.getUUID().equals(handle.getEntityUUID()))
+					handle.setEntityUUID(selectedEntity.getUUID());
 				
 				handle.tick(i, j, k);
 			}
@@ -245,11 +247,7 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 		if(Remote2D.hasMouseBeenPressed() && !(getMouseInWindow(i,j) || menu.isMenuHovered(i,j)))
 		{
 			if(map != null && !isWidgetHovered(i,j) && (handle == null || !handle.isSelected()))
-			{
-				Entity e = map.getTopEntityAtPoint(getMapMousePos());
-				String s = e==null?null:e.getUUID();
-				setSelectedEntity(s);
-			}
+				setSelectedEntity(map.getEntityList().indexOf(map.getTopEntityAtPoint(getMapMousePos())));
 		}
 		
 		if(map != null)
@@ -345,10 +343,16 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 		return window.pos.getColliderWithDim(window.dim.add(new Vector2(0,20))).isPointInside(new Vector2(i,j));
 	}
 	
-	public void setSelectedEntity(String uuid)
+	public void setSelectedEntity(int index)
 	{
-		selectedEntity = uuid;
-		inspector.setCurrentEntity(uuid);
+		if(index == -1)
+		{
+			selectedEntity = null;
+			inspector.setCurrentEntity(null);
+			return;
+		}
+		selectedEntity = map.getEntityList().get(index);
+		inspector.setCurrentEntity(map.getEntityList().get(index));
 	}
 
 	@Override
@@ -376,7 +380,7 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 		inspector.setCurrentEntity(null);
 	}
 
-	public String getSelectedEntity() {
+	public Entity getSelectedEntity() {
 		return selectedEntity;
 	}
 	
