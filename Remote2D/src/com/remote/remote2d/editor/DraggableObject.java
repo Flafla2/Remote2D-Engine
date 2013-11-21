@@ -83,6 +83,11 @@ public class DraggableObject extends Gui {
 		}
 	}
 	
+	public boolean hasShown()
+	{
+		return hasShown;
+	}
+	
 	public void setAbsolutePos(Vector2 pos)
 	{
 		this.pos = pos.copy();

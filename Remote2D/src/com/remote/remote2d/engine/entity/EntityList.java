@@ -198,5 +198,23 @@ public class EntityList {
 	public void clear() {
 		entityList.clear();
 	}
+
+	/**
+	 * Adds the given entity just before the entity with the given UUID.  Accounts for child entities.
+	 * @param uuidRep UUID of the entity to add before
+	 * @param e Entity to add
+	 */
+	public void add(String uuidRep, Entity e)
+	{
+		for(int x=0;x<entityList.size();x++)
+		{
+			Entity ent = entityList.get(x);
+			if(ent.getUUID().equals(uuidRep))
+			{
+				entityList.add(x, e);
+				x++; // Otherwise would go into an infinite loop
+			}
+		}
+	}
 	
 }

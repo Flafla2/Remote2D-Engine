@@ -58,18 +58,15 @@ public class Entity extends EditorObject {
 	 */
 	public Material material;
 	public boolean repeatTex = false;
-	
 	public boolean linearScaling = false;
+	public Entity parent;
 	
 	private Texture slashTex;
 	
 	private Vector2 oldPos;
 	
 	private static final String slashLoc = "res/gui/slash.png";
-	protected ArrayList<Entity> children;
 	protected ArrayList<Component> components;
-		
-	protected Entity parent;
 	
 	public Entity(Map map)
 	{
@@ -80,7 +77,6 @@ public class Entity extends EditorObject {
 	{
 		super(map,null);
 		this.name = name;
-		children = new ArrayList<Entity>();
 		components = new ArrayList<Component>();
 		
 		slashTex = new Texture(slashLoc,false,true);
@@ -95,7 +91,6 @@ public class Entity extends EditorObject {
 	{
 		super(map,uuid);
 		this.name = name;
-		children = new ArrayList<Entity>();
 		components = new ArrayList<Component>();
 		slashTex = new Texture(slashLoc,false,true);
 		
@@ -110,10 +105,7 @@ public class Entity extends EditorObject {
 	 */
 	public void addChild(Entity e)
 	{
-		if(e.getParent() != null)
-			e.parent.removeChild(this);
 		e.parent = this;
-		children.add(e);
 	}
 	
 	/**
@@ -189,23 +181,6 @@ public class Entity extends EditorObject {
 		}
 		
 		return v1.getColliderWithDim(v2.subtract(v1));
-	}
-	
-	/**
-	 * Gets a child entity at the specified index.
-	 * @param index The index of a child entity
-	 */
-	public Entity getChild(int index)
-	{
-		return children.get(index);
-	}
-	
-	/**
-	 * How many children this entity has.
-	 */
-	public int getChildrenSize()
-	{
-		return children.size();
 	}
 	
 	/**
@@ -373,7 +348,7 @@ public class Entity extends EditorObject {
 	 */
 	public boolean isChild(Entity e)
 	{
-		return children.contains(e);
+		return equals(e.getParent());
 	}
 	
 	/**
@@ -401,11 +376,7 @@ public class Entity extends EditorObject {
 	 */
 	public void removeChild(Entity e)
 	{
-		if(children.contains(e))
-		{
-			children.remove(e);
-			e.parent = null;
-		}
+		e.parent = null;
 	}
 	
 	/**

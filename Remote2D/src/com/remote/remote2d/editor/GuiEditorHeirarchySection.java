@@ -22,14 +22,16 @@ public class GuiEditorHeirarchySection {
 	public boolean selected = false;
 	public boolean dragSelected = false;
 	public GuiEditorHeirarchy heirarchy;
+	public String uuid;
 	
 	
-	public GuiEditorHeirarchySection(GuiEditorHeirarchy heirarchy, String content, Vector2 pos, Vector2 dim)
+	public GuiEditorHeirarchySection(GuiEditorHeirarchy heirarchy, String content, String uuid, Vector2 pos, Vector2 dim)
 	{
 		this.heirarchy = heirarchy;
 		this.content = content;
 		this.pos = pos;
 		this.dim = dim;
+		this.uuid = uuid;
 	}
 	
 
@@ -62,8 +64,9 @@ public class GuiEditorHeirarchySection {
 			}
 		} else if(Mouse.isButtonDown(0) && pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)) && heirarchy.getEditor().dragObject == null)
 		{
+			Vector2 pos = this.pos.subtract(new Vector2(0,heirarchy.offset));
 			String uuid = heirarchy.getEntityForSec(this).getUUID();
-			heirarchy.getEditor().dragObject = new DraggableObjectEntity(heirarchy.getEditor(),content,uuid,pos,dim,new Vector2(i,j).subtract(pos));
+			heirarchy.getEditor().dragObject = new DraggableObjectEntity(heirarchy.getEditor(),content,uuid,pos,dim,new Vector2(i,j).subtract(this.pos));
 		} else if(pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)) && Remote2D.hasMouseBeenReleased())
 		{
 			heirarchy.setAllUnselected();
