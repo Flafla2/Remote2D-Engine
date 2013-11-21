@@ -1,5 +1,6 @@
 package com.remote.remote2d.engine;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -218,6 +219,19 @@ public class Remote2D {
 	
 	private static void start()
 	{
+		String os = System.getProperty("os.name").toLowerCase();
+		String nativesDirectory = "";
+		if(os.indexOf("mac") >= 0)
+			nativesDirectory = "lib/natives_mac";
+		else if(os.indexOf("win") >= 0)
+			nativesDirectory = "lib/natives_windows";
+		else if(os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("aix") > 0 )
+			nativesDirectory = "lib/natives_linux";
+		else if(os.indexOf("sunos") >= 0)
+			nativesDirectory = "lib/natives_solaris";
+		
+		System.setProperty("org.lwjgl.librarypath", new File(nativesDirectory).getAbsolutePath());
+		
 		Vector2 gameDim = game.getDefaultResolution();
 		Vector2 winDim = game.getDefaultScreenResolution();
 		DisplayHandler.init((int)winDim.x,(int)winDim.y,(int)gameDim.x,(int)gameDim.y,game.getDefaultStretchType(),false,false);
