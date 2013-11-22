@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.editor.GuiCreateSpriteSheet;
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.engine.Remote2D;
@@ -34,6 +35,7 @@ public class GuiEditorBrowser extends Gui {
 		
 		folderStack = new Stack<Folder>();
 		sections = new ArrayList<GuiEditorBrowserSection>();
+		Log.debug((R2DFileUtility.getJarPath() == null)+"");
 		pushFolder(new Folder(R2DFileUtility.getJarPath().getPath()));
 	}
 	

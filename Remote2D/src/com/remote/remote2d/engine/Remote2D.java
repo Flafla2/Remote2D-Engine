@@ -342,9 +342,7 @@ public class Remote2D {
 	/**
 	 * A limited list of all keys that have been pressed this tick.  Similar to
 	 * {@link #getKeyboardList()}, however this only counts keys that are included
-	 * in {@link #allowedChars}:<br /><br />
-	 * 
-	 * {@value #allowedChars}
+	 * in {@link #allowedChars}
 	 */
 	@SuppressWarnings("unchecked")
 	public static ArrayList<Character> getLimitedKeyboardList()

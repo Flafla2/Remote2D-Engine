@@ -38,9 +38,9 @@ public class Entity extends EditorObject {
 	/**
 	 * This entity's local position, relative to its parent entity.  DO NOT USE THIS
 	 * for calculating the global position of an entity (for rendering, etc.) use
-	 * {@link #getGlobalPos()}.
+	 * {@link #getPosGlobal()}.
 	 * 
-	 * @see #getGlobalPos()
+	 * @see #getPosGlobal()
 	 */
 	public Vector2 pos;
 	/**

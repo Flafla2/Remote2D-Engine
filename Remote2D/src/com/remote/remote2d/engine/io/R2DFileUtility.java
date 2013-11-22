@@ -102,7 +102,7 @@ public class R2DFileUtility {
 
 	public static File getJarPath()
 	{
-		return new File(Remote2D.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
+		return new File(Remote2D.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getAbsoluteFile().getParentFile();
 	}
 
 	public static String getRelativePath(File file, File folder) {
