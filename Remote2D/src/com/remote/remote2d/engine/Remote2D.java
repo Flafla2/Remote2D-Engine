@@ -433,7 +433,8 @@ public class Remote2D {
 			application.addApplicationListener(new MacUIHandler());
 			application.setEnabledPreferencesMenu(false);
 			
-			application.setApplicationIconImage(TextureLoader.loadImage(game.getIconPath()[0]));
+			if(game.getIconPath() != null && game.getIconPath().length > 0)
+				application.setApplicationIconImage(TextureLoader.loadImage(game.getIconPath()[0]));
 		}
 				
 		Thread thread = new Thread("Remote2D Thread") {
