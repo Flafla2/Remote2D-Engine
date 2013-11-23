@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import com.remote.remote2d.editor.GuiEditor;
@@ -59,7 +58,7 @@ public class Entity extends EditorObject {
 	public Material material;
 	public boolean repeatTex = false;
 	public boolean linearScaling = false;
-	public Entity parent;
+	//TODO: Readd parents
 	
 	private Texture slashTex;
 	
@@ -97,15 +96,6 @@ public class Entity extends EditorObject {
 		pos = new Vector2(0,0);
 		oldPos = new Vector2(0,0);
 		dim = new Vector2(50,50);
-	}
-	
-	/**
-	 * Adds a child to this entity
-	 * @param e The child
-	 */
-	public void addChild(Entity e)
-	{
-		e.parent = this;
 	}
 	
 	/**
@@ -242,21 +232,13 @@ public class Entity extends EditorObject {
 	 * The global rotation of this Entity. {@link #rotation} is local, so it does not
 	 * account for the rotation of its parents.  This does account for this.
 	 * 
+	 * NOTE: Because parents have not been implemented yet this is equivalent to {@link #rotation}
+	 * 
 	 * @see #rotation
 	 */
 	public float getGlobalRotation()
 	{
-		if(parent == null)
-			return rotation;
-		return parent.getGlobalRotation() + rotation;
-	}
-	
-	/**
-	 * The parent of this entity.
-	 */
-	public Entity getParent()
-	{
-		return parent;
+		return rotation;
 	}
 	
 	/**
@@ -268,7 +250,7 @@ public class Entity extends EditorObject {
 	 */
 	public Vector2 getPosGlobal(float interpolation)
 	{
-		return Renderer.matrixMultiply(getPosLocal(interpolation), getTransformMatrix());
+		return Renderer.matrixMultiply(new Vector2(0,0), getTransformMatrix());
 	}
 	
 	/**
@@ -279,7 +261,7 @@ public class Entity extends EditorObject {
 	 */
 	public Vector2 getPosGlobal()
 	{
-		return Renderer.matrixMultiply(pos, getTransformMatrix());
+		return Renderer.matrixMultiply(new Vector2(0,0), getTransformMatrix());
 	}
 	
 	/**
@@ -330,25 +312,21 @@ public class Entity extends EditorObject {
 	/**
 	 * The final matrix made up of the matrices of the combined transformations
 	 * of this Entity and its parents.
+	 * 
+	 * NOTE: Because parents have not been implemented yet this is equivalent to {@link #getLocalTransformMatrix()}
 	 */
 	public Matrix4f getTransformMatrix()
 	{
-		Matrix4f mat = new Matrix4f();
-		Matrix4f.rotate((float)(rotation*Math.PI/180), new Vector3f(0,0,1), mat, mat);
-		Matrix4f.translate(new Vector2f(pos.x,pos.y), mat, mat);
-		if(parent == null)
-			return mat;
-		
-		return Matrix4f.mul(mat, parent.getTransformMatrix(), null);
+		Matrix4f mat = getLocalTransformMatrix();
+
+		return mat;
 	}
 	
-	/**
-	 * @param e Any entity
-	 * @return If <i>e</i> is a child of this entity.
-	 */
-	public boolean isChild(Entity e)
-	{
-		return equals(e.getParent());
+	public Matrix4f getLocalTransformMatrix() {
+		Matrix4f mat = new Matrix4f();
+		Matrix4f.translate(new Vector3f(pos.x,pos.y,0), mat, mat);
+		Matrix4f.rotate((float)((rotation*Math.PI)/180f), new Vector3f(0,0,1), mat, mat);
+		return mat;
 	}
 	
 	/**
@@ -371,15 +349,6 @@ public class Entity extends EditorObject {
 	}
 	
 	/**
-	 * Removes a child from this entity
-	 * @param e The child to remove
-	 */
-	public void removeChild(Entity e)
-	{
-		e.parent = null;
-	}
-	
-	/**
 	 * Removes this entity from its map's entity list.
 	 */
 	public void removeEntityFromWorld()
@@ -396,7 +365,6 @@ public class Entity extends EditorObject {
 	public void render(boolean editor, float interpolation)
 	{
 		Vector2 pos = Interpolator.linearInterpolate(oldPos, this.pos, interpolation);
-		Vector2 globalPos = getPosGlobal(interpolation);
 		
 		if(editor)
 			oldPos = pos.copy();
@@ -411,9 +379,8 @@ public class Entity extends EditorObject {
 			components.get(x).renderBefore(editor, interpolation);
 		
 		Renderer.pushMatrix();
-			Renderer.translate(new Vector2(-globalPos.x, -globalPos.y));
-			Renderer.rotate(rotation);
-			Renderer.translate(new Vector2(globalPos.x, globalPos.y));
+			Renderer.mult(getTransformMatrix());
+			
 			if(editor)
 			{
 				float maxX = (dim.x)/32f;
@@ -423,19 +390,19 @@ public class Entity extends EditorObject {
 					color = 0xff0000;
 				else
 					color = 0xffaaaa;
-				Renderer.drawRect(globalPos, dim, new Vector2(0,0), new Vector2(maxX, maxY), slashTex, color, 1);
+				Renderer.drawRect(new Vector2(0,0), dim, new Vector2(0,0), new Vector2(maxX, maxY), slashTex, color, 1);
 			}
 			
-			material.render(globalPos, dim);
+			material.render(new Vector2(0,0), dim);
 			
 			if(editor && selected)
-				Renderer.drawLineRect(globalPos, dim, 1, 0, 0, 1);
+				Renderer.drawLineRect(new Vector2(0,0), dim, 1, 0, 0, 1);
 		Renderer.popMatrix();
 		
 		for(int x=components.size()-1;x>=0;x--)
 			components.get(x).renderAfter(editor, interpolation);
 	}
-	
+
 	/**
 	 * Renders all of this entity's colliders for debugging purposes.
 	 */

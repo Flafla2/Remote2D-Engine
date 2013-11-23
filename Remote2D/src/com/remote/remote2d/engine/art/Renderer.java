@@ -1,6 +1,7 @@
 package com.remote.remote2d.engine.art;
 
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import java.util.Stack;
 
 import org.lwjgl.BufferUtils;
@@ -26,10 +27,12 @@ public class Renderer {
 	
 	private static boolean wireframe = false;
 	private static Stack<Matrix4f> matrixStack = new Stack<Matrix4f>();
+	public static Stack<ArrayList<String>> operations = new Stack<ArrayList<String>>();
 	
 	static
 	{
 		matrixStack.push(new Matrix4f());
+		operations.push(new ArrayList<String>());
 	}
 	
 	/**
@@ -737,6 +740,7 @@ public class Renderer {
 	public static void pushMatrix()
 	{
 		matrixStack.push(new Matrix4f(matrixStack.peek()));
+		operations.push(new ArrayList<String>());
 	}
 	
 	public static void popMatrix()
@@ -744,6 +748,7 @@ public class Renderer {
 		if(matrixStack.size() > 1)
 		{
 			matrixStack.pop();
+			operations.pop();
 			pushMatrixToGL();
 		}
 	}
@@ -753,9 +758,10 @@ public class Renderer {
 		if(!radians)
 		{
 			angle *= Math.PI;
-			angle /= 180;
+			angle /= 180f;
 		}
 		matrixStack.peek().rotate(angle, new Vector3f(0,0,1));
+		operations.peek().add("Rotate: "+((angle*180)/Math.PI)+" deg ("+angle+" rad)");
 		pushMatrixToGL();
 	}
 	
@@ -767,30 +773,50 @@ public class Renderer {
 	public static void translate(Vector2 trans)
 	{
 		matrixStack.peek().translate(new Vector3f(trans.x,trans.y,0));
+		operations.peek().add("Translate: "+trans.toString());
+		pushMatrixToGL();
+	}
+	
+	public static void mult(Matrix4f matrix)
+	{
+		matrixStack.set(matrixStack.size()-1, Matrix4f.mul(matrixStack.peek(), matrix, null));
+		operations.peek().add("Matrix Mult: \n"+matrix.toString());
+		pushMatrixToGL();
+	}
+	
+	public static void setTop(Matrix4f matrix)
+	{
+		matrixStack.set(matrixStack.size()-1, matrix);
+		operations.peek().add("Matrix Set: \n"+matrix.toString());
 		pushMatrixToGL();
 	}
 	
 	public static void scale(Vector2 scale)
 	{
 		matrixStack.peek().scale(new Vector3f(scale.x, scale.y, 1));
+		operations.peek().add("Scale: "+scale.toString());
 		pushMatrixToGL();
 	}
 	
 	public static void scale(float scale)
 	{
 		matrixStack.peek().scale(new Vector3f(scale, scale, 1));
+		operations.peek().add("Scale: "+scale);
 		pushMatrixToGL();
 	}
 	
 	public static void loadIdentity()
 	{
 		matrixStack.peek().setIdentity();
+		operations.peek().add("Load Identity");
 	}
 	
 	public static void clear()
 	{
 		matrixStack.clear();
 		matrixStack.push(new Matrix4f());
+		operations.clear();
+		operations.push(new ArrayList<String>());
 	}
 
 	public static Matrix4f peekMatrix() {
@@ -799,7 +825,7 @@ public class Renderer {
 	
 	public static Vector2 matrixMultiply(Vector2 vec, Matrix4f matrix)
 	{
-		Vector4f lwjglVec = new Vector4f(vec.x,vec.y,0,0);
+		Vector4f lwjglVec = new Vector4f(vec.x,vec.y,0,1);
 		Vector4f retVec = Matrix4f.transform(matrix, lwjglVec, null);
 		return new Vector2(retVec.x, retVec.y);
 	}
