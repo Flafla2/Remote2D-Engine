@@ -10,7 +10,7 @@ public class OperationDeleteEntity extends Operation {
 
 	public OperationDeleteEntity(GuiEditor editor) {
 		super(editor);
-		this.entity = editor.getSelectedEntity();
+		this.entity = editor.getMap().getEntityList().getEntityWithUUID(editor.getSelectedEntity());
 	}
 
 	@Override

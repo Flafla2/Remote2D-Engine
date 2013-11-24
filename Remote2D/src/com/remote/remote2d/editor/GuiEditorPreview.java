@@ -1,6 +1,5 @@
 package com.remote.remote2d.editor;
 
-import com.remote.remote2d.editor.inspector.GuiEditorInspector;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.entity.Entity;
@@ -9,16 +8,16 @@ import com.remote.remote2d.engine.logic.Vector2;
 
 public class GuiEditorPreview extends Gui {
 	
-	private GuiEditorInspector inspector;
+	private GuiEditor editor;
 	
 	public Vector2 pos;
 	public Vector2 dim;
 	
-	public GuiEditorPreview(GuiEditorInspector inspector, Vector2 pos, Vector2 dim)
+	public GuiEditorPreview(GuiEditor editor, Vector2 pos, Vector2 dim)
 	{
 		this.pos = pos;
 		this.dim = dim;
-		this.inspector = inspector;
+		this.editor = editor;
 	}
 
 	@Override
@@ -36,14 +35,12 @@ public class GuiEditorPreview extends Gui {
 		
 		Renderer.startScissor(new Vector2(pos.x,pos.y+21), dim);
 		
-		if(inspector.currentEntity != null)
+		if(editor.getSelectedEntity() != null)
 		{
+			Entity current = editor.getMap().getEntityList().getEntityWithUUID(editor.getSelectedEntity());
 			Renderer.pushMatrix();
-			if(inspector.currentEntity instanceof Entity)
-			{
-				Renderer.translate(new Vector2(pos.x+dim.x/2-inspector.currentEntity.getDim().x/2, pos.y+dim.y/2-inspector.currentEntity.getDim().y/2));
-				inspector.currentEntity.renderPreview(interpolation);
-			}
+			Renderer.translate(new Vector2(pos.x+dim.x/2-current.getDim().x/2, pos.y+dim.y/2-current.getDim().y/2));
+			current.renderPreview(interpolation);
 			Renderer.popMatrix();
 		}
 		

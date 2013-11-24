@@ -24,11 +24,11 @@ public class OperationEditEntity extends Operation {
 		{
 			if(editor.getMap().getEntityList().get(x).getUUID().equals(before.getUUID()))
 			{
-				boolean setSelected = editor.getSelectedEntity().getUUID().equals(before.getUUID());
+				boolean setSelected = before.getUUID().equals(editor.getSelectedEntity());
 				after.updatePos();
 				editor.getMap().getEntityList().set(x, after);
 				if(setSelected)
-					editor.setSelectedEntity(x);
+					editor.setSelectedEntity(after.getUUID());
 				return;
 			}
 		}
@@ -44,11 +44,11 @@ public class OperationEditEntity extends Operation {
 		{
 			if(editor.getMap().getEntityList().get(x).getUUID().equals(after.getUUID()))
 			{
-				boolean setSelected = editor.getSelectedEntity().getUUID().equals(after.getUUID());
+				boolean setSelected = after.getUUID().equals(editor.getSelectedEntity());
 				before.updatePos();
 				editor.getMap().getEntityList().set(x, before);
 				if(setSelected)
-					editor.setSelectedEntity(x);
+					editor.setSelectedEntity(before.getUUID());
 				return;
 			}
 		}

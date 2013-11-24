@@ -15,7 +15,7 @@ import com.remote.remote2d.engine.logic.Vector2;
 
 public class GuiEditorInspector extends GuiMenu {
 		
-	public Entity currentEntity;
+	public String currentEntity;
 	private ArrayList<EditorObjectWizard> wizards;
 	private GuiButton button;
 	private GuiEditor editor;
@@ -108,20 +108,19 @@ public class GuiEditorInspector extends GuiMenu {
 		return (float)Interpolator.linearInterpolate(lastOffset, offset, interpolation);
 	}
 	
-	public void setCurrentEntity(Entity o)
+	public void setCurrentEntity(String o)
 	{
 		this.currentEntity = o;
+		Entity e = editor.getMap().getEntityList().getEntityWithUUID(currentEntity);
 		wizards.clear();
 		button.setDisabled(currentEntity == null);
 		if(currentEntity==null)
 			return;
 		
 		Vector2 currentPos = pos.copy();
-		EditorObjectWizard ew = new EditorObjectWizard(editor,currentEntity,currentPos,(int)dim.x);
+		EditorObjectWizard ew = new EditorObjectWizard(editor,e,currentPos,(int)dim.x);
 		wizards.add(ew);
 		currentPos.y += ew.getHeight();
-		
-		Entity e = o;
 		
 		for(int x=0;x<e.getComponents().size();x++)
 		{
@@ -143,13 +142,12 @@ public class GuiEditorInspector extends GuiMenu {
 	
 	public void apply()
 	{
-		Entity clone = currentEntity.clone();
+		Entity before = editor.getMap().getEntityList().getEntityWithUUID(currentEntity).clone();
 		for(int x=0;x<wizards.size();x++)
 		{
 			wizards.get(x).setComponentFields();
 		}
-		Entity before = clone;
-		Entity after = currentEntity.clone();
+		Entity after = editor.getMap().getEntityList().getEntityWithUUID(currentEntity);
 		editor.executeOperation(new OperationEditEntity(editor,before,after));
 	}
 	

@@ -8,6 +8,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import com.esotericsoftware.minlog.Log;
+import com.remote.remote2d.editor.operation.OperationAddComponent;
 import com.remote.remote2d.editor.operation.OperationDeleteEntity;
 import com.remote.remote2d.editor.operation.OperationNewEntity;
 import com.remote.remote2d.editor.operation.OperationNewMap;
@@ -311,10 +312,7 @@ public class GuiEditorTopMenu extends Gui {
 		} else if(secTitle.equalsIgnoreCase("Component"))
 		{
 			if(editor.getSelectedEntity() != null)
-			{
-				editor.getSelectedEntity().addComponent(InsertableComponentList.getComponentWithEntity(secSubTitle,editor.getSelectedEntity()));
-				editor.getInspector().setCurrentEntity(editor.getSelectedEntity());
-			}
+				editor.executeOperation(new OperationAddComponent(editor,editor.getSelectedEntity(),InsertableComponentList.getComponentWithEntity(secSubTitle, editor.getMap().getEntityList().getEntityWithUUID(editor.getSelectedEntity()))));
 		}
 	}
 	

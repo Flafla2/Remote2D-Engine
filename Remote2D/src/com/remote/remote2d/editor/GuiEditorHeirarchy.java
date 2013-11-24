@@ -107,7 +107,7 @@ public class GuiEditorHeirarchy extends GuiMenu {
 	{
 		for(int x=0;x<sections.size();x++)
 			if(sections.get(x).selected)
-				getEditor().setSelectedEntity(x);
+				getEditor().setSelectedEntity(sections.get(x).uuid);
 	}
 	
 	public void animateSections()
@@ -175,7 +175,6 @@ public class GuiEditorHeirarchy extends GuiMenu {
 			return;
 		
 		float currentYPos = pos.y;
-		int selected = getEditor().getMap().getEntityList().indexOf(getEditor().getSelectedEntity());
 		for(int x=0;x<getEditor().getMap().getEntityList().size();x++)
 		{
 			Entity n = getEditor().getMap().getEntityList().get(x);
@@ -183,7 +182,7 @@ public class GuiEditorHeirarchy extends GuiMenu {
 			if(name.equals(""))
 				name = "Untitled";
 			GuiEditorHeirarchySection sec = new GuiEditorHeirarchySection(this,name,n.getUUID(),new Vector2(pos.x,currentYPos),new Vector2(dim.x,20));
-			if(selected == x)
+			if(n.getUUID().equals(editor.getSelectedEntity()))
 				sec.selected = true;
 			sections.add(sec);
 			
