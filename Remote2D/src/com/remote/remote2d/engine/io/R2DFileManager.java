@@ -38,8 +38,6 @@ public class R2DFileManager {
 	
 	public R2DFileManager(String path, R2DFileSaver saverClass)
 	{
-		path = path.replace('/', File.separatorChar);
-		path = path.replace('\\', File.separatorChar);
 		this.path = path;
 		file = R2DFileUtility.getResource(path);
 		collection = new R2DTypeCollection(file.getName());

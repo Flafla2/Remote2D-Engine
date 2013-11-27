@@ -26,6 +26,7 @@ public class Map implements R2DFileSaver {
 	public Camera camera;
 	public int backgroundColor = 0xffffff;
 	public int gridSize = 16;
+	public String path = null;
 	
 	public boolean debug = false;
 	

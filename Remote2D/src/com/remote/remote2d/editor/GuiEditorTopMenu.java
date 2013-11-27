@@ -12,7 +12,6 @@ import com.remote.remote2d.editor.operation.OperationAddComponent;
 import com.remote.remote2d.editor.operation.OperationDeleteEntity;
 import com.remote.remote2d.editor.operation.OperationNewEntity;
 import com.remote.remote2d.editor.operation.OperationNewMap;
-import com.remote.remote2d.editor.operation.OperationOpenMap;
 import com.remote.remote2d.editor.operation.OperationSaveMap;
 import com.remote.remote2d.engine.DisplayHandler;
 import com.remote.remote2d.engine.Remote2D;
@@ -22,9 +21,7 @@ import com.remote.remote2d.engine.entity.InsertableComponentList;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.gui.GuiInGame;
 import com.remote.remote2d.engine.gui.KeyShortcut;
-import com.remote.remote2d.engine.io.R2DFileManager;
 import com.remote.remote2d.engine.logic.Vector2;
-import com.remote.remote2d.engine.world.Map;
 
 public class GuiEditorTopMenu extends Gui {
 	
@@ -201,16 +198,16 @@ public class GuiEditorTopMenu extends Gui {
 			} else if(secSubTitle.equalsIgnoreCase("Open Map"))
 			{
 				Log.info("Opening!");
-				Map newMap = new Map();
-				R2DFileManager mapManager = new R2DFileManager("res/maps/map.r2d", newMap);
-				mapManager.read();
-				if(editor.getMap() != null)
-					editor.confirmOperation(new OperationOpenMap(editor,newMap));
-				else
-					editor.executeOperation(new OperationOpenMap(editor,newMap));
-			} else if(secSubTitle.equalsIgnoreCase("Save Map"))
+				editor.pushWindow(new GuiWindowOpenMap(editor, new Vector2(i,j), editor.getWindowBounds()));
+			} else if(secSubTitle.equalsIgnoreCase("Save Map") && editor.getMap() != null)
 			{
-				editor.confirmOperation(new OperationSaveMap(editor));
+				if(editor.getMap().path != null)
+					editor.confirmOperation(new OperationSaveMap(editor,editor.getMap().path));
+				else
+					editor.pushWindow(new GuiWindowSaveMap(editor,new Vector2(i,j),editor.getWindowBounds()));
+			} else if(secSubTitle.equalsIgnoreCase("Save Map As...") && editor.getMap() != null)
+			{
+				editor.pushWindow(new GuiWindowSaveMap(editor,new Vector2(i,j),editor.getWindowBounds()));
 			}
 		} else if(secTitle.equalsIgnoreCase("Edit"))
 		{
