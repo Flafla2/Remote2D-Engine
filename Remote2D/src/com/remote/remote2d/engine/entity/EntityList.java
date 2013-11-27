@@ -125,7 +125,14 @@ public class EntityList {
 	}
 	
 	/**
-	 * Sets the entity at the given index to the given entity
+	 * Sets the entity at the given index to the given entity.
+	 * The higher the index, the later the Entity will be rendered,
+	 * which means that an entity with a higher index will be "on top" of
+	 * entities with a lower index.
+	 * 
+	 * Also keep in mind that set() does NOT retain pointers to other entities.
+	 * For this reason set() should almost ONLY be used by the engine.  In almost
+	 * all cases {@link Entity#transpose(Entity)} is recommended.
 	 * @param i Index to set
 	 * @param e Entity to set at the given index
 	 */
@@ -152,6 +159,10 @@ public class EntityList {
 	}
 	
 	/**
+	 * Gets the entity at the given index.  The higher the index, the later the
+	 * Entity will be rendered, which means that an entity with a higher index will
+	 * be "on top" of entities with a lower index.
+	 * 
 	 * @param index Index to get from
 	 * @return The Entity at the given index of the list.
 	 */

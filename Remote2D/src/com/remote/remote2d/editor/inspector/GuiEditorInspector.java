@@ -147,7 +147,7 @@ public class GuiEditorInspector extends GuiMenu {
 		{
 			wizards.get(x).setComponentFields();
 		}
-		Entity after = editor.getMap().getEntityList().getEntityWithUUID(currentEntity);
+		Entity after = editor.getMap().getEntityList().getEntityWithUUID(currentEntity).clone();
 		editor.executeOperation(new OperationEditEntity(editor,before,after));
 	}
 	

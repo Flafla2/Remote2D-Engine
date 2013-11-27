@@ -129,6 +129,22 @@ public class Entity extends EditorObject {
 		return clone;
 	}
 	
+	/**
+	 * Takes all the attributes of the given entity and transposes it to this
+	 * entity.
+	 * @param e Entity to transpose over to this one.
+	 */
+	public void transpose(Entity e)
+	{
+		R2DTypeCollection compile = new R2DTypeCollection("Entity Clone");
+		e.saveR2DFile(compile);
+		loadR2DFile(compile);
+		
+		components.clear();
+		for(Component c : e.components)
+			addComponent(c.clone());
+	}
+	
 	@Override
 	public boolean equals(Object o)
 	{
