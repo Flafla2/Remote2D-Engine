@@ -1,16 +1,24 @@
 package com.remote.remote2d.editor.operation;
 
+import java.io.File;
+
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.engine.io.R2DFileManager;
+import com.remote.remote2d.engine.io.R2DFileUtility;
 import com.remote.remote2d.engine.world.Map;
 
 public class OperationSaveMap extends Operation {
 	
 	String path;
+	String name;
+	boolean exists;
 	
 	public OperationSaveMap(GuiEditor editor, String path) {
 		super(editor);
 		this.path = path;
+		File f = R2DFileUtility.getResource(path);
+		exists = f.exists();
+		name = f.getName();
 	}
 
 	@Override
@@ -29,7 +37,7 @@ public class OperationSaveMap extends Operation {
 
 	@Override
 	public String name() {
-		return "Save Map";
+		return "Save Map"+(exists ? " ("+name+" already exists!)" : "");
 	}
 
 	@Override

@@ -23,6 +23,8 @@ public class GuiWindowSaveMap extends GuiWindow {
 		
 		textField = new GuiTextField(new Vector2(10,10),new Vector2(dim.x-20,40), 20);
 		textField.text = "/res/maps/map.r2d";
+		if(holder instanceof GuiEditor && ((GuiEditor)holder).getMap().path != null)
+			textField.text = ((GuiEditor)holder).getMap().path;
 	}
 	
 	@Override
