@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.esotericsoftware.minlog.Log;
+import com.remote.remote2d.engine.io.R2DFileUtility;
+
 public class Folder {
 	
 	private String folderPath;
@@ -27,12 +30,17 @@ public class Folder {
 		
 		files.clear();
 		
-		File[] subFiles = new File(path).listFiles();
+		File file = R2DFileUtility.getResource(path);
+		File[] subFiles = file.listFiles();
 		
-		Arrays.sort(subFiles,new FileComparator());
+		if(subFiles != null)
+		{
+			Arrays.sort(subFiles,new FileComparator());
 		
-		for(File f : subFiles)
-			files.add(f);
+			for(File f : subFiles)
+				files.add(f);
+		} else
+			Log.warn("Can't find folder path: "+path);
 	}
 	
 	public Folder getParent()

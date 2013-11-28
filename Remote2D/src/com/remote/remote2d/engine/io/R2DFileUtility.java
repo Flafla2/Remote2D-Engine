@@ -1,9 +1,11 @@
 package com.remote.remote2d.engine.io;
 
 import java.io.File;
+import java.net.URISyntaxException;
 
 import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
+import com.remote.remote2d.engine.Remote2DException;
 
 /**
  * A utility class for saving loading, and managing R2D files.
@@ -102,7 +104,12 @@ public class R2DFileUtility {
 
 	public static File getJarPath()
 	{
-		return new File(Remote2D.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getAbsoluteFile().getParentFile();
+		try {
+			File f = new File(Remote2D.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getAbsoluteFile().getParentFile();
+			return f;
+		} catch (URISyntaxException e) {
+			throw new Remote2DException(e);
+		}
 	}
 
 	public static String getRelativePath(File file, File folder) {

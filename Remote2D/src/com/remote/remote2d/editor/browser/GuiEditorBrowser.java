@@ -35,8 +35,7 @@ public class GuiEditorBrowser extends Gui {
 		
 		folderStack = new Stack<Folder>();
 		sections = new ArrayList<GuiEditorBrowserSection>();
-		Log.debug((R2DFileUtility.getJarPath() == null)+"");
-		pushFolder(new Folder(R2DFileUtility.getJarPath().getPath()));
+		pushFolder(new Folder("."));
 	}
 	
 	public void pushFolder(Folder f)
