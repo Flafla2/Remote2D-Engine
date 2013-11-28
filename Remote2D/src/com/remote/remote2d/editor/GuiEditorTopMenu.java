@@ -38,7 +38,7 @@ public class GuiEditorTopMenu extends Gui {
 				
 		int currentX = 0;
 				
-		String[] fileContents = {"New Map","Open Map","Save Map"};
+		String[] fileContents = {"New Map","Open Map","Save Map","Save Map As..."};
 		GuiEditorTopMenuSection file = new GuiEditorTopMenuSection(currentX, 0, height, fileContents, "File", this);
 		
 		file.keyCombos[0] = new KeyShortcut(new int[]{Keyboard.KEY_N});
