@@ -30,7 +30,8 @@ public class GuiWindowSaveMap extends GuiWindow {
 	@Override
 	public void initGui()
 	{
-		textField.dim = new Vector2(dim.x-20,40);
+		if(textField != null)
+			textField.dim = new Vector2(dim.x-20,40);
 		
 		buttonList.clear();
 		buttonList.add(new GuiButton(0,new Vector2(10,dim.y-50),new Vector2(dim.x/2-10,40),"Cancel"));
