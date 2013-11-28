@@ -90,8 +90,12 @@ public class R2DFileManager {
 			
 			Path path = Paths.get(file.getAbsolutePath());
 			UserDefinedFileAttributeView view = Files.getFileAttributeView(path, UserDefinedFileAttributeView.class);
-			view.write("user.xml", Charset.defaultCharset().encode(Boolean.toString(xml)));
-			view.write("user.mimetype", Charset.defaultCharset().encode("application/xml"));
+			//TODO: Change xml check from using attributes to something else
+			if(view != null)
+			{
+				view.write("user.xml", Charset.defaultCharset().encode(Boolean.toString(xml)));
+				view.write("user.mimetype", Charset.defaultCharset().encode("application/xml"));
+			}
 		} catch (IOException e) {
 			throw new Remote2DException(e,"Error writing R2D file!");
 		}
