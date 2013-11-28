@@ -202,13 +202,16 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 				} else
 					dragPoint = null;
 				
-				int deltaWheel = Remote2D.getDeltaWheel();
-				float scale = map.camera.scale;
-				if(deltaWheel > 0 && map.camera.scale < 16)//zoom in, up
-					scale *= 2;
-				else if(deltaWheel < 0 && map.camera.scale > 0.25)//zoom out, down
-					scale /= 2;
-				map.setScaleAroundScreenPoint(new Vector2(i,j), scale);
+				if(!getMouseInWindow(i,j))
+				{
+					int deltaWheel = Remote2D.getDeltaWheel();
+					float scale = map.camera.scale;
+					if(deltaWheel > 0 && map.camera.scale < 16)//zoom in, up
+						scale *= 2;
+					else if(deltaWheel < 0 && map.camera.scale > 0.25)//zoom out, down
+						scale /= 2;
+					map.setScaleAroundScreenPoint(new Vector2(i,j), scale);
+				}
 			}
 			
 			map.tick(i, j, k, true);
