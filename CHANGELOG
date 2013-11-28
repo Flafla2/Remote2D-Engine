@@ -1,0 +1,31 @@
+===CHANGELOG===
+
+==V0.1.2 ALPHA==
+FEATURES:
+- Added a debug tool in Renderer.class that allows you to see all matrix operations currently pushed to the stack
+- Adding Components is now undoable
+- Added a test component for testing Entity pointers
+- Added Open Map / Save Map dialogs, as well as a “Save Map As...” option
+- Saving a map reminds you if the file exists and is being overwritten
+FIXES:
+- Removed parenting temporarily, as it was buggy and didn’t work
+- Fixed buggy rotation
+- The inspector is now slightly more stable, using Entity UUIDs instead of the Entity’s index in the EntityList for storage
+- Fixed Entity pointers not being updated when the Entity that is pointed to is changed.
+- Fixed a crash when saving a file if user-defined attributes are unavailable for some reason (NOTE: if this does occur the engine will have to guess if XML is used)
+- Fixed a bug where the map would still zoom in and out when you scroll even if a window is currently selected
+- Fixed a bug where R2DFileUtility.getJarPath() would not be formatted in UTF-8 (ex. spaces would be formatted as “%20”)
+- Fixed a bug in the browser which wouldn’t load anything outside of Eclipse
+MISC:
+- Updated changelog formatting
+
+==V0.1.1 ALPHA==
+FEATURES:
+- Changed build from packaging external jars to extracting them, allowing you to use the jar for both an API and a Runnable test jar.
+FIXES:
+- Hotfix fixing a fatal bug that doesn’t allow the editor to open
+- Hotfix fixing a fatal error on macs if no icon is specified
+
+==V1.0 ALPHA==
+FEATURES:
+- Initial Release
