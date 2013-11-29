@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.editor.GuiCreateSpriteSheet;
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.engine.Remote2D;

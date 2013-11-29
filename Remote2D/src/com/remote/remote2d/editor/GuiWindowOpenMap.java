@@ -48,7 +48,8 @@ public class GuiWindowOpenMap extends GuiWindow {
 	public void tick(int i, int j, int k)
 	{
 		super.tick(i,j,k);
-		textField.tick(i, j, k);
+		Vector2 mouse = getMouseInWindow(i,j);
+		textField.tick((int)mouse.x, (int)mouse.y, k);
 		
 		if(!R2DFileUtility.R2DExists(textField.text))
 			doneButton.setDisabled(true);
