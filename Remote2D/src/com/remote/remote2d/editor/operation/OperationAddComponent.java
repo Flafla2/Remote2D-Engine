@@ -9,7 +9,8 @@ public class OperationAddComponent extends Operation {
 	private String u;
 	private Component c;
 	private int position;
-
+	private String oldPrefab;
+	
 	public OperationAddComponent(GuiEditor editor, String e, Component c) {
 		super(editor);
 		this.u = e;
@@ -19,6 +20,8 @@ public class OperationAddComponent extends Operation {
 	@Override
 	public void execute() {
 		Entity e = editor.getMap().getEntityList().getEntityWithUUID(u);
+		oldPrefab = e.getPrefabPath();
+		e.setPrefabPath(null);
 		e.getComponents().add(c);
 		position = e.getComponents().indexOf(c);
 		
@@ -29,6 +32,7 @@ public class OperationAddComponent extends Operation {
 	@Override
 	public void undo() {
 		Entity e = editor.getMap().getEntityList().getEntityWithUUID(u);
+		e.setPrefabPath(oldPrefab);
 		e.getComponents().remove(position);
 		
 		if(u != null && u.equals(editor.getSelectedEntity()))
@@ -38,6 +42,21 @@ public class OperationAddComponent extends Operation {
 	@Override
 	public String name() {
 		return "Add Component";
+	}
+	
+	@Override
+	public String confirmationMessage()
+	{
+		Entity e = editor.getMap().getEntityList().getEntityWithUUID(u);
+		String name = e.name;
+		if(name.equals(""))
+			name = "Untitled";
+		String ret = "Are you sure you would like to edit "+name+"?";
+		if(e.getPrefabPath() != null)
+			ret += "  This entity is currently attached to a prefab, and will be disconnected from its prefab status!";
+		if(!canBeUndone())
+			ret += "  This operation cannot be undone.";
+		return ret;
 	}
 
 	@Override

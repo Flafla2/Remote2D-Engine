@@ -37,7 +37,18 @@ public class OperationSaveMap extends Operation {
 
 	@Override
 	public String name() {
-		return "Save Map"+(exists ? " ("+name+" already exists!)" : "");
+		return "Save Map";
+	}
+	
+	@Override
+	public String confirmationMessage()
+	{
+		String ret = "Are you sure you would like to "+name()+"?";
+		if(!exists)
+			ret += "  "+name+" already exists, and will be overwritten!";
+		if(!canBeUndone())
+			ret += "  This operation cannot be undone.";
+		return ret;
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.entity.component.Component;
 import com.remote.remote2d.engine.entity.component.ComponentCollider;
+import com.remote.remote2d.engine.io.R2DFileManager;
 import com.remote.remote2d.engine.io.R2DTypeCollection;
 import com.remote.remote2d.engine.logic.Collider;
 import com.remote.remote2d.engine.logic.Collision;
@@ -61,9 +62,8 @@ public class Entity extends EditorObject {
 	//TODO: Readd parents
 	
 	private Texture slashTex;
-	
+	private String prefabPath = null;
 	private Vector2 oldPos;
-	
 	private static final String slashLoc = "res/gui/slash.png";
 	protected ArrayList<Component> components;
 	
@@ -489,6 +489,27 @@ public class Entity extends EditorObject {
 	public void updatePos()
 	{
 		oldPos = pos.copy();
+	}
+	
+	/**
+	 * Assigns a prefab to this Entity.  This means that, the entity should be exactly the same as its prefab counterpart, until
+	 * its connection with the prefab is broken.
+	 * @param path Path (locally to the jar file) to the prefab file.
+	 */
+	public void setPrefabPath(String path)
+	{
+		this.prefabPath = path;
+		if(path == null)
+			return;
+		R2DFileManager manager = new R2DFileManager(path,null);
+		manager.read();
+		manager.getCollection().setString("uuid", getUUID());
+		loadR2DFile(manager.getCollection());
+	}
+	
+	public String getPrefabPath()
+	{
+		return prefabPath;
 	}
 		
 }

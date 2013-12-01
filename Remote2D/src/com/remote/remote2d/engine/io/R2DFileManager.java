@@ -183,4 +183,9 @@ public class R2DFileManager {
 		return path;
 	}
 	
+	public R2DTypeCollection getCollection()
+	{
+		return collection;
+	}
+	
 }

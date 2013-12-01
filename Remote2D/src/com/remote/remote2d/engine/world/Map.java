@@ -214,6 +214,13 @@ public class Map implements R2DFileSaver {
 		for(int x=0;x<entities.size();x++)
 		{
 			R2DTypeCollection c = new R2DTypeCollection("entity_"+x);
+			
+			if(entities.get(x).getPrefabPath() != null)
+			{
+				c.setString("prefabPath", entities.get(x).getPrefabPath());
+				continue;
+			}
+			
 			entities.get(x).saveR2DFile(c);
 			ArrayList<Component> components = entities.get(x).getComponents();
 			c.setInteger("componentCount", components.size());
@@ -241,6 +248,15 @@ public class Map implements R2DFileSaver {
 			else
 				entities.removeEntityFromList(e);	//Will be moved to the top after we load.
 													//This is done in order to keep all Entity pointers intact.
+			
+			if(c.hasKey("prefabPath"))
+			{
+				String prefabPath = c.getString("prefabPath");
+				e.setPrefabPath(prefabPath);
+				continue;
+			} else
+				e.setPrefabPath(null);
+			
 			e.loadR2DFile(c);
 			int componentCount = c.getInteger("componentCount");
 			for(int y=0;y<componentCount;y++)

@@ -58,6 +58,20 @@ public class OperationEditEntity extends Operation {
 	public String name() {
 		return "Edit Entity";
 	}
+	
+	@Override
+	public String confirmationMessage()
+	{
+		String name = before.name;
+		if(name.equals(""))
+			name = "Untitled";
+		String ret = "Are you sure you would like to edit "+name+"?";
+		if(before.getPrefabPath() != null && after.getPrefabPath() == null)
+			ret += "  This entity is currently attached to a prefab, and will be disconnected from its prefab status!";
+		if(!canBeUndone())
+			ret += "  This operation cannot be undone.";
+		return ret;
+	}
 
 	@Override
 	public boolean canBeUndone() {

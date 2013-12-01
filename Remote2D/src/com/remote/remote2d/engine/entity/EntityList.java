@@ -7,6 +7,9 @@ import org.lwjgl.opengl.GL11;
 import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.entity.component.Component;
+import com.remote.remote2d.engine.io.R2DFileManager;
+import com.remote.remote2d.engine.io.R2DFileUtility;
+import com.remote.remote2d.engine.io.R2DTypeCollection;
 import com.remote.remote2d.engine.world.Map;
 
 /**
@@ -227,5 +230,60 @@ public class EntityList {
 			}
 		}
 	}
+	
+	/**
+	 * Instantiates the given prefab onto the entity list at the given index.  In other words, it takes a saved file, loads it into
+	 * the level, and adds it into the entity list.
+	 * @param coll Compiled entity data, already loaded into an R2DTypeCollection.
+	 * @param index The index at which you want to instantiate (insert) the entity.
+	 */
+	public void instantiatePrefab(R2DTypeCollection coll, int index)
+	{
+		String oldUUID = coll.getString("uuid");
+		Entity e = new Entity(map);
+		String uuid = e.getUUID();
+		coll.setString("uuid", uuid);
+		e.loadR2DFile(coll);
+		coll.setString("uuid",oldUUID);
+		entityList.add(index, e);
+	}
+	
+	/**
+	 * Instantiates the given prefab onto the entity list at the end of the list.  In other words, it takes a saved file, loads it into
+	 * the level, and adds it to the end of the entity list.
+	 * @param coll Compiled entity data, already loaded into an R2DTypeCollection.
+	 */
+	public void instantiatePrefab(R2DTypeCollection coll)
+	{
+		instantiatePrefab(coll,entityList.size());
+	}
+	
+	/**
+	 * Instantiates the given prefab onto the entity list at the given index.  In other words, it takes a saved file, loads it into
+	 * the level, and adds it into the entity list.
+	 * @param path Path to compiled entity data, in the form of a prefab file (The file must end in the filetype denoted by {@link Entity#getExtension()})
+	 * @param index The index at which you want to instantiate (insert) the entity.
+	 */
+	public void instantiatePrefab(String path, int index)
+	{
+		if(!R2DFileUtility.R2DExists(path) || !path.endsWith(Entity.getExtension()))
+			return;
+		
+		R2DFileManager manager = new R2DFileManager(path,null);
+		manager.read();
+		
+		instantiatePrefab(manager.getCollection(),index);
+	}
+	
+	/**
+	 * Instantiates the given prefab onto the entity list at the given index.  In other words, it takes a saved file, loads it into
+	 * the level, and adds it into the entity list.
+	 * @param path Path to compiled entity data, in the form of a prefab file (The file must end in the filetype denoted by {@link Entity#getExtension()})
+	 */
+	public void instantiatePrefab(String path)
+	{
+		instantiatePrefab(path,entityList.size());
+	}
+	
 	
 }
