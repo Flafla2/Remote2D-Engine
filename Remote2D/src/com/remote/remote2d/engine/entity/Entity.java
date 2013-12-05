@@ -117,32 +117,27 @@ public class Entity extends EditorObject {
 	@Override
 	public Entity clone()
 	{
-		R2DTypeCollection compile = new R2DTypeCollection("Entity Clone");
-		saveR2DFile(compile);
 		Entity clone = new Entity(map);
-		clone.loadR2DFile(compile);
-		
-		for(Component c : components)
-		{
-			clone.addComponent(c.clone());
-		}
+		R2DTypeCollection compile = new R2DTypeCollection("Compile");
+		Map.saveEntityFull(this, compile, false);
+//		if(newUUID)
+//			compile.setString("uuid", clone.getUUID());
+		Map.loadEntityFull(clone, compile, false);
 		return clone;
 	}
 	
 	/**
 	 * Takes all the attributes of the given entity and transposes it to this
+	 * entity.  Keep in mind that this does NOT transpose the UUID of the other
 	 * entity.
 	 * @param e Entity to transpose over to this one.
 	 */
 	public void transpose(Entity e)
 	{
 		R2DTypeCollection compile = new R2DTypeCollection("Entity Clone");
-		e.saveR2DFile(compile);
-		loadR2DFile(compile);
-		
-		components.clear();
-		for(Component c : e.components)
-			addComponent(c.clone());
+		Map.saveEntityFull(e, compile, false);
+		compile.setString("uuid", getUUID());
+		Map.loadEntityFull(this, compile, false);
 	}
 	
 	@Override
@@ -504,7 +499,11 @@ public class Entity extends EditorObject {
 		R2DFileManager manager = new R2DFileManager(path,null);
 		manager.read();
 		manager.getCollection().setString("uuid", getUUID());
-		loadR2DFile(manager.getCollection());
+		manager.getCollection().setVector2D("pos", pos);
+		manager.getCollection().setFloat("rotation", rotation);
+		manager.getCollection().setString("name", name);
+		
+		Map.loadEntityFull(this, manager.getCollection(), true);
 	}
 	
 	public String getPrefabPath()

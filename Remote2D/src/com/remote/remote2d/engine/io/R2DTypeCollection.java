@@ -321,5 +321,28 @@ public class R2DTypeCollection extends R2DType {
 	{
 		return data.toString();
 	}
+	
+	@Override
+	public boolean equals(R2DType type)
+	{
+		if(!(type instanceof R2DTypeCollection))
+			return false;
+		Iterator<Entry<String, R2DType>> iterator = ((R2DTypeCollection)type).getDataIterator();
+		while(iterator.hasNext())
+		{
+			Entry<String, R2DType> entry = iterator.next();
+			if(!entry.getValue().equals(getType(entry.getKey())))
+				return false;
+		}
+		
+		Iterator<Entry<String, R2DType>> thisIterator = getDataIterator();
+		while(thisIterator.hasNext())
+		{
+			Entry<String, R2DType> entry = thisIterator.next();
+			if(!entry.getValue().equals(((R2DTypeCollection)type).getType(entry.getKey())))
+					return false;
+		}
+		return true;
+	}
 
 }

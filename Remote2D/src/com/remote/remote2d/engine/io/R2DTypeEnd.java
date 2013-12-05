@@ -37,5 +37,13 @@ public class R2DTypeEnd extends R2DType {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	@Override
+	public boolean equals(R2DType type)
+	{
+		if(!(type instanceof R2DTypeBoolean))
+			return false;
+		return true;
+	}
 
 }

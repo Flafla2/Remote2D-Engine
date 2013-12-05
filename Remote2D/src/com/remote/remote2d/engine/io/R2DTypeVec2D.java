@@ -61,5 +61,16 @@ public class R2DTypeVec2D extends R2DType {
 	{
 		return data.toString();
 	}
+	
+	@Override
+	public boolean equals(R2DType type)
+	{	
+		if(!(type instanceof R2DTypeVec2D))
+			return false;
+		Vector2 otherData = ((R2DTypeVec2D)type).data;
+		if((data == null && otherData != null) || (otherData == null && data != null))
+			return false;
+		return data.equals(otherData);
+	}
 
 }

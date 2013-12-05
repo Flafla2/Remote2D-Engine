@@ -43,7 +43,7 @@ public class GuiEditorHeirarchy extends GuiMenu {
 		if(getEditor().getMap() == null)
 			return;
 		
-		if(!Mouse.isButtonDown(0) && !isSecAnimating())
+		if(!Mouse.isButtonDown(0))
 		{
 			reloadSections();
 		}
@@ -110,62 +110,10 @@ public class GuiEditorHeirarchy extends GuiMenu {
 				getEditor().setSelectedEntity(sections.get(x).uuid);
 	}
 	
-	public void animateSections()
-	{
-		int selectedIndex = getSelected();
-		GuiEditorHeirarchySection sec = null;
-		if(selectedIndex != -1)
-			sec = sections.get(selectedIndex);
-		int newSelectedIndex = -1;
-		if(sec != null && pos.getColliderWithDim(dim).isPointInside(new Vector2(Remote2D.getMouseCoords())))
-			newSelectedIndex = (int)(Remote2D.getMouseCoords().y-pos.y)/20;
-		else if(sec != null)
-			newSelectedIndex = selectedIndex;
-		
-		if(newSelectedIndex < 0)
-			newSelectedIndex = 0;
-		if(newSelectedIndex >= getEditor().getMap().getEntityList().size()-1)
-			newSelectedIndex = getEditor().getMap().getEntityList().size()-1;
-		
-		Entity e = getEditor().getMap().getEntityList().get(selectedIndex);
-		getEditor().getMap().getEntityList().removeEntityFromList(e);
-		getEditor().getMap().getEntityList().addEntityToList(e,newSelectedIndex);
-		
-		sections.remove(sec);
-		sections.add(newSelectedIndex, sec);
-		
-		float currentYPos = pos.y;
-		for(int x=0;x<sections.size();x++)
-		{
-			sections.get(x).setKeyframe(new Vector2(pos.x,currentYPos), 100);
-			currentYPos += 20;
-		}
-	}
-	
 	public void setAllUnselected()
 	{
 		for(int x=0;x<sections.size();x++)
 			sections.get(x).selected = false;
-	}
-	
-	private boolean isSecAnimating()
-	{
-		for(int x=0;x<sections.size();x++)
-		{
-			if(sections.get(x).isAnimating())
-				return true;
-		}
-		return false;
-	}
-	
-	private int getSelected()
-	{
-		for(int x=0;x<sections.size();x++)
-		{
-			if(sections.get(x).selected)
-				return x;
-		}
-		return -1;
 	}
 	
 	private void reloadSections()

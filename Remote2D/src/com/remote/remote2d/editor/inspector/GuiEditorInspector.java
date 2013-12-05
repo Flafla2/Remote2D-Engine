@@ -1,21 +1,32 @@
 package com.remote.remote2d.editor.inspector;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
+import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.editor.DraggableObject;
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.editor.operation.OperationEditEntity;
+import com.remote.remote2d.editor.operation.OperationEditPrefab;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Renderer;
+import com.remote.remote2d.engine.entity.EditorObject;
 import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.gui.GuiButton;
 import com.remote.remote2d.engine.gui.GuiMenu;
+import com.remote.remote2d.engine.io.R2DFileUtility;
+import com.remote.remote2d.engine.io.R2DType;
+import com.remote.remote2d.engine.io.R2DTypeCollection;
 import com.remote.remote2d.engine.logic.Interpolator;
 import com.remote.remote2d.engine.logic.Vector2;
+import com.remote.remote2d.engine.world.Map;
 
 public class GuiEditorInspector extends GuiMenu {
 		
-	public String currentEntity;
+	private String currentEntity;
+	private String prefabPath;
 	private ArrayList<EditorObjectWizard> wizards;
 	private GuiButton button;
 	private GuiEditor editor;
@@ -23,6 +34,8 @@ public class GuiEditorInspector extends GuiMenu {
 	private float lastOffset = 0;
 	public Vector2 pos;
 	public Vector2 dim;
+	
+	public static final String[] whitelist = {"name","pos","rotation","uuid"};
 
 	public GuiEditorInspector(Vector2 pos, Vector2 dim, GuiEditor editor)
 	{
@@ -44,8 +57,6 @@ public class GuiEditorInspector extends GuiMenu {
 			button.setDisabled(currentEntity == null);
 			buttonList.add(button);
 		}
-		
-		
 	}
 	
 	@Override
@@ -111,14 +122,48 @@ public class GuiEditorInspector extends GuiMenu {
 	public void setCurrentEntity(String o)
 	{
 		this.currentEntity = o;
-		Entity e = editor.getMap().getEntityList().getEntityWithUUID(currentEntity);
+		
 		wizards.clear();
-		button.setDisabled(currentEntity == null);
+		button.setDisabled(currentEntity == null && prefabPath == null);
 		if(currentEntity==null)
 			return;
 		
+		Entity e = editor.getMap().getEntityList().getEntityWithUUID(currentEntity);
+		prefabPath = null;
+		
 		Vector2 currentPos = pos.copy();
 		EditorObjectWizard ew = new EditorObjectWizard(editor,e,currentPos,(int)dim.x);
+		wizards.add(ew);
+		if(e.getPrefabPath() != null)
+			ew.title += " (Prefab: "+e.getPrefabPath()+")";
+		currentPos.y += ew.getHeight();
+		
+		for(int x=0;x<e.getComponents().size();x++)
+		{
+			EditorObjectWizard cw = new EditorObjectWizard(editor,e.getComponents().get(x),currentPos,(int)dim.x);
+			wizards.add(cw);
+			currentPos.y += cw.getHeight();
+		}
+	}
+	
+	public void setPrefab(String path)
+	{
+		if(path == null || !R2DFileUtility.R2DExists(path))
+			return;
+		this.prefabPath = path;
+		wizards.clear();
+		button.setDisabled(currentEntity == null && prefabPath == null);
+		if(prefabPath == null)
+			return;
+		
+		currentEntity = null;
+		
+		Entity e = new Entity(editor.getMap());
+		e.setPrefabPath(path);
+		
+		Vector2 currentPos = pos.copy();
+		EditorObjectWizard ew = new EditorObjectWizard(editor,e,currentPos,(int)dim.x);
+		ew.title = path;
 		wizards.add(ew);
 		currentPos.y += ew.getHeight();
 		
@@ -142,16 +187,41 @@ public class GuiEditorInspector extends GuiMenu {
 	
 	public void apply()
 	{
-		Entity before = editor.getMap().getEntityList().getEntityWithUUID(currentEntity).clone();
-		for(int x=0;x<wizards.size();x++)
+		if(currentEntity != null)
 		{
-			wizards.get(x).setComponentFields();
+			Entity before = editor.getMap().getEntityList().getEntityWithUUID(currentEntity).clone();
+			for(int x=0;x<wizards.size();x++)
+			{
+				wizards.get(x).setComponentFields();
+			}
+			Entity after = editor.getMap().getEntityList().getEntityWithUUID(currentEntity).clone();
+			boolean changed = hasEntityBeenChanged(before,after);
+			Log.debug("changed: "+changed);
+			if(changed)
+				after.setPrefabPath(null);
+			
+			if(before.getPrefabPath() == null)
+				editor.executeOperation(new OperationEditEntity(editor,before,after));
+			else if(changed)
+				editor.confirmOperation(new OperationEditEntity(editor,before,after));
 		}
-		Entity after = editor.getMap().getEntityList().getEntityWithUUID(currentEntity).clone();
-		if(before.getPrefabPath() == null)
-			editor.executeOperation(new OperationEditEntity(editor,before,after));
-		else
-			editor.confirmOperation(new OperationEditEntity(editor,before,after));
+		
+		if(prefabPath != null && wizards.size() > 0)
+		{
+			for(int x=0;x<wizards.size();x++)
+			{
+				wizards.get(x).setComponentFields();
+			}
+			
+			EditorObject o = wizards.get(0).getObject();
+			if(o instanceof Entity)
+			{
+				Entity e = (Entity)o;
+				R2DTypeCollection coll = new R2DTypeCollection("Prefab");
+				Map.saveEntityFull(e, coll, true);
+				editor.confirmOperation(new OperationEditPrefab(editor,prefabPath,coll));
+			}
+		}
 	}
 	
 	public boolean isTyping()
@@ -179,6 +249,24 @@ public class GuiEditorInspector extends GuiMenu {
 		{
 			apply();
 		}
+	}
+	
+	public boolean hasEntityBeenChanged(Entity before, Entity after)
+	{
+		R2DTypeCollection collBefore = new R2DTypeCollection("Entity1");
+		before.saveR2DFile(collBefore);
+		R2DTypeCollection collAfter = new R2DTypeCollection("Entity2");
+		after.saveR2DFile(collAfter);
+		
+		Iterator<Entry<String,R2DType>> iterator = collBefore.getDataIterator();
+		while(iterator.hasNext())
+		{
+			Entry<String,R2DType> next = iterator.next();
+			
+			if(!Arrays.asList(whitelist).contains(next.getKey()) && !next.getValue().equals(collAfter.getType(next.getKey())))
+				return true;
+		}
+		return false;
 	}
 
 }

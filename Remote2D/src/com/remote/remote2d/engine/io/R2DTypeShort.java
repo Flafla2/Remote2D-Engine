@@ -49,5 +49,13 @@ public class R2DTypeShort extends R2DType {
 	{
 		return data+"";
 	}
+	
+	@Override
+	public boolean equals(R2DType type)
+	{
+		if(!(type instanceof R2DTypeShort))
+			return false;
+		return ((R2DTypeShort)type).data == data;
+	}
 
 }

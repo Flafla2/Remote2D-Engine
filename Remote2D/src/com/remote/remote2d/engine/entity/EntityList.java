@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 
+import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.entity.component.Component;
@@ -237,15 +238,16 @@ public class EntityList {
 	 * @param coll Compiled entity data, already loaded into an R2DTypeCollection.
 	 * @param index The index at which you want to instantiate (insert) the entity.
 	 */
-	public void instantiatePrefab(R2DTypeCollection coll, int index)
+	public Entity instantiatePrefab(R2DTypeCollection coll, int index)
 	{
 		String oldUUID = coll.getString("uuid");
 		Entity e = new Entity(map);
 		String uuid = e.getUUID();
 		coll.setString("uuid", uuid);
-		e.loadR2DFile(coll);
+		Map.loadEntityFull(e, coll, false);
 		coll.setString("uuid",oldUUID);
 		entityList.add(index, e);
+		return e;
 	}
 	
 	/**
@@ -253,9 +255,9 @@ public class EntityList {
 	 * the level, and adds it to the end of the entity list.
 	 * @param coll Compiled entity data, already loaded into an R2DTypeCollection.
 	 */
-	public void instantiatePrefab(R2DTypeCollection coll)
+	public Entity instantiatePrefab(R2DTypeCollection coll)
 	{
-		instantiatePrefab(coll,entityList.size());
+		return instantiatePrefab(coll,entityList.size());
 	}
 	
 	/**
@@ -264,15 +266,16 @@ public class EntityList {
 	 * @param path Path to compiled entity data, in the form of a prefab file (The file must end in the filetype denoted by {@link Entity#getExtension()})
 	 * @param index The index at which you want to instantiate (insert) the entity.
 	 */
-	public void instantiatePrefab(String path, int index)
+	public Entity instantiatePrefab(String path, int index)
 	{
+		Log.debug(path+" "+R2DFileUtility.R2DExists(path));
 		if(!R2DFileUtility.R2DExists(path) || !path.endsWith(Entity.getExtension()))
-			return;
+			return null;
 		
 		R2DFileManager manager = new R2DFileManager(path,null);
 		manager.read();
 		
-		instantiatePrefab(manager.getCollection(),index);
+		return instantiatePrefab(manager.getCollection(),index);
 	}
 	
 	/**
@@ -280,9 +283,9 @@ public class EntityList {
 	 * the level, and adds it into the entity list.
 	 * @param path Path to compiled entity data, in the form of a prefab file (The file must end in the filetype denoted by {@link Entity#getExtension()})
 	 */
-	public void instantiatePrefab(String path)
+	public Entity instantiatePrefab(String path)
 	{
-		instantiatePrefab(path,entityList.size());
+		return instantiatePrefab(path,entityList.size());
 	}
 	
 	

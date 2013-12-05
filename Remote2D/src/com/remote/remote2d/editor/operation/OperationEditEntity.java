@@ -7,7 +7,8 @@ public class OperationEditEntity extends Operation {
 	
 	Entity before;
 	Entity after;
-
+	
+	
 	public OperationEditEntity(GuiEditor editor, Entity before, Entity after) {
 		super(editor);
 		this.before = before;
@@ -20,6 +21,7 @@ public class OperationEditEntity extends Operation {
 //		after.updatePos();
 //		editor.getMap().getEntityList().set(position,after);
 //		editor.setSelectedEntity(position);
+		
 		for(int x=0;x<editor.getMap().getEntityList().size();x++)
 		{
 			if(editor.getMap().getEntityList().get(x).getUUID().equals(before.getUUID()))

@@ -188,4 +188,9 @@ public class R2DFileManager {
 		return collection;
 	}
 	
+	public void setCollection(R2DTypeCollection coll)
+	{
+		this.collection = coll;
+	}
+	
 }

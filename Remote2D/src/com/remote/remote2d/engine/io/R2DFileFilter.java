@@ -21,6 +21,7 @@ public class R2DFileFilter implements FilenameFilter {
 	 * <ul>
 	 * <li>.anim</li>
 	 * <li>.r2d</li>
+	 * <li>.entity</li>
 	 * </ul>
 	 */
 	public static ArrayList<String> extensions = new ArrayList<String>();
@@ -29,6 +30,7 @@ public class R2DFileFilter implements FilenameFilter {
 	{
 		extensions.add(".anim");
 		extensions.add(".r2d");
+		extensions.add(".entity");
 	}
 
 	@Override

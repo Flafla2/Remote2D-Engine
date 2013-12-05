@@ -49,5 +49,16 @@ public class R2DTypeString extends R2DType {
 	{
 		return data;
 	}
+	
+	@Override
+	public boolean equals(R2DType type)
+	{	
+		if(!(type instanceof R2DTypeString))
+			return false;
+		String otherData = ((R2DTypeString)type).data;
+		if((data == null && otherData != null) || (otherData == null && data != null))
+			return false;
+		return data.equals(otherData);
+	}
 
 }

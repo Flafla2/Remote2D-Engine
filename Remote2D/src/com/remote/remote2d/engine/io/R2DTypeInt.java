@@ -50,5 +50,13 @@ public class R2DTypeInt extends R2DType {
 		String hexString = Integer.toHexString(data);
 		return data+" (0x"+hexString+")";
 	}
+	
+	@Override
+	public boolean equals(R2DType type)
+	{
+		if(!(type instanceof R2DTypeInt))
+			return false;
+		return ((R2DTypeInt)type).data == data;
+	}
 
 }

@@ -249,6 +249,7 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 					setSelectedEntity(e.getUUID());
 				else
 					setSelectedEntity(null);
+				browser.setAllUnselected();
 			}
 		}
 		
@@ -454,6 +455,10 @@ public class GuiEditor extends GuiMenu implements WindowHolder,MapHolder {
 	{
 		e.pos = map.screenToWorldCoords(new Vector2(Gui.screenWidth()/2,Gui.screenHeight()/2));
 		map.getEntityList().addEntityToList(e);
+	}
+
+	public GuiEditorBrowser getBrowser() {
+		return browser;
 	}
 	
 }

@@ -79,6 +79,9 @@ public class R2DFileUtility {
 		if(s.startsWith(File.separator))
 			s = s.substring(1);
 		
+		if(s.startsWith("."+File.separator))
+			s = s.substring(2);
+				
 		return new File(s);
 	}
 	
@@ -129,7 +132,7 @@ public class R2DFileUtility {
 	 */
 	public static File getRelativeFile(File absolute)
 	{
-		return new File(getRelativePath(absolute,getJarPath()));
+		return getResource(getRelativePath(absolute,getJarPath()));
 	}
 
 }

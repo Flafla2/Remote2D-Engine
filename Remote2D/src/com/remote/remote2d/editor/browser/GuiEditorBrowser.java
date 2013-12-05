@@ -89,10 +89,8 @@ public class GuiEditorBrowser extends Gui {
 				Remote2D.guiList.push(new GuiCreateSpriteSheet(new Animation(localPath)));
 			else if(localPath.endsWith(Entity.getExtension()))
 			{
-				Entity e = new Entity(editor.getMap());
-				R2DFileManager manager = new R2DFileManager(localPath,e);
-				manager.read();
-				editor.insertEntity(e);
+				Entity e = editor.getMap().getEntityList().instantiatePrefab(localPath);
+				editor.setSelectedEntity(e.getUUID());
 			} else if(localPath.endsWith(Map.getExtension()))
 			{
 				Map map = new Map();
@@ -121,6 +119,10 @@ public class GuiEditorBrowser extends Gui {
 			section.render(interpolation);
 	}
 	
-	
+	public void setAllUnselected()
+	{
+		for(GuiEditorBrowserSection sec : sections)
+			sec.isSelected = false;
+	}
 	
 }

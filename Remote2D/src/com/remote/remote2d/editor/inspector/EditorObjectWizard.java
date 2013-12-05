@@ -25,10 +25,12 @@ public class EditorObjectWizard {
 	private Vector2 pos;
 	private int width;
 	public ArrayList<GuiEditorInspectorSection> sections;
+	public String title;
 	
 	public EditorObjectWizard(GuiEditor editor, EditorObject c, Vector2 pos, int width)
 	{
 		object = c;
+		title = object.getClass().getSimpleName();
 		this.editor = editor;
 		this.pos = pos.copy();
 		this.width = width;
@@ -215,7 +217,11 @@ public class EditorObjectWizard {
 		Renderer.drawLine(new Vector2(pos.x,pos.y+20), new Vector2(pos.x+width,pos.y+20), 0xffffff, 1.0f);
 		Renderer.drawLine(new Vector2(pos.x,pos.y+getHeight()), new Vector2(pos.x+width,pos.y+getHeight()), 0xffffff, 1.0f);
 		
-		Fonts.get("Arial").drawString(object.getClass().getSimpleName(), pos.x, pos.y, 20, 0xffffff);
+		Fonts.get("Arial").drawString(title, pos.x, pos.y, 20, 0xffffff);
+	}
+
+	public EditorObject getObject() {
+		return object;
 	}
 	
 }

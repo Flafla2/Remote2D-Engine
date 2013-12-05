@@ -9,10 +9,6 @@ import com.remote.remote2d.engine.logic.Interpolator;
 import com.remote.remote2d.engine.logic.Vector2;
 
 public class GuiEditorHeirarchySection {
-	private Vector2 oldAnimPos;
-	private Vector2 newAnimPos;
-	private long animStartTime;
-	private long animLength;
 	private long lastClickEvent = -1;
 	private Vector2 oldPos;
 	public Vector2 pos;
@@ -20,7 +16,6 @@ public class GuiEditorHeirarchySection {
 	
 	public String content;
 	public boolean selected = false;
-	public boolean dragSelected = false;
 	public GuiEditorHeirarchy heirarchy;
 	public String uuid;
 	
@@ -37,12 +32,6 @@ public class GuiEditorHeirarchySection {
 
 	public void tick(int i, int j, int k) {
 		oldPos = pos.copy();
-		if(oldAnimPos != null && newAnimPos != null && animStartTime != -1 && animLength != -1)
-		{
-			float currentTime = System.currentTimeMillis()-animStartTime;
-			currentTime /= animLength;
-			pos = Interpolator.linearInterpolate(oldAnimPos, newAnimPos, currentTime);
-		}
 		
 		long time = System.currentTimeMillis();
 		if(Remote2D.hasMouseBeenPressed())
@@ -71,30 +60,17 @@ public class GuiEditorHeirarchySection {
 		{
 			heirarchy.setAllUnselected();
 			selected = true;
-			dragSelected = false;
 			heirarchy.updateSelected();
-		} else
-			dragSelected = false;
+			
+			heirarchy.getEditor().getBrowser().setAllUnselected();
+		}
 	}
 
 	public void render(float interpolation) {
 		Vector2 truePos = Interpolator.linearInterpolate(oldPos, pos, interpolation);
-		if(selected || dragSelected)
+		if(selected)
 			Renderer.drawRect(truePos, dim, 0xffffff, 0.5f);
 		Fonts.get("Arial").drawString(content, truePos.x, truePos.y, 20, 0xffffff);
-	}
-	
-	public boolean isAnimating()
-	{
-		return System.currentTimeMillis() - animStartTime <= animLength;
-	}
-	
-	public void setKeyframe(Vector2 newPos, long length)
-	{
-		oldAnimPos = this.pos.copy();
-		newAnimPos = newPos;
-		animStartTime = System.currentTimeMillis();
-		animLength = length;
 	}
 
 }

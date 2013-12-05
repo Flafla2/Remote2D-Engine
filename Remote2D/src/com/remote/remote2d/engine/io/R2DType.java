@@ -20,6 +20,7 @@ public abstract class R2DType {
 	public abstract void write(DataOutput d) throws IOException;
 	public abstract void read(Element e);
 	public abstract void write(Element e);
+	public abstract boolean equals(R2DType type);
 	
 	public abstract byte getId();
 	

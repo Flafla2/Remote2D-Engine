@@ -49,5 +49,13 @@ public class R2DTypeChar extends R2DType {
 	{
 		return data+"";
 	}
+	
+	@Override
+	public boolean equals(R2DType type)
+	{
+		if(!(type instanceof R2DTypeChar))
+			return false;
+		return ((R2DTypeChar)type).data == data;
+	}
 
 }

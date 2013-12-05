@@ -215,23 +215,39 @@ public class Map implements R2DFileSaver {
 		{
 			R2DTypeCollection c = new R2DTypeCollection("entity_"+x);
 			
-			if(entities.get(x).getPrefabPath() != null)
-			{
-				c.setString("prefabPath", entities.get(x).getPrefabPath());
-				continue;
-			}
+			saveEntityFull(entities.get(x),c,false);
 			
-			entities.get(x).saveR2DFile(c);
-			ArrayList<Component> components = entities.get(x).getComponents();
-			c.setInteger("componentCount", components.size());
-			for(int y=0;y<components.size();y++)
-			{
-				R2DTypeCollection cComp = new R2DTypeCollection("component_"+y);
-				cComp.setString("className", InsertableComponentList.getComponentID(components.get(y)));
-				components.get(y).saveR2DFile(cComp);
-				c.setCollection(cComp);
-			}
 			collection.setCollection(c);
+		}
+	}
+	
+	/**
+	 * Saves an entity into the given collection completely - meaning that it not only saves the Entity's data, but the data of its components as well.
+	 * @param e Entity to save / compile
+	 * @param c Collection to save to
+	 * @param ignorePrefab Whether or not to ignore being a prefab.  If this is false and an entity is a prefab, only the path to the prefab will be saved, as well as certain essential variables (pos,name,rotation,uuid).
+	 */
+	public static void saveEntityFull(Entity e, R2DTypeCollection c, boolean ignorePrefab)
+	{
+		if(e.getPrefabPath() != null && !ignorePrefab)
+		{
+			c.setString("prefabPath", e.getPrefabPath());
+			c.setVector2D("pos", e.pos);
+			c.setFloat("rotation", e.rotation);
+			c.setString("name", e.name);
+			c.setString("uuid", e.getUUID());
+			return;
+		}
+		
+		e.saveR2DFile(c);
+		ArrayList<Component> components = e.getComponents();
+		c.setInteger("componentCount", components.size());
+		for(int y=0;y<components.size();y++)
+		{
+			R2DTypeCollection cComp = new R2DTypeCollection("component_"+y);
+			cComp.setString("className", InsertableComponentList.getComponentID(components.get(y)));
+			components.get(y).saveR2DFile(cComp);
+			c.setCollection(cComp);
 		}
 	}
 	
@@ -243,33 +259,41 @@ public class Map implements R2DFileSaver {
 		{
 			R2DTypeCollection c = collection.getCollection("entity_"+x);
 			Entity e = entities.getEntityWithUUID(c.getString("uuid"));
+			
 			if(e == null)
 				e = new Entity(this,"",c.getString("uuid"));
 			else
 				entities.removeEntityFromList(e);	//Will be moved to the top after we load.
 													//This is done in order to keep all Entity pointers intact.
 			
-			if(c.hasKey("prefabPath"))
-			{
-				String prefabPath = c.getString("prefabPath");
-				e.setPrefabPath(prefabPath);
-				continue;
-			} else
-				e.setPrefabPath(null);
+			loadEntityFull(e,c,false);
 			
-			e.loadR2DFile(c);
-			int componentCount = c.getInteger("componentCount");
-			for(int y=0;y<componentCount;y++)
-			{
-				R2DTypeCollection cComp = c.getCollection("component_"+y);
-				Component comp = InsertableComponentList.getComponentWithEntity(cComp.getString("className"),e);
-				comp.loadR2DFile(cComp);
-				comp.apply();
-				e.addComponent(comp);
-			}
 			entities.addEntityToList(e);
 		}
 		//collection.printContents();
+	}
+	
+	public static void loadEntityFull(Entity e, R2DTypeCollection c, boolean ignorePrefab)
+	{
+		if(c.hasKey("prefabPath") && !ignorePrefab)
+		{
+			String prefabPath = c.getString("prefabPath");
+			e.setPrefabPath(prefabPath);
+			return;
+		} else
+			e.setPrefabPath(null);
+		
+		e.loadR2DFile(c);
+		e.getComponents().clear();
+		int componentCount = c.getInteger("componentCount");
+		for(int y=0;y<componentCount;y++)
+		{
+			R2DTypeCollection cComp = c.getCollection("component_"+y);
+			Component comp = InsertableComponentList.getComponentWithEntity(cComp.getString("className"),e);
+			comp.loadR2DFile(cComp);
+			comp.apply();
+			e.addComponent(comp);
+		}
 	}
 	
 	public Vector2 screenToWorldCoords(Vector2 vec)

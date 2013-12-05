@@ -44,6 +44,7 @@ public class GuiEditorTopMenu extends Gui {
 		file.keyCombos[0] = new KeyShortcut(new int[]{Keyboard.KEY_N});
 		file.keyCombos[1] = new KeyShortcut(new int[]{Keyboard.KEY_O});
 		file.keyCombos[2] = new KeyShortcut(new int[]{Keyboard.KEY_S});
+		file.keyCombos[2] = new KeyShortcut(new int[]{Keyboard.KEY_S}).setUseShift(true);
 		
 		file.reloadSubWidth();
 		
@@ -62,22 +63,31 @@ public class GuiEditorTopMenu extends Gui {
 		
 		edit.reloadSubWidth();
 		
-		String[] worldContents = {"Insert Entity", "Delete Entity", "Toggle Grid", "Increase Grid Size", "Decrease Grid Size", "Zoom In", "Zoom Out", "Revert Zoom", "Run Map"};
+		String[] worldContents = {"Toggle Grid", "Increase Grid Size", "Decrease Grid Size", "Zoom In", "Zoom Out", "Revert Zoom", "Run Map"};
 		GuiEditorTopMenuSection world = new GuiEditorTopMenuSection(currentX, 0, height, worldContents, "World", this);
 		if(world.getEnabled())
 			currentX += world.width;
 		
-		world.keyCombos[0] = new KeyShortcut(new int[]{Keyboard.KEY_E});
-		world.keyCombos[1] = new KeyShortcut(new int[]{Keyboard.KEY_DELETE}).setMetaOrControl(false);
-		world.keyCombos[2] = new KeyShortcut(new int[]{Keyboard.KEY_G}).setMetaOrControl(false);
-		world.keyCombos[3] = new KeyShortcut(new int[]{Keyboard.KEY_RBRACKET}).setMetaOrControl(false);
-		world.keyCombos[4] = new KeyShortcut(new int[]{Keyboard.KEY_LBRACKET}).setMetaOrControl(false);
-		world.keyCombos[5] = new KeyShortcut(new int[]{Keyboard.KEY_EQUALS}).setMetaOrControl(false);
-		world.keyCombos[6] = new KeyShortcut(new int[]{Keyboard.KEY_MINUS}).setMetaOrControl(false);
-		world.keyCombos[7] = new KeyShortcut(new int[]{Keyboard.KEY_0}).setMetaOrControl(false);
-		world.keyCombos[8] = new KeyShortcut(new int[]{Keyboard.KEY_R});
+		world.keyCombos[0] = new KeyShortcut(new int[]{Keyboard.KEY_G}).setMetaOrControl(false);
+		world.keyCombos[1] = new KeyShortcut(new int[]{Keyboard.KEY_RBRACKET}).setMetaOrControl(false);
+		world.keyCombos[2] = new KeyShortcut(new int[]{Keyboard.KEY_LBRACKET}).setMetaOrControl(false);
+		world.keyCombos[3] = new KeyShortcut(new int[]{Keyboard.KEY_EQUALS}).setMetaOrControl(false);
+		world.keyCombos[4] = new KeyShortcut(new int[]{Keyboard.KEY_MINUS}).setMetaOrControl(false);
+		world.keyCombos[5] = new KeyShortcut(new int[]{Keyboard.KEY_0}).setMetaOrControl(false);
+		world.keyCombos[6] = new KeyShortcut(new int[]{Keyboard.KEY_R});
 		
 		world.reloadSubWidth();
+		
+		String[] entityContents = {"Insert Entity", "Delete Entity", "Create Prefab from Selected"};
+		GuiEditorTopMenuSection entity = new GuiEditorTopMenuSection(currentX, 0, height, entityContents, "Entity", this);
+		if(world.getEnabled())
+			currentX += world.width;
+		
+		entity.keyCombos[0] = new KeyShortcut(new int[]{Keyboard.KEY_E});
+		entity.keyCombos[1] = new KeyShortcut(new int[]{Keyboard.KEY_DELETE}).setMetaOrControl(false);
+		entity.keyCombos[2] = new KeyShortcut(new int[]{Keyboard.KEY_P}).setUseShift(true);
+		
+		entity.reloadSubWidth();
 		
 		Iterator<Entry<String,Class<?>>> iterator = InsertableComponentList.getIterator();
 		ArrayList<String> contents = new ArrayList<String>();
@@ -109,6 +119,7 @@ public class GuiEditorTopMenu extends Gui {
 		sections.add(file);
 		sections.add(world);
 		sections.add(edit);
+		sections.add(entity);
 		sections.add(component);
 		sections.add(window);
 		sections.add(dev);
@@ -167,6 +178,7 @@ public class GuiEditorTopMenu extends Gui {
 	public void tick(int i, int j, int k) {
 		getSectionWithName("World").setEnabled(editor.getMap() != null);
 		getSectionWithName("Component").setEnabled(editor.getMap() != null);
+		getSectionWithName("Entity").setEnabled(editor.getMap() != null);
 		
 		for(int x=0;x<sections.size();x++)
 		{
@@ -276,16 +288,9 @@ public class GuiEditorTopMenu extends Gui {
 			}
 		} else if(secTitle.equalsIgnoreCase("World"))
 		{
-			if(secSubTitle.equalsIgnoreCase("Insert Entity"))
-			{
-				editor.confirmOperation(new OperationNewEntity(editor));
-			} else if(secSubTitle.equalsIgnoreCase("Run Map"))
+			if(secSubTitle.equalsIgnoreCase("Run Map"))
 			{
 				Remote2D.guiList.push(new GuiInGame(editor.getMap().copy()));
-			} else if(secSubTitle.equalsIgnoreCase("Delete Entity"))
-			{
-				OperationDeleteEntity delete = new OperationDeleteEntity(editor);
-				editor.confirmOperation(delete);
 			} else if(secSubTitle.equalsIgnoreCase("Toggle Grid"))
 			{
 				editor.grid = !editor.grid;
@@ -310,6 +315,19 @@ public class GuiEditorTopMenu extends Gui {
 		{
 			if(editor.getSelectedEntity() != null)
 				editor.executeOperation(new OperationAddComponent(editor,editor.getSelectedEntity(),InsertableComponentList.getComponentWithEntity(secSubTitle, editor.getMap().getEntityList().getEntityWithUUID(editor.getSelectedEntity()))));
+		} else if(secTitle.equalsIgnoreCase("Entity"))
+		{
+			if(secSubTitle.equalsIgnoreCase("Insert Entity"))
+			{
+				editor.confirmOperation(new OperationNewEntity(editor));
+			} else if(secSubTitle.equalsIgnoreCase("Delete Entity"))
+			{
+				OperationDeleteEntity delete = new OperationDeleteEntity(editor);
+				editor.confirmOperation(delete);
+			} else if(secSubTitle.equalsIgnoreCase("Create Prefab from Selected") && editor.getSelectedEntity() != null)
+			{
+				editor.pushWindow(new GuiWindowCreatePrefab(editor,new Vector2(i,j),editor.getWindowBounds(),editor.getMap().getEntityList().getEntityWithUUID(editor.getSelectedEntity())));
+			}
 		}
 	}
 	

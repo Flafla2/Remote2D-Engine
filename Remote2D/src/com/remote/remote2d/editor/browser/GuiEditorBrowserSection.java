@@ -8,6 +8,7 @@ import com.remote.remote2d.editor.DraggableObjectFile;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
+import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.logic.Vector2;
 
@@ -38,6 +39,11 @@ public class GuiEditorBrowserSection extends Gui {
 			if(pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)))
 			{
 				isSelected = true;
+				if(file != null && file.isFile() && file.getName().endsWith(Entity.getExtension()))
+				{
+					browser.getEditor().setSelectedEntity(null);
+					browser.getEditor().getInspector().setPrefab(file.getPath());
+				}
 				if(lastClickEvent != -1 && time-lastClickEvent <= 500)
 				{
 					browser.doubleClickEvent(file);
@@ -46,10 +52,11 @@ public class GuiEditorBrowserSection extends Gui {
 				{
 					lastClickEvent = time;
 				}
-			} else
+			} else if(browser.pos.getColliderWithDim(browser.dim).isPointInside(new Vector2(i,j)))
 			{
 				lastClickEvent = -1;
 				isSelected = false;
+				browser.getEditor().getInspector().setPrefab(null);
 			}
 		} else if(Mouse.isButtonDown(0) && pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)) && file != null && browser.getEditor().dragObject == null)
 		{
