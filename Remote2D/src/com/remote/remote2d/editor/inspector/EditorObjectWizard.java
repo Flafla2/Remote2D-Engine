@@ -16,6 +16,7 @@ import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.entity.EditorObject;
 import com.remote.remote2d.engine.entity.Entity;
+import com.remote.remote2d.engine.entity.component.Component;
 import com.remote.remote2d.engine.logic.Vector2;
 
 public class EditorObjectWizard {
@@ -186,10 +187,15 @@ public class EditorObjectWizard {
 		for(int x=0;x<sections.size();x++)
 		{
 			Vector2 secDim = new Vector2(width,sections.get(x).sectionHeight());
-			boolean inside = sections.get(x).pos.getColliderWithDim(secDim).isPointInside(mouseVec);
-			if(inside && sections.get(x).acceptsDraggableObject(drag))
+			GuiEditorInspectorSection sec = sections.get(x);
+			boolean inside = sec.pos.getColliderWithDim(secDim).isPointInside(mouseVec);
+			if(inside && sec.acceptsDraggableObject(drag))
 			{
-				sections.get(x).acceptDraggableObject(drag);
+				if (sec instanceof GuiEditorInspectorSectionEntity)
+					((GuiEditorInspectorSectionEntity) sec).acceptDraggableEntityWithOwner(drag, ((Component)object).getEntity());
+				else
+					sec.acceptDraggableObject(drag);
+				
 				return true;
 			}
 		}

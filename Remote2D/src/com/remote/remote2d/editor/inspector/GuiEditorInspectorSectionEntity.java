@@ -110,5 +110,11 @@ public class GuiEditorInspectorSectionEntity extends GuiEditorInspectorSection {
 		}
 	}
 
+	//only accepts if UUIDs are different
+	public void acceptDraggableEntityWithOwner(DraggableObject object, Entity owner)
+	{
+		if (!((DraggableObjectEntity)object).uuid.equals(owner.getUUID()))
+			acceptDraggableObject(object);
+	}
 }
 

@@ -94,5 +94,7 @@ public abstract class Component extends EditorObject{
 		this.entity = e;
 		this.map = e.getMap();
 	}
-	
+	public Entity getEntity(){
+		return entity;
+	}
 }
