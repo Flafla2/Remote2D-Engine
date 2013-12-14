@@ -14,6 +14,7 @@ import com.remote.remote2d.engine.entity.InsertableComponentList;
 import com.remote.remote2d.engine.entity.component.Component;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.io.R2DFileSaver;
+import com.remote.remote2d.engine.io.R2DFileUtility;
 import com.remote.remote2d.engine.io.R2DTypeCollection;
 import com.remote.remote2d.engine.logic.Collider;
 import com.remote.remote2d.engine.logic.Collision;
@@ -231,7 +232,7 @@ public class Map implements R2DFileSaver {
 	{
 		if(e.getPrefabPath() != null && !ignorePrefab)
 		{
-			c.setString("prefabPath", e.getPrefabPath());
+			c.setString("prefabPath", R2DFileUtility.getStandardPath(e.getPrefabPath()));
 			c.setVector2D("pos", e.pos);
 			c.setFloat("rotation", e.rotation);
 			c.setString("name", e.name);
@@ -280,6 +281,10 @@ public class Map implements R2DFileSaver {
 			String prefabPath = c.getString("prefabPath");
 			
 			e.setPrefabPath(prefabPath);
+			e.name = c.getString("name");
+			e.pos = c.getVector2D("pos");
+			e.rotation = c.getFloat("rotation");
+			e.setUUID(c.getString("uuid"));
 			return;
 		} else if(!ignorePrefab)
 			e.setPrefabPath(null);

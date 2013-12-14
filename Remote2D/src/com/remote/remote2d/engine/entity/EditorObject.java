@@ -210,4 +210,9 @@ public abstract class EditorObject implements R2DFileSaver {
 		return uuid;
 	}
 	
+	public void setUUID(String uuid)
+	{
+		this.uuid = uuid;
+	}
+	
 }

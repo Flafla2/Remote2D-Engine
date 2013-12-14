@@ -211,7 +211,7 @@ public class GuiEditorInspector extends GuiMenu {
 			if(changed)
 				after.setPrefabPath(null);
 			
-			if(before.getPrefabPath() == null)
+			if(before.getPrefabPath() == null || !changed)
 				editor.executeOperation(new OperationEditEntity(editor,before,after));
 			else if(changed)
 				editor.confirmOperation(new OperationEditEntity(editor,before,after));
