@@ -14,5 +14,5 @@ public class DraggableObjectFile extends DraggableObject {
 		this.file = file;
 		if(this.file.isAbsolute())
 			this.file = R2DFileUtility.getRelativeFile(file);
-	}	
+	}
 }

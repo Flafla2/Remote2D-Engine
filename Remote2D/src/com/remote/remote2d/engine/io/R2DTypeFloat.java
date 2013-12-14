@@ -53,7 +53,7 @@ public class R2DTypeFloat extends R2DType {
 	@Override
 	public boolean equals(R2DType type)
 	{
-		if(!(type instanceof R2DTypeFloat))
+		if(!type.name.equals(name) || !(type instanceof R2DTypeFloat))
 			return false;
 		return ((R2DTypeFloat)type).data == data;
 	}

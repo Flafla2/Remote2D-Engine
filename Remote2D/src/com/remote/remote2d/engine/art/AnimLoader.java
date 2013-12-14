@@ -1,6 +1,6 @@
 package com.remote.remote2d.engine.art;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.io.R2DFileUtility;
@@ -13,24 +13,43 @@ import com.remote.remote2d.engine.io.R2DFileUtility;
  */
 public class AnimLoader {
 	
-	private static HashMap<String,Animation> animList;
+	private static ArrayList<AnimData> animList;
 	
 	static
 	{
-		animList = new HashMap<String,Animation>();
+		animList = new ArrayList<AnimData>();
 	}
 	
 	public static Animation getAnimation(String s)
 	{
 		if(!R2DFileUtility.R2DExists(s))
 			return null;
-		if(!animList.containsKey(s))
+		
+		AnimData data = new AnimData();
+		data.path = R2DFileUtility.formatPath(s);
+		
+		if(!animList.contains(data))
 		{
-			Log.debug("New animation added to list: "+s);
-			Animation animation = new Animation(s);
-			animList.put(s, animation);
+			Animation animation = new Animation(R2DFileUtility.formatPath(s));
+			data.animation = animation;
+			animList.add(data);
+			Log.debug("New animation added to list: "+R2DFileUtility.formatPath(s)+"; size="+animList.size());
 		}
-		return animList.get(s);
+		return animList.get(animList.indexOf(data)).animation;
+	}
+	
+	private static class AnimData
+	{
+		public Animation animation;
+		public String path;
+		
+		public boolean equals(Object o)
+		{
+			if(!(o instanceof AnimData))
+				return false;
+			
+			return path.equals(((AnimData)o).path);
+		}
 	}
 	
 }

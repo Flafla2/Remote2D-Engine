@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.entity.component.Component;
@@ -268,7 +267,6 @@ public class EntityList {
 	 */
 	public Entity instantiatePrefab(String path, int index)
 	{
-		Log.debug(path+" "+R2DFileUtility.R2DExists(path));
 		if(!R2DFileUtility.R2DExists(path) || !path.endsWith(Entity.getExtension()))
 			return null;
 		

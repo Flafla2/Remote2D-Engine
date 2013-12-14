@@ -55,7 +55,7 @@ public class R2DTypeByte extends R2DType {
 	@Override
 	public boolean equals(R2DType type)
 	{
-		if(!(type instanceof R2DTypeByte))
+		if(!type.name.equals(name) || !(type instanceof R2DTypeByte))
 			return false;
 		return ((R2DTypeByte)type).data == data;
 	}

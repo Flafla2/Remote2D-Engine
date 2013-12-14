@@ -68,6 +68,15 @@ public class Vector1 {
 	}
 	
 	@Override
+	public boolean equals(Object o)
+	{
+		if(!(o instanceof Vector1))
+			return false;
+		Vector1 vec = (Vector1)o;
+		return vec.x == this.x;
+	}
+	
+	@Override
 	public String toString()
 	{
 		return "("+x+")";

@@ -2,7 +2,6 @@ package com.remote.remote2d.editor.operation;
 
 import java.util.ArrayList;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.gui.GuiButton;
@@ -23,7 +22,7 @@ public class GuiWindowConfirmOperation extends GuiWindow {
 		
 		ArrayList<String> trueContents = Fonts.get("Arial").getStringSet(contents, 20, dim.x-20);
 		
-		Log.debug(trueContents.toString());
+		//Log.debug(trueContents.toString());
 		this.contents = new String[trueContents.size()];
 		this.contents = trueContents.toArray(this.contents);
 		

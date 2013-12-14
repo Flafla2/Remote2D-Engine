@@ -54,7 +54,7 @@ public class R2DTypeInt extends R2DType {
 	@Override
 	public boolean equals(R2DType type)
 	{
-		if(!(type instanceof R2DTypeInt))
+		if(!type.name.equals(name) || !(type instanceof R2DTypeInt))
 			return false;
 		return ((R2DTypeInt)type).data == data;
 	}

@@ -55,7 +55,7 @@ public class R2DTypeBoolean extends R2DType {
 	@Override
 	public boolean equals(R2DType type)
 	{
-		if(!(type instanceof R2DTypeBoolean))
+		if(!type.name.equals(name) || !(type instanceof R2DTypeBoolean))
 			return false;
 		return ((R2DTypeBoolean)type).data == data;
 	}

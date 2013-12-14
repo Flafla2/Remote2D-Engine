@@ -278,9 +278,10 @@ public class Map implements R2DFileSaver {
 		if(c.hasKey("prefabPath") && !ignorePrefab)
 		{
 			String prefabPath = c.getString("prefabPath");
+			
 			e.setPrefabPath(prefabPath);
 			return;
-		} else
+		} else if(!ignorePrefab)
 			e.setPrefabPath(null);
 		
 		e.loadR2DFile(c);

@@ -62,12 +62,11 @@ public class R2DFileManager {
 			buf = null;
 		} catch(Exception e)
 		{
-			Log.warn("Unable to read R2D file metadata: "+file.getName());
+			//Log.warn("Unable to read R2D file metadata: "+file.getName());
 		}
 		
 		if(read)
 		{
-			Log.debug("File Manager","Reading file "+file.getName()+"; file exists!");
 			try {
 				doReadOperation(file,xml);
 			} catch (IOException e) {
@@ -83,9 +82,7 @@ public class R2DFileManager {
 	{
 		try {
 			File file = R2DFileUtility.getResource(this.path);
-			
-			Log.debug("File Manager","Writing to file "+file.getName());
-			
+						
 			doWriteOperation(file,xml);
 			
 			Path path = Paths.get(file.getAbsolutePath());

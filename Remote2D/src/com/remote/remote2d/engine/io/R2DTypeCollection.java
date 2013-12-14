@@ -325,7 +325,7 @@ public class R2DTypeCollection extends R2DType {
 	@Override
 	public boolean equals(R2DType type)
 	{
-		if(!(type instanceof R2DTypeCollection))
+		if(!type.name.equals(name) || !(type instanceof R2DTypeCollection))
 			return false;
 		Iterator<Entry<String, R2DType>> iterator = ((R2DTypeCollection)type).getDataIterator();
 		while(iterator.hasNext())

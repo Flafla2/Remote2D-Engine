@@ -52,4 +52,13 @@ public class Vector3 extends Vector2 {
 	{
 		return "("+x+","+y+","+z+")";
 	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		if(!(o instanceof Vector3))
+			return false;
+		Vector3 vec = (Vector3)o;
+		return vec.x == this.x && vec.y == this.y && vec.z == this.z;
+	}
 }

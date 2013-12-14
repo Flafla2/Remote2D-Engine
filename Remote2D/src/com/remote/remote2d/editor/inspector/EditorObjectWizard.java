@@ -224,4 +224,15 @@ public class EditorObjectWizard {
 		return object;
 	}
 	
+	/**
+	 * Sets the object to use in this wizard.
+	 * @param e The object to replace with.  MUST be the same class as the original object.
+	 */
+	public void setObject(EditorObject e)
+	{
+		if(e.getClass() != object.getClass())
+			return;
+		object = e;
+	}
+	
 }

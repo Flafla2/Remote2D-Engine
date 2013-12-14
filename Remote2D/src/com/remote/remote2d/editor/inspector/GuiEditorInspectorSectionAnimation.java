@@ -57,7 +57,10 @@ public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSectio
 			textField.text = ((Animation)o).getPath();
 		} else if(o instanceof String)
 			if(R2DFileUtility.R2DExists((String)o))
+			{
 				textField.text = (String)o;
+				textField.text = textField.text.replace('\\', '/');
+			}
 	}
 
 	@Override

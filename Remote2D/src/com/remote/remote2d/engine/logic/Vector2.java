@@ -112,4 +112,13 @@ public class Vector2 extends Vector1 {
 		return new Vector2(x%mod.x,y%mod.y);
 	}
 	
+	@Override
+	public boolean equals(Object o)
+	{
+		if(!(o instanceof Vector2))
+			return false;
+		Vector2 vec = (Vector2)o;
+		return vec.x == this.x && vec.y == this.y;
+	}
+	
 }

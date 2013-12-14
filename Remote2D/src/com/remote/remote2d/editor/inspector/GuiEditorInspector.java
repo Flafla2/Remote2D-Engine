@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.editor.DraggableObject;
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.editor.operation.OperationEditEntity;
@@ -190,13 +189,25 @@ public class GuiEditorInspector extends GuiMenu {
 		if(currentEntity != null)
 		{
 			Entity before = editor.getMap().getEntityList().getEntityWithUUID(currentEntity).clone();
+			Entity after = editor.getMap().getEntityList().getEntityWithUUID(currentEntity).clone();
+						
+			EditorObject e = wizards.get(0).getObject();
+			EditorObject[] comps = new EditorObject[wizards.size()-1];
+			wizards.get(0).setObject(after);
+			for(int x=0;x<after.getComponents().size();x++)
+			{
+				comps[x] = wizards.get(x+1).getObject();
+				wizards.get(x+1).setObject(after.getComponents().get(x));
+			}
 			for(int x=0;x<wizards.size();x++)
 			{
 				wizards.get(x).setComponentFields();
 			}
-			Entity after = editor.getMap().getEntityList().getEntityWithUUID(currentEntity).clone();
+			wizards.get(0).setObject(e);
+			for(int x=0;x<after.getComponents().size();x++)
+				wizards.get(x+1).setObject(comps[x]);
+			
 			boolean changed = hasEntityBeenChanged(before,after);
-			Log.debug("changed: "+changed);
 			if(changed)
 				after.setPrefabPath(null);
 			
@@ -254,9 +265,9 @@ public class GuiEditorInspector extends GuiMenu {
 	public boolean hasEntityBeenChanged(Entity before, Entity after)
 	{
 		R2DTypeCollection collBefore = new R2DTypeCollection("Entity1");
-		before.saveR2DFile(collBefore);
+		Map.saveEntityFull(before, collBefore, true);
 		R2DTypeCollection collAfter = new R2DTypeCollection("Entity2");
-		after.saveR2DFile(collAfter);
+		Map.saveEntityFull(after, collAfter, true);
 		
 		Iterator<Entry<String,R2DType>> iterator = collBefore.getDataIterator();
 		while(iterator.hasNext())

@@ -53,7 +53,7 @@ public class R2DTypeChar extends R2DType {
 	@Override
 	public boolean equals(R2DType type)
 	{
-		if(!(type instanceof R2DTypeChar))
+		if(!type.name.equals(name) || !(type instanceof R2DTypeChar))
 			return false;
 		return ((R2DTypeChar)type).data == data;
 	}

@@ -3,7 +3,6 @@ package com.remote.remote2d.engine.io;
 import java.io.File;
 import java.net.URISyntaxException;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.Remote2DException;
 
@@ -27,7 +26,7 @@ public class R2DFileUtility {
 		R2DFileFilter filter = new R2DFileFilter();
 		for(File f : file.listFiles())
 		{
-			Log.debug(f.isFile()+" "+filter.accept(file, f.getName()));
+			//Log.debug(f.isFile()+" "+filter.accept(file, f.getName()));
 			if(f.isFile() && filter.accept(file, f.getName()))
 			{
 				String localPath = R2DFileUtility.getRelativeFile(f).getPath();
@@ -73,6 +72,16 @@ public class R2DFileUtility {
 	 */
 	public static File getResource(String s)
 	{
+		return new File(formatPath(s));
+	}
+	
+	/**
+	 * Reformats the given path into a uniform path structure so that equivalent
+	 * paths in the file system will still equal each other as a string.
+	 * @param s Path to format
+	 */
+	public static String formatPath(String s)
+	{
 		s = s.replace('\\', File.separatorChar);
 		s = s.replace('/', File.separatorChar);
 		
@@ -81,8 +90,7 @@ public class R2DFileUtility {
 		
 		if(s.startsWith("."+File.separator))
 			s = s.substring(2);
-				
-		return new File(s);
+		return s;
 	}
 	
 	public static boolean textureExists(String s)
@@ -123,6 +131,19 @@ public class R2DFileUtility {
 	    } else {
 	        return null;
 	    }
+	}
+	
+	/**
+	 * Returns a standard path that will be the same across all platforms.
+	 * Useful for IO.
+	 * @param path Path to convert to standard
+	 */
+	public static String getStandardPath(String path)
+	{
+		path = path.replace('\\', '/');
+		if(path.startsWith("/"))
+			path = path.substring(1);
+		return path;
 	}
 
 	/**

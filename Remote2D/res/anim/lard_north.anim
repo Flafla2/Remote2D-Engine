@@ -5,13 +5,13 @@
             <x>32.0</x>
             <y>32.0</y>
         </type>
-        <type id="11" name="startPos">
-            <x>0.0</x>
-            <y>128.0</y>
-        </type>
         <type id="11" name="frames">
             <x>6.0</x>
             <y>1.0</y>
+        </type>
+        <type id="11" name="startPos">
+            <x>0.0</x>
+            <y>128.0</y>
         </type>
         <type id="8" name="texture">res/art/lord_lard_sheet.png</type>
         <type id="3" name="framelength">100</type>

@@ -2,7 +2,6 @@ package com.remote.remote2d.editor;
 
 import java.util.ArrayList;
 
-import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.gui.GuiButton;
@@ -71,14 +70,12 @@ public class GuiWindowCreatePrefab extends GuiWindow {
 			holder.closeWindow(this);
 		else if(button.id == 1)
 		{
-			Entity after = ((GuiEditor)holder).getMap().getEntityList().getEntityWithUUID(this.entity).clone();
+			Entity e = ((GuiEditor)holder).getMap().getEntityList().getEntityWithUUID(entity);
 			R2DFileManager manager = new R2DFileManager(textField.text,null);
-			Map.saveEntityFull(after, manager.getCollection(), true);
+			Map.saveEntityFull(e, manager.getCollection(), true);
 			manager.write();
 			
-			after.setPrefabPath(textField.text);
-			((GuiEditor)holder).getMap().getEntityList().getEntityWithUUID(this.entity).transpose(after);
-			Log.debug("Saving prefab: "+textField.text+"; "+((GuiEditor)holder).getMap().getEntityList().getEntityWithUUID(this.entity).getPrefabPath());
+			e.setPrefabPath(textField.text);
 			holder.closeWindow(this);
 		}
 	}

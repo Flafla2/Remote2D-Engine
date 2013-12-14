@@ -1,7 +1,9 @@
 package com.remote.remote2d.editor.operation;
 
 import com.remote.remote2d.editor.GuiEditor;
+import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.io.R2DFileManager;
+import com.remote.remote2d.engine.io.R2DFileUtility;
 import com.remote.remote2d.engine.io.R2DTypeCollection;
 
 public class OperationEditPrefab extends Operation {
@@ -23,6 +25,8 @@ public class OperationEditPrefab extends Operation {
 		oldColl = manager.getCollection();
 		manager.setCollection(newColl);
 		manager.write();
+		
+		updateMapWithPrefab();
 	}
 
 	@Override
@@ -30,6 +34,23 @@ public class OperationEditPrefab extends Operation {
 		R2DFileManager manager = new R2DFileManager(path,null);
 		manager.setCollection(oldColl);
 		manager.write();
+		
+		updateMapWithPrefab();
+	}
+	
+	public void updateMapWithPrefab()
+	{
+		for(int x=0; x< editor.getMap().getEntityList().size(); x++)
+		{
+			Entity e = editor.getMap().getEntityList().get(x);
+			if(e.getPrefabPath() == null)
+				continue;
+			if(R2DFileUtility.getStandardPath(e.getPrefabPath()).equals(R2DFileUtility.getStandardPath(path)))
+			{
+				e.setPrefabPath(path);
+				
+			}
+		}
 	}
 
 	@Override

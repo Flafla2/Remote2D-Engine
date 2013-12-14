@@ -117,12 +117,8 @@ public class Entity extends EditorObject {
 	@Override
 	public Entity clone()
 	{
-		Entity clone = new Entity(map);
-		R2DTypeCollection compile = new R2DTypeCollection("Compile");
-		Map.saveEntityFull(this, compile, false);
-//		if(newUUID)
-//			compile.setString("uuid", clone.getUUID());
-		Map.loadEntityFull(clone, compile, false);
+		Entity clone = new Entity(map,name,getUUID());
+		clone.transpose(this);
 		return clone;
 	}
 	
