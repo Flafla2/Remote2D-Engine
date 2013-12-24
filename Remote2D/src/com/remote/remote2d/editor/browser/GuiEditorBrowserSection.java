@@ -36,23 +36,26 @@ public class GuiEditorBrowserSection extends Gui {
 		long time = System.currentTimeMillis();
 		if(Remote2D.hasMouseBeenPressed())
 		{
-			if(pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)))
+			if(browser.pos.getColliderWithDim(browser.dim).isPointInside(new Vector2(i,j)))
 			{
-				isSelected = true;
-				if(file != null && file.isFile() && file.getName().endsWith(Entity.getExtension()))
+				if(pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)))
 				{
-					browser.getEditor().setSelectedEntity(null);
-					browser.getEditor().getInspector().setPrefab(file.getPath());
+					isSelected = true;
+					if(file != null && file.isFile() && file.getName().endsWith(Entity.getExtension()))
+					{
+						browser.getEditor().setSelectedEntity(null);
+						browser.getEditor().getInspector().setPrefab(file.getPath());
+					}
+					if(lastClickEvent != -1 && time-lastClickEvent <= 500)
+					{
+						browser.doubleClickEvent(file);
+						lastClickEvent = -1;
+					} else
+					{
+						lastClickEvent = time;
+					}
 				}
-				if(lastClickEvent != -1 && time-lastClickEvent <= 500)
-				{
-					browser.doubleClickEvent(file);
-					lastClickEvent = -1;
-				} else
-				{
-					lastClickEvent = time;
-				}
-			} else if(browser.pos.getColliderWithDim(browser.dim).isPointInside(new Vector2(i,j)))
+			} else
 			{
 				lastClickEvent = -1;
 				isSelected = false;

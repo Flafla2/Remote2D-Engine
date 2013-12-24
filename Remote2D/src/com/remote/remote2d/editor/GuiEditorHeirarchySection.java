@@ -36,20 +36,20 @@ public class GuiEditorHeirarchySection {
 		long time = System.currentTimeMillis();
 		if(Remote2D.hasMouseBeenPressed())
 		{
-			if(pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)))
-			{	
-				if(lastClickEvent != -1 && time-lastClickEvent <= 500)
-				{
-					//TODO: Enable entity focusing on double click
-					lastClickEvent = -1;
-				} else
-				{
-					lastClickEvent = time;
-				}
-			} else
+			if(heirarchy.pos.getColliderWithDim(heirarchy.dim).isPointInside(new Vector2(i,j)))
 			{
-				lastClickEvent = -1;
-				
+				if(pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)))
+				{	
+					if(lastClickEvent != -1 && time-lastClickEvent <= 500)
+					{
+						//TODO: Enable entity focusing on double click
+						lastClickEvent = -1;
+					} else
+					{
+						lastClickEvent = time;
+					}
+				} else
+					lastClickEvent = -1;
 			}
 		} else if(Mouse.isButtonDown(0) && pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)) && heirarchy.getEditor().dragObject == null)
 		{

@@ -36,7 +36,13 @@ public class GuiEditorInspectorSectionVec2D extends GuiEditorInspectorSection {
 
 	@Override
 	public Object getData() {
-		return new Vector2(Float.parseFloat(textField1.text),Float.parseFloat(textField2.text));
+		float f1 = 0;
+		if(!textField1.text.trim().equals(""))
+			f1 = Float.parseFloat(textField1.text);
+		float f2 = 0;
+		if(!textField2.text.trim().equals(""))
+			f2 = Float.parseFloat(textField2.text);
+		return new Vector2(f1,f2);
 	}
 
 	@Override

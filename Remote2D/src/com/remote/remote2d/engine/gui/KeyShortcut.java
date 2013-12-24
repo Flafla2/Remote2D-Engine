@@ -23,9 +23,14 @@ public class KeyShortcut {
 	{
 		String result = "";
 		if(useShift)
-			result+='\u21e7';
+		{
+			if(System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0)
+				result+='\u2191';
+			else
+				result+="SHFT";
+		}
 		if(useControl)
-			result+="Ctrl";
+			result+="CTRL";
 		if(useMeta)
 			result += "\u2318";
 		for(int x : shortcuts)

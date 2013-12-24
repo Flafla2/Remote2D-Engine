@@ -19,7 +19,6 @@ import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.entity.InsertableComponentList;
 import com.remote.remote2d.engine.gui.Gui;
-import com.remote.remote2d.engine.gui.GuiInGame;
 import com.remote.remote2d.engine.gui.KeyShortcut;
 import com.remote.remote2d.engine.logic.Vector2;
 
@@ -44,7 +43,7 @@ public class GuiEditorTopMenu extends Gui {
 		file.keyCombos[0] = new KeyShortcut(new int[]{Keyboard.KEY_N});
 		file.keyCombos[1] = new KeyShortcut(new int[]{Keyboard.KEY_O});
 		file.keyCombos[2] = new KeyShortcut(new int[]{Keyboard.KEY_S});
-		file.keyCombos[2] = new KeyShortcut(new int[]{Keyboard.KEY_S}).setUseShift(true);
+		file.keyCombos[3] = new KeyShortcut(new int[]{Keyboard.KEY_S}).setUseShift(true);
 		
 		file.reloadSubWidth();
 		
@@ -58,7 +57,7 @@ public class GuiEditorTopMenu extends Gui {
 		
 		edit.keyCombos[0] = new KeyShortcut(new int[]{Keyboard.KEY_Z});
 		edit.keyCombos[1] = new KeyShortcut(new int[]{Keyboard.KEY_Y});
-		edit.keyCombos[2] = new KeyShortcut(new int[]{Keyboard.KEY_S}).setUseShift(true);
+		edit.keyCombos[2] = new KeyShortcut(new int[]{Keyboard.KEY_C}).setUseShift(true);
 		edit.keyCombos[3] = new KeyShortcut(new int[]{Keyboard.KEY_O}).setUseShift(true);
 		
 		edit.reloadSubWidth();
@@ -290,7 +289,7 @@ public class GuiEditorTopMenu extends Gui {
 		{
 			if(secSubTitle.equalsIgnoreCase("Run Map"))
 			{
-				Remote2D.guiList.push(new GuiInGame(editor.getMap().copy()));
+				Remote2D.guiList.push(Remote2D.getGame().getNewInGameGui(editor.getMap().copy()));
 			} else if(secSubTitle.equalsIgnoreCase("Toggle Grid"))
 			{
 				editor.grid = !editor.grid;

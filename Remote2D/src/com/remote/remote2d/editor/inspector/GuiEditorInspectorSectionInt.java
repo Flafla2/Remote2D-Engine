@@ -26,6 +26,8 @@ public class GuiEditorInspectorSectionInt extends GuiEditorInspectorSection {
 
 	@Override
 	public Object getData() {
+		if(textField.text.trim().equals(""))
+			return new Integer(0);
 		return Integer.parseInt(textField.text);
 	}
 

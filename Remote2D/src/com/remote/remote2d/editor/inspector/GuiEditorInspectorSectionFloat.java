@@ -26,6 +26,8 @@ public class GuiEditorInspectorSectionFloat extends GuiEditorInspectorSection {
 
 	@Override
 	public Object getData() {
+		if(textField.text.trim().equals(""))
+			return new Float(0);
 		return Float.parseFloat(textField.text);
 	}
 

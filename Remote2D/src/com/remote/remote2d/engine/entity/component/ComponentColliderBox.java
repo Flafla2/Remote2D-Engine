@@ -25,7 +25,8 @@ public class ComponentColliderBox extends Component implements ComponentCollider
 
 	@Override
 	public void renderAfter(boolean editor, float interpolation) {
-		pos.getColliderWithDim(dim).getTransformedCollider(entity.getPosGlobal(interpolation)).drawCollider(0x00ff00);
+		if(editor)
+			pos.getColliderWithDim(dim).getTransformedCollider(entity.getPosGlobal(interpolation)).drawCollider(0x00ff00);
 	}
 
 	@Override

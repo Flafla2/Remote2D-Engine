@@ -4,6 +4,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import com.esotericsoftware.minlog.Log;
+
 import nu.xom.Element;
 
 public class R2DTypeString extends R2DType {
@@ -53,7 +55,12 @@ public class R2DTypeString extends R2DType {
 	@Override
 	public boolean equals(R2DType type)
 	{	
-		if(!type.name.equals(name) || !(type instanceof R2DTypeString))
+		if(type == null)
+		{
+			Log.debug("type==null");
+			return false;
+		}
+		if((type.name != null && !type.name.equals(name)) || (name != null && !name.equals(type.name)) || !(type instanceof R2DTypeString))
 			return false;
 		String otherData = ((R2DTypeString)type).data;
 		if((data == null && otherData != null) || (otherData == null && data != null))

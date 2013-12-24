@@ -6,7 +6,10 @@ import java.awt.Insets;
 
 import javax.swing.JFrame;
 
+import com.remote.remote2d.engine.gui.GuiInGame;
+import com.remote.remote2d.engine.gui.GuiMenu;
 import com.remote.remote2d.engine.logic.Vector2;
+import com.remote.remote2d.engine.world.Map;
 
 /**
  * A catch-all class that each and every game MUST use.  This class handles information
@@ -68,6 +71,18 @@ public abstract class Remote2DGame {
 		Insets inset = frame.getInsets();
 		frame.dispose();
 		return new Vector2(screenDimension.width-inset.left-inset.right,screenDimension.height-inset.top-inset.bottom);
+	}
+	
+	/**
+	 * This is called by the editor when you click "Run Map", and is recommended
+	 * to be called by your game when you want to push an in-game GUI to the stack.
+	 * This can be used to override the default, simple {@link GuiInGame} with a more
+	 * complex GUI.
+	 * @param map The map that should be used in the created GUI
+	 */
+	public GuiMenu getNewInGameGui(Map map)
+	{
+		return new GuiInGame(map);
 	}
 	
 }

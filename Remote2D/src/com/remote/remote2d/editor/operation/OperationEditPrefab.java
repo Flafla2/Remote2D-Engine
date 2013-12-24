@@ -48,7 +48,6 @@ public class OperationEditPrefab extends Operation {
 			if(R2DFileUtility.getStandardPath(e.getPrefabPath()).equals(R2DFileUtility.getStandardPath(path)))
 			{
 				e.setPrefabPath(path);
-				
 			}
 		}
 	}

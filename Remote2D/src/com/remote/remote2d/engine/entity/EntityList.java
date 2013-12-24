@@ -7,9 +7,7 @@ import org.lwjgl.opengl.GL11;
 import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.entity.component.Component;
-import com.remote.remote2d.engine.io.R2DFileManager;
 import com.remote.remote2d.engine.io.R2DFileUtility;
-import com.remote.remote2d.engine.io.R2DTypeCollection;
 import com.remote.remote2d.engine.world.Map;
 
 /**
@@ -26,6 +24,7 @@ public class EntityList {
 	 */
 	private ArrayList<Entity> entityList;
 	private Map map;
+	private int iterator = -1;
 	
 	/**
 	 * Creates a new EntityList based on a parent map
@@ -42,7 +41,7 @@ public class EntityList {
 	 */
 	public void addEntityToList(Entity e)
 	{
-		entityList.add(e);
+		addEntityToList(e,entityList.size());
 	}
 	
 	/**
@@ -53,6 +52,11 @@ public class EntityList {
 	public void addEntityToList(Entity e,int i)
 	{
 		entityList.add(i,e);
+		if(iterator != -1)
+		{
+			if(i < iterator)
+				iterator++;
+		}
 	}
 	
 	/**
@@ -87,6 +91,11 @@ public class EntityList {
 	public void removeEntityFromList(int i)
 	{
 		entityList.remove(i);
+		if(iterator != -1)
+		{
+			if(i < iterator)
+				iterator--;
+		}
 	}
 	
 	/**
@@ -121,10 +130,9 @@ public class EntityList {
 	 */
 	public void tick(int i, int j, int k)
 	{
-		for(int x=0;x<entityList.size();x++)
-		{
-			entityList.get(x).tick(i, j, k);
-		}
+		for(iterator=0;iterator<entityList.size();iterator++)
+			entityList.get(iterator).tick(i, j, k);
+		iterator = -1;
 	}
 	
 	/**
@@ -234,34 +242,6 @@ public class EntityList {
 	/**
 	 * Instantiates the given prefab onto the entity list at the given index.  In other words, it takes a saved file, loads it into
 	 * the level, and adds it into the entity list.
-	 * @param coll Compiled entity data, already loaded into an R2DTypeCollection.
-	 * @param index The index at which you want to instantiate (insert) the entity.
-	 */
-	public Entity instantiatePrefab(R2DTypeCollection coll, int index)
-	{
-		String oldUUID = coll.getString("uuid");
-		Entity e = new Entity(map);
-		String uuid = e.getUUID();
-		coll.setString("uuid", uuid);
-		Map.loadEntityFull(e, coll, false);
-		coll.setString("uuid",oldUUID);
-		entityList.add(index, e);
-		return e;
-	}
-	
-	/**
-	 * Instantiates the given prefab onto the entity list at the end of the list.  In other words, it takes a saved file, loads it into
-	 * the level, and adds it to the end of the entity list.
-	 * @param coll Compiled entity data, already loaded into an R2DTypeCollection.
-	 */
-	public Entity instantiatePrefab(R2DTypeCollection coll)
-	{
-		return instantiatePrefab(coll,entityList.size());
-	}
-	
-	/**
-	 * Instantiates the given prefab onto the entity list at the given index.  In other words, it takes a saved file, loads it into
-	 * the level, and adds it into the entity list.
 	 * @param path Path to compiled entity data, in the form of a prefab file (The file must end in the filetype denoted by {@link Entity#getExtension()})
 	 * @param index The index at which you want to instantiate (insert) the entity.
 	 */
@@ -270,10 +250,10 @@ public class EntityList {
 		if(!R2DFileUtility.R2DExists(path) || !path.endsWith(Entity.getExtension()))
 			return null;
 		
-		R2DFileManager manager = new R2DFileManager(path,null);
-		manager.read();
-		
-		return instantiatePrefab(manager.getCollection(),index);
+		Entity e = new Entity(map);
+		e.setPrefabPath(path);
+		entityList.add(index,e);
+		return e;
 	}
 	
 	/**
