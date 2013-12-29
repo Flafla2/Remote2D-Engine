@@ -6,7 +6,7 @@ import com.remote.remote2d.editor.DraggableObject;
 import com.remote.remote2d.editor.DraggableObjectFile;
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.engine.Remote2D;
-import com.remote.remote2d.engine.art.AnimLoader;
+import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.art.Animation;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.gui.GuiTextField;
@@ -30,7 +30,7 @@ public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSectio
 	@Override
 	public Object getData() {
 		if(R2DFileUtility.R2DExists(textField.text))
-			return AnimLoader.getAnimation(textField.text);
+			return ResourceLoader.getAnimation(textField.text);
 		return null;
 	}
 

@@ -54,6 +54,14 @@ public class Animation implements R2DFileSaver {
 	public boolean flippedY = false;
 	
 	/**
+	 * Creates a completely empty animation to be loaded later.
+	 */
+	public Animation()
+	{
+		
+	}
+	
+	/**
 	 * All parameters pertain to the sprite's dimensions on the actual IMAGE, not in game
 	 * while rendering.
 	 * @param texPath Path to the animation's texture
