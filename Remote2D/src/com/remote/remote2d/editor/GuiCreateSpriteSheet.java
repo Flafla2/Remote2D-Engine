@@ -9,6 +9,7 @@ import com.remote.remote2d.engine.StretchType;
 import com.remote.remote2d.engine.art.Animation;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
+import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.gui.GuiButton;
 import com.remote.remote2d.engine.gui.GuiMenu;
@@ -158,10 +159,8 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 		if(R2DFileUtility.textureExists(texID.text) && tex != null)
 		{
 			if(!tex.getTextureLocation().equals(texID.text))
-			{
-				tex.removeTexture();
-				tex = new Texture(texID.text);
-			}
+				reloadTex();
+			
 			BufferedImage image = tex.getImage();
 			Vector2 dim = new Vector2(image.getWidth(),image.getHeight());
 			image.flush();
@@ -250,11 +249,7 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 	public void reloadTex()
 	{
 		if(tex == null || !tex.getTextureLocation().equals(texID.text))
-		{
-			if(tex != null)
-				tex.removeTexture();
-			tex = new Texture(texID.text);
-		}
+			tex = ResourceLoader.getTexture(texID.text);
 	}
 	
 	@Override

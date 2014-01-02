@@ -1,5 +1,6 @@
 package com.remote.remote2d.editor;
 
+import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.gui.GuiButton;
 import com.remote.remote2d.engine.gui.GuiTextField;
@@ -42,9 +43,7 @@ public class GuiWindowViewArtAsset extends GuiWindow {
 	{
 		if(R2DFileUtility.textureExists(field.text))
 		{
-			if(tex != null)
-				tex.removeTexture();
-			tex = new Texture(field.text);
+			tex = ResourceLoader.getTexture(field.text);
 		}
 	}
 	

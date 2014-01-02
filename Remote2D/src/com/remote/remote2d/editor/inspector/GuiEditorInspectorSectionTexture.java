@@ -7,6 +7,7 @@ import com.remote.remote2d.editor.DraggableObjectFile;
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
+import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.gui.GuiTextField;
 import com.remote.remote2d.engine.io.R2DFileUtility;
@@ -29,7 +30,7 @@ public class GuiEditorInspectorSectionTexture extends GuiEditorInspectorSection 
 	@Override
 	public Object getData() {
 		if(R2DFileUtility.textureExists(textField.text))
-			return new Texture(textField.text);
+			return ResourceLoader.getTexture(textField.text);
 		else
 			return null;
 	}

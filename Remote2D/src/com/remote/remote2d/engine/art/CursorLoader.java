@@ -21,7 +21,7 @@ public class CursorLoader {
 	 */
 	public static void setCursor(String tex, Vector2 hotspot)
 	{
-		CursorLoader.tex = new Texture(tex);
+		CursorLoader.tex = ResourceLoader.getTexture(tex);
 		CursorLoader.hotspot = hotspot;
 		
 		if(tex != null)
@@ -67,7 +67,7 @@ public class CursorLoader {
 	public static void setMouseTexLoc(String tex)
 	{
 		CursorLoader.tex.removeTexture();
-		CursorLoader.tex = new Texture(tex);
+		CursorLoader.tex = ResourceLoader.getTexture(tex);
 	}
 	
 }

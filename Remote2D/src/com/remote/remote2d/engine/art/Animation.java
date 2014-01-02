@@ -65,7 +65,7 @@ public class Animation implements R2DFileSaver {
 	public Animation(String texPath, Vector2 startPos, Vector2 spriteDim, Vector2 padding, Vector2 frames, int framelength)
 	{
 		this.texPath = texPath;
-		this.tex = new Texture(texPath);
+		this.tex = ResourceLoader.getTexture(texPath);
 		this.startPos = startPos;
 		this.spriteDim = spriteDim;
 		this.padding = padding;
@@ -83,7 +83,7 @@ public class Animation implements R2DFileSaver {
 	{
 		loadR2DFile(ResourceLoader.getCollection(path));
 		this.path = path;
-		this.tex = new Texture(texPath);
+		this.tex = ResourceLoader.getTexture(texPath);
 	}
 	
 	@Override

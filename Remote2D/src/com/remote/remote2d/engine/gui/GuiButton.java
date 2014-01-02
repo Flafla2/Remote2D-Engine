@@ -2,6 +2,7 @@ package com.remote.remote2d.engine.gui;
 
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
+import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.logic.Vector2;
 
@@ -33,7 +34,7 @@ public class GuiButton extends Gui {
 		this.dim = dim;
 		this.text = text;
 		
-		tex = new Texture("res/gui/controls.png");
+		tex = ResourceLoader.getTexture("res/gui/controls.png");
 	}
 	
 	@Override

@@ -97,7 +97,7 @@ public class Material {
 	
 	public void setTexture(String path)
 	{
-		setTexture(new Texture(path));
+		setTexture(ResourceLoader.getTexture(path));
 	}
 	
 	public void setAnimation(Animation anim)

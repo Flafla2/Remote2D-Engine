@@ -16,6 +16,7 @@ import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.StretchType;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
+import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.gui.GuiButton;
 import com.remote.remote2d.engine.gui.GuiMenu;
@@ -125,10 +126,8 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 		if(R2DFileUtility.textureExists(texturePath.text))
 		{
 			if(!tex.getTextureLocation().equals(texturePath.text))
-			{
-				tex.removeTexture();
-				tex = new Texture(texturePath.text);
-			}
+				tex = ResourceLoader.getTexture(texturePath.text);
+			
 			BufferedImage image = tex.getImage();
 			Vector2 dim = new Vector2(image.getWidth(),image.getHeight());
 			image.flush();
@@ -187,10 +186,8 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 				if(isPickingBG)
 				{
 					if(!tex.getTextureLocation().equals(texturePath.text))
-					{
-						tex.removeTexture();
-						tex = new Texture(texturePath.text);
-					}
+						tex = ResourceLoader.getTexture(texturePath.text);
+					
 					int x = (int) ((i-offset.x)/scale);
 					int y = (int) ((j-offset.y)/scale);
 					if(tex != null && x < tex.getImage().getWidth() && y < tex.getImage().getHeight())
@@ -243,13 +240,9 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 		
 		if(R2DFileUtility.textureExists(texturePath.text))
 		{
-			if(tex == null)
-				tex = new Texture(texturePath.text);
-			if(!tex.getTextureLocation().equals(texturePath.text))
-			{
-				tex.removeTexture();
-				tex = new Texture(texturePath.text);
-			}
+			if(tex == null || !tex.getTextureLocation().equals(texturePath.text))
+				tex = ResourceLoader.getTexture(texturePath.text);
+			
 			boolean up = Keyboard.isKeyDown(Keyboard.KEY_UP);
 			boolean down = Keyboard.isKeyDown(Keyboard.KEY_DOWN);
 			boolean left = Keyboard.isKeyDown(Keyboard.KEY_LEFT);
@@ -309,10 +302,8 @@ public class GuiOptimizeSpriteSheet extends GuiMenu {
 		 else if(button.id == 8)
 		 {
 			if(!tex.getTextureLocation().equals(texturePath.text))
-			{
-				tex.removeTexture();
-				tex = new Texture(texturePath.text);
-			}
+				tex = ResourceLoader.getTexture(texturePath.text);
+			
 			 BufferedImage source = tex.getImage();
 			 Vector2 frameSize = new Vector2(0,0);
 			 for(int x=0;x<frameDefiners.size();x++)

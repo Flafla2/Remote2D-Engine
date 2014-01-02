@@ -10,6 +10,7 @@ import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.art.Animation;
 import com.remote.remote2d.engine.art.Material;
 import com.remote.remote2d.engine.art.Material.RenderType;
+import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.entity.component.Component;
 import com.remote.remote2d.engine.io.R2DFileSaver;
@@ -144,7 +145,7 @@ public abstract class EditorObject implements R2DFileSaver {
 					else if(field.getType() == long.class)
 						field.set(this, collection.getLong(field.getName()));
 					else if(field.getType() == Texture.class)
-						field.set(this, new Texture(collection.getString(field.getName())));
+						field.set(this, ResourceLoader.getTexture(collection.getString(field.getName())));
 					else if(field.getType() == Vector2.class)
 						field.set(this, collection.getVector2D(field.getName()));
 					else if(field.getType() == Animation.class)
@@ -167,7 +168,7 @@ public abstract class EditorObject implements R2DFileSaver {
 						int color = matColl.getInteger("Color");
 						Texture tex = null;
 						if(matColl.getString("Texture") != null && !matColl.getString("Texture").trim().equals(""))
-							tex = new Texture(matColl.getString("Texture"));
+							tex = ResourceLoader.getTexture(matColl.getString("Texture"));
 						Animation anim = null;
 						if(matColl.getString("Animation") != null && !matColl.getString("Animation").trim().equals(""))
 							anim = new Animation(matColl.getString("Animation"));
