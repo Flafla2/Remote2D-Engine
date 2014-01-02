@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import com.esotericsoftware.minlog.Log;
-import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.art.Animation;
 import com.remote.remote2d.engine.art.Material;
 import com.remote.remote2d.engine.art.Material.RenderType;
@@ -149,7 +148,7 @@ public abstract class EditorObject implements R2DFileSaver {
 					else if(field.getType() == Vector2.class)
 						field.set(this, collection.getVector2D(field.getName()));
 					else if(field.getType() == Animation.class)
-						field.set(this, ResourceLoader.getAnimation(collection.getString(field.getName())));
+						field.set(this, new Animation(collection.getString(field.getName())));
 					else if(field.getType() == boolean.class)
 						field.set(this, collection.getBoolean(field.getName()));
 					else if(field.getType() == Color.class)

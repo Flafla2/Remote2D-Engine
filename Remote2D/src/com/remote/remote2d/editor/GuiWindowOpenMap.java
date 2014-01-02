@@ -1,11 +1,11 @@
 package com.remote.remote2d.editor;
 
 import com.remote.remote2d.editor.operation.OperationOpenMap;
+import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.gui.GuiButton;
 import com.remote.remote2d.engine.gui.GuiTextField;
 import com.remote.remote2d.engine.gui.GuiWindow;
 import com.remote.remote2d.engine.gui.WindowHolder;
-import com.remote.remote2d.engine.io.R2DFileManager;
 import com.remote.remote2d.engine.io.R2DFileUtility;
 import com.remote.remote2d.engine.logic.ColliderBox;
 import com.remote.remote2d.engine.logic.Vector2;
@@ -67,8 +67,7 @@ public class GuiWindowOpenMap extends GuiWindow {
 			GuiEditor editor = (GuiEditor)holder;
 			
 			Map newMap = new Map();
-			R2DFileManager mapManager = new R2DFileManager(textField.text, newMap);
-			mapManager.read();
+			newMap.loadR2DFile(ResourceLoader.getCollection(textField.text));
 			if(editor.getMap() != null)
 				editor.confirmOperation(new OperationOpenMap(editor,newMap));
 			else

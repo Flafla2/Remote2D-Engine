@@ -57,5 +57,11 @@ public class R2DTypeChar extends R2DType {
 			return false;
 		return ((R2DTypeChar)type).data == data;
 	}
+	
+	@Override
+	public R2DTypeChar clone()
+	{
+		return new R2DTypeChar(name,data);
+	}
 
 }

@@ -10,10 +10,10 @@ import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Material;
 import com.remote.remote2d.engine.art.Renderer;
+import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.entity.component.Component;
 import com.remote.remote2d.engine.entity.component.ComponentCollider;
-import com.remote.remote2d.engine.io.R2DFileManager;
 import com.remote.remote2d.engine.io.R2DTypeCollection;
 import com.remote.remote2d.engine.logic.Collider;
 import com.remote.remote2d.engine.logic.Collision;
@@ -492,14 +492,13 @@ public class Entity extends EditorObject {
 		this.prefabPath = path;
 		if(path == null)
 			return;
-		R2DFileManager manager = new R2DFileManager(path,null);
-		manager.read();
-		manager.getCollection().setString("uuid", getUUID());
-		manager.getCollection().setVector2D("pos", pos);
-		manager.getCollection().setFloat("rotation", rotation);
-		manager.getCollection().setString("name", name);
+		R2DTypeCollection coll = ResourceLoader.getCollection(path).clone();
+		coll.setString("uuid", getUUID());
+		coll.setVector2D("pos", pos);
+		coll.setFloat("rotation", rotation);
+		coll.setString("name", name);
 		
-		Map.loadEntityFull(this, manager.getCollection(), true);
+		Map.loadEntityFull(this, coll, true);
 	}
 	
 	public String getPrefabPath()

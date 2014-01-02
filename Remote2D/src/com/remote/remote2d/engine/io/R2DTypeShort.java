@@ -57,5 +57,11 @@ public class R2DTypeShort extends R2DType {
 			return false;
 		return ((R2DTypeShort)type).data == data;
 	}
+	
+	@Override
+	public R2DTypeShort clone()
+	{
+		return new R2DTypeShort(name,data);
+	}
 
 }

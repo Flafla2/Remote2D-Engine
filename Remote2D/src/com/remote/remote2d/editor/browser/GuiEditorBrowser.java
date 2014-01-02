@@ -10,9 +10,9 @@ import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Animation;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
+import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.gui.Gui;
-import com.remote.remote2d.engine.io.R2DFileManager;
 import com.remote.remote2d.engine.io.R2DFileUtility;
 import com.remote.remote2d.engine.logic.Vector2;
 import com.remote.remote2d.engine.world.Map;
@@ -94,8 +94,7 @@ public class GuiEditorBrowser extends Gui {
 			} else if(localPath.endsWith(Map.getExtension()))
 			{
 				Map map = new Map();
-				R2DFileManager manager = new R2DFileManager(localPath,map);
-				manager.read();
+				map.loadR2DFile(ResourceLoader.getCollection(localPath));
 				editor.setMap(map);
 			}
 

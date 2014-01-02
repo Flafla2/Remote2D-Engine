@@ -59,5 +59,11 @@ public class R2DTypeByte extends R2DType {
 			return false;
 		return ((R2DTypeByte)type).data == data;
 	}
+	
+	@Override
+	public R2DTypeByte clone()
+	{
+		return new R2DTypeByte(name,data);
+	}
 
 }

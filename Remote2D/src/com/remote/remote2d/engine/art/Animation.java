@@ -3,7 +3,6 @@ package com.remote.remote2d.engine.art;
 import java.awt.image.BufferedImage;
 
 import com.esotericsoftware.minlog.Log;
-import com.remote.remote2d.engine.io.R2DFileManager;
 import com.remote.remote2d.engine.io.R2DFileSaver;
 import com.remote.remote2d.engine.io.R2DTypeCollection;
 import com.remote.remote2d.engine.logic.ColliderBox;
@@ -54,14 +53,6 @@ public class Animation implements R2DFileSaver {
 	public boolean flippedY = false;
 	
 	/**
-	 * Creates a completely empty animation to be loaded later.
-	 */
-	public Animation()
-	{
-		
-	}
-	
-	/**
 	 * All parameters pertain to the sprite's dimensions on the actual IMAGE, not in game
 	 * while rendering.
 	 * @param texPath Path to the animation's texture
@@ -90,8 +81,7 @@ public class Animation implements R2DFileSaver {
 	 */
 	public Animation(String path)
 	{
-		R2DFileManager manager = new R2DFileManager(path,this);
-		manager.read();
+		loadR2DFile(ResourceLoader.getCollection(path));
 		this.path = path;
 		this.tex = new Texture(texPath);
 	}

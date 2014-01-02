@@ -21,6 +21,7 @@ public abstract class R2DType {
 	public abstract void read(Element e);
 	public abstract void write(Element e);
 	public abstract boolean equals(R2DType type);
+	public abstract R2DType clone();
 	
 	public abstract byte getId();
 	

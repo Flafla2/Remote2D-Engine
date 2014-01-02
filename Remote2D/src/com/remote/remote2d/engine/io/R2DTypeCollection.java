@@ -344,5 +344,18 @@ public class R2DTypeCollection extends R2DType {
 		}
 		return true;
 	}
+	
+	@Override
+	public R2DTypeCollection clone()
+	{
+		R2DTypeCollection coll = new R2DTypeCollection(name);
+		Iterator<Entry<String,R2DType>> iterator = getDataIterator();
+		while(iterator.hasNext())
+		{
+			Entry<String,R2DType> entry = iterator.next();
+			coll.setType(entry.getKey(), entry.getValue().clone());
+		}
+		return coll;
+	}
 
 }

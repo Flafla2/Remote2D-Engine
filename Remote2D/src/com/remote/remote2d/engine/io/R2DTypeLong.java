@@ -57,5 +57,11 @@ public class R2DTypeLong extends R2DType {
 			return false;
 		return ((R2DTypeLong)type).data == data;
 	}
+	
+	@Override
+	public R2DTypeFloat clone()
+	{
+		return new R2DTypeFloat(name,data);
+	}
 
 }

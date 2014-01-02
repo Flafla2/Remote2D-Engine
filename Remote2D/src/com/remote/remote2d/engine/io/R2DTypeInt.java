@@ -58,5 +58,11 @@ public class R2DTypeInt extends R2DType {
 			return false;
 		return ((R2DTypeInt)type).data == data;
 	}
+	
+	@Override
+	public R2DTypeInt clone()
+	{
+		return new R2DTypeInt(name,data);
+	}
 
 }

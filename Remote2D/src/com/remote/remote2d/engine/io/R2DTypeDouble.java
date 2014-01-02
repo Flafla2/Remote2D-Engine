@@ -57,5 +57,11 @@ public class R2DTypeDouble extends R2DType {
 			return false;
 		return ((R2DTypeDouble)type).data == data;
 	}
+	
+	@Override
+	public R2DTypeDouble clone()
+	{
+		return new R2DTypeDouble(name,data);
+	}
 
 }

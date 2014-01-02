@@ -45,5 +45,11 @@ public class R2DTypeEnd extends R2DType {
 			return false;
 		return true;
 	}
+	
+	@Override
+	public R2DTypeEnd clone()
+	{
+		return new R2DTypeEnd();
+	}
 
 }

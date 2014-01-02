@@ -34,16 +34,6 @@ public class ResourceLoader {
 		return textureCache.get(R2DFileUtility.formatPath(path));
 	}
 	
-	public static Animation getAnimation(String path)
-	{
-		if(!path.endsWith(Animation.getExtension()) || !r2dCache.containsKey(R2DFileUtility.formatPath(path)))
-			return null;
-		
-		Animation anim = new Animation();
-		anim.loadR2DFile(r2dCache.get(R2DFileUtility.formatPath(path)));
-		return anim;
-	}
-	
 	public static R2DTypeCollection getCollection(String path)
 	{
 		return r2dCache.get(R2DFileUtility.formatPath(path));
@@ -69,10 +59,10 @@ public class ResourceLoader {
 		textureCache.clear();
 		folders.clear();
 		
-		searchFile(new File(root));
+		refreshFile(new File(root));
 	}
 	
-	private static void searchFile(File f)
+	public static void refreshFile(File f)
 	{
 		if(!f.exists())
 			return;
@@ -90,7 +80,7 @@ public class ResourceLoader {
 		{
 			File[] files = f.listFiles();
 			for(File sub : files)
-				searchFile(sub);
+				refreshFile(sub);
 			folders.add(R2DFileUtility.formatPath(f.getPath()));
 		}
 	}

@@ -23,6 +23,7 @@ import nu.xom.ValidityException;
 
 import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.Remote2DException;
+import com.remote.remote2d.engine.art.ResourceLoader;
 
 public class R2DFileManager {
 	
@@ -34,7 +35,7 @@ public class R2DFileManager {
 	/**
 	 * Whether or not to use XML for writing files, unless otherwise specified.
 	 */
-	public static boolean USE_XML = false;
+	public static boolean USE_XML = true;
 	
 	public R2DFileManager(String path, R2DFileSaver saverClass)
 	{
@@ -93,6 +94,8 @@ public class R2DFileManager {
 				view.write("user.xml", Charset.defaultCharset().encode(Boolean.toString(xml)));
 				view.write("user.mimetype", Charset.defaultCharset().encode("application/xml"));
 			}
+			
+			ResourceLoader.refreshFile(file);
 		} catch (IOException e) {
 			throw new Remote2DException(e,"Error writing R2D file!");
 		}

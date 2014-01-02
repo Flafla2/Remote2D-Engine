@@ -67,5 +67,11 @@ public class R2DTypeString extends R2DType {
 			return false;
 		return data.equals(otherData);
 	}
+	
+	@Override
+	public R2DTypeString clone()
+	{
+		return new R2DTypeString(name,data);
+	}
 
 }

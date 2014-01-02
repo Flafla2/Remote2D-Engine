@@ -59,5 +59,11 @@ public class R2DTypeBoolean extends R2DType {
 			return false;
 		return ((R2DTypeBoolean)type).data == data;
 	}
+	
+	@Override
+	public R2DTypeBoolean clone()
+	{
+		return new R2DTypeBoolean(name,data);
+	}
 
 }

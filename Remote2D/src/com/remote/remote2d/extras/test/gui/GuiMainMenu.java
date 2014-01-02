@@ -3,9 +3,9 @@ package com.remote.remote2d.extras.test.gui;
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
+import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.gui.GuiButton;
 import com.remote.remote2d.engine.gui.GuiMenu;
-import com.remote.remote2d.engine.io.R2DFileManager;
 import com.remote.remote2d.engine.logic.Vector2;
 import com.remote.remote2d.engine.world.Map;
 
@@ -45,8 +45,7 @@ public class GuiMainMenu extends GuiMenu {
 	{
 		if (button.id == 0) {
 			Map newMap = new Map();
-			R2DFileManager mapManager = new R2DFileManager("res/maps/map.r2d", newMap);
-			mapManager.read();
+			newMap.loadR2DFile(ResourceLoader.getCollection("res/maps/map.r2d"));
 			Remote2D.guiList.push(Remote2D.getGame().getNewInGameGui(newMap)); // start game
 		}
 		else if (button.id == 1) Remote2D.guiList.add(new GuiEditor());

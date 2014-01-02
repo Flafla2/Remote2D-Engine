@@ -74,5 +74,11 @@ public class R2DTypeVec2D extends R2DType {
 			return false;
 		return data.equals(otherData);
 	}
+	
+	@Override
+	public R2DTypeVec2D clone()
+	{
+		return new R2DTypeVec2D(name,data.copy());
+	}
 
 }

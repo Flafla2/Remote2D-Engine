@@ -1,6 +1,7 @@
 package com.remote.remote2d.editor.operation;
 
 import com.remote.remote2d.editor.GuiEditor;
+import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.io.R2DFileManager;
 import com.remote.remote2d.engine.io.R2DFileUtility;
@@ -21,8 +22,7 @@ public class OperationEditPrefab extends Operation {
 	@Override
 	public void execute() {		
 		R2DFileManager manager = new R2DFileManager(path,null);
-		manager.read();
-		oldColl = manager.getCollection();
+		oldColl = ResourceLoader.getCollection(path);
 		manager.setCollection(newColl);
 		manager.write();
 		

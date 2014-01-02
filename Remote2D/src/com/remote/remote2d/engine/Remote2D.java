@@ -16,6 +16,7 @@ import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.editor.GuiWindowConsole;
 import com.remote.remote2d.engine.art.CursorLoader;
 import com.remote.remote2d.engine.art.Renderer;
+import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.art.TextureLoader;
 import com.remote.remote2d.engine.entity.InsertableComponentList;
 import com.remote.remote2d.engine.entity.component.ComponentCamera;
@@ -171,6 +172,8 @@ public class Remote2D {
 		charList = new ArrayList<Character>();
 		charListLimited = new ArrayList<Character>();
 		keyboardList = new ArrayList<Integer>();
+		
+		ResourceLoader.refresh(".");
 		
 		InsertableComponentList.addInsertableComponent("Box Collider", ComponentColliderBox.class);
 		InsertableComponentList.addInsertableComponent("Camera", ComponentCamera.class);
