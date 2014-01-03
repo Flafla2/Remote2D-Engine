@@ -1,5 +1,7 @@
 package com.remote.remote2d.editor.operation;
 
+import java.io.IOException;
+
 import com.remote.remote2d.editor.GuiEditor;
 import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.entity.Entity;
@@ -20,20 +22,26 @@ public class OperationEditPrefab extends Operation {
 	}
 
 	@Override
-	public void execute() {		
-		R2DFileManager manager = new R2DFileManager(path,null);
-		oldColl = ResourceLoader.getCollection(path);
-		manager.setCollection(newColl);
-		manager.write();
-		
-		updateMapWithPrefab();
+	public void execute() {
+		try
+		{
+			R2DFileManager manager = new R2DFileManager(path,null);
+			oldColl = ResourceLoader.getCollection(path);
+			manager.setCollection(newColl);
+			manager.write();
+			
+			updateMapWithPrefab();
+		} catch(IOException e){}
 	}
 
 	@Override
 	public void undo() {
-		R2DFileManager manager = new R2DFileManager(path,null);
-		manager.setCollection(oldColl);
-		manager.write();
+		try
+		{
+			R2DFileManager manager = new R2DFileManager(path,null);
+			manager.setCollection(oldColl);
+			manager.write();
+		} catch(IOException e){}
 		
 		updateMapWithPrefab();
 	}

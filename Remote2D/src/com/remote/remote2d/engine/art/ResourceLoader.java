@@ -10,7 +10,8 @@ import com.remote.remote2d.engine.io.R2DFileUtility;
 import com.remote.remote2d.engine.io.R2DTypeCollection;
 
 /**
- * Caches all Remote2D Resources so that they don't need to be reloaded all the time
+ * Caches all Remote2D Resources so that they don't need to be reloaded all the time.
+ * More specifically, this caches Textures and R2D Files (stored as R2DTypeCollections)
  * 
  * @author Flafla2
  */
@@ -72,8 +73,12 @@ public class ResourceLoader {
 			if(filter.accept(f.getParentFile(), f.getName()))
 			{
 				R2DFileManager manager = new R2DFileManager(f.getPath(),null);
-				manager.read();
-				r2dCache.put(R2DFileUtility.formatPath(f.getPath()), manager.getCollection());
+				try
+				{
+					manager.read();
+					r2dCache.put(R2DFileUtility.formatPath(f.getPath()), manager.getCollection());
+				} catch(Exception e ){}
+				
 			} else if(f.getName().endsWith(".png") || f.getName().endsWith(".jpg") || f.getName().endsWith(".bmp") || f.getName().endsWith(".jpeg") || f.getName().endsWith(".wbmp") || f.getName().endsWith(".jpeg"))
 				textureCache.put(R2DFileUtility.formatPath(f.getPath()), new Texture(f.getPath()));
 		} else if(f.isDirectory())

@@ -144,8 +144,8 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 		Fonts.get("Arial").drawString("Path", 5, 290, 20, 0xffffff);
 		if(!isReady() || !animSave.hasText())
 			Fonts.get("Arial").drawString("Fill out all fields!", 5, 335, 20, 0xff0000);
-		else if(!animSave.text.endsWith(Animation.getExtension()))
-			Fonts.get("Arial").drawString("Use "+Animation.getExtension()+" extension", 5, 335, 20, 0xff0000);
+		else if(!Animation.isValidFile(animSave.text))
+			Fonts.get("Arial").drawString("Use "+Animation.getExtension()+".bin or "+Animation.getExtension()+".xml extensions", 5, 335, 20, 0xff0000);
 		if(System.currentTimeMillis()-lastMessageTime <= messageTime)
 			Fonts.get("Arial").drawString(message, 5, screenHeight()-110, 20, 0xffffff);
 	}
@@ -207,7 +207,7 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 		
 		oldOffset = offset.copy();
 		
-		createButton.setDisabled(!(isReady() && animSave.hasText() && animSave.text.endsWith(Animation.getExtension())));
+		createButton.setDisabled(!(isReady() && animSave.hasText() && Animation.isValidFile(animSave.text)));
 		regenButton.setDisabled(!isReady());
 		
 		if(Remote2D.getKeyboardList().contains('[') && scale >= 2)
@@ -257,10 +257,16 @@ public class GuiCreateSpriteSheet extends GuiMenu {
 	{
 		if(button.id == 0)
 		{
-			R2DFileManager manager = new R2DFileManager(animSave.text,animation);
-			manager.write();
-			lastMessageTime = System.currentTimeMillis();
-			message = "File "+manager.getFile().getName()+" saved.";
+			try
+			{
+				R2DFileManager manager = new R2DFileManager(animSave.text,animation);
+				manager.write();
+				lastMessageTime = System.currentTimeMillis();
+				message = "File "+manager.getFile().getName()+" saved.";
+			} catch(Exception e)
+			{
+				message = "Error in saving file!";
+			}
 			//Remote2D.guiList.pop();
 		} else if(button.id == 1)
 		{

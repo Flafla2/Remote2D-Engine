@@ -34,6 +34,13 @@ public class Entity extends EditorObject {
 	public static String getExtension() {
 		return ".entity";
 	}
+	
+	public static boolean isValidFile(String name)
+	{
+		String lc = name.toLowerCase();
+		return lc.endsWith(getExtension()+".xml") || lc.endsWith(getExtension()+".bin");
+	}
+	
 	public String name;
 	/**
 	 * This entity's local position, relative to its parent entity.  DO NOT USE THIS

@@ -3,6 +3,7 @@ package com.remote.remote2d.editor.operation;
 import java.io.File;
 
 import com.remote.remote2d.editor.GuiEditor;
+import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.io.R2DFileManager;
 import com.remote.remote2d.engine.io.R2DFileUtility;
 import com.remote.remote2d.engine.world.Map;
@@ -23,11 +24,16 @@ public class OperationSaveMap extends Operation {
 
 	@Override
 	public void execute() {
-		Map map = editor.getMap();
-		R2DFileManager mapManager = new R2DFileManager(path, map);
-		mapManager.write();
-		map.path = path;
-		editor.setMap(map);
+		try
+		{
+			Map map = editor.getMap();
+			R2DFileManager mapManager = new R2DFileManager(path, map);
+			mapManager.write();
+			map.path = path;
+			editor.setMap(map);
+		} catch(Exception e){
+			throw new Remote2DException(e);
+		}
 	}
 
 	@Override

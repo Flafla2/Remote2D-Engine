@@ -41,7 +41,7 @@ public class GuiEditorBrowserSection extends Gui {
 				if(pos.getColliderWithDim(dim).isPointInside(new Vector2(i,j)))
 				{
 					isSelected = true;
-					if(file != null && file.isFile() && file.getName().endsWith(Entity.getExtension()))
+					if(file != null && file.isFile() && Entity.isValidFile(file.getName()))
 					{
 						browser.getEditor().setSelectedEntity(null);
 						browser.getEditor().getInspector().setPrefab(file.getPath());

@@ -6,12 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.UserDefinedFileAttributeView;
 
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -32,11 +26,6 @@ public class R2DFileManager {
 	private R2DTypeCollection collection;
 	private R2DFileSaver saverClass;
 	
-	/**
-	 * Whether or not to use XML for writing files, unless otherwise specified.
-	 */
-	public static boolean USE_XML = true;
-	
 	public R2DFileManager(String path, R2DFileSaver saverClass)
 	{
 		this.path = path;
@@ -45,55 +34,31 @@ public class R2DFileManager {
 		this.saverClass = saverClass;
 	}
 	
-	public void read()
+	public void read() throws IOException
 	{
 		boolean read = file.exists();
-		boolean xml = USE_XML;
-		try
-		{
-			Path path = Paths.get(file.getAbsolutePath());
-			UserDefinedFileAttributeView view = Files.getFileAttributeView(path,UserDefinedFileAttributeView.class);
-			String name = "user.xml";
-			ByteBuffer buf = ByteBuffer.allocate(view.size(name));
-			view.read(name, buf);
-			buf.flip();
-			String value = Charset.defaultCharset().decode(buf).toString();
-			xml = Boolean.parseBoolean(value);
-			buf.clear();
-			buf = null;
-		} catch(Exception e)
-		{
-			//Log.warn("Unable to read R2D file metadata: "+file.getName());
-		}
+		boolean xml = true;
+		
+		if(file.getName().toLowerCase().endsWith(".xml"))
+			xml = true;
+		else if(file.getName().toLowerCase().endsWith(".bin"))
+			xml = false;
 		
 		if(read)
-		{
-			try {
-				doReadOperation(file,xml);
-			} catch (IOException e) {
-				throw new Remote2DException(e,"Error reading R2D file!");
-			}
-		} else
-		{
+			doReadOperation(file,xml);
+		else
 			collection = new R2DTypeCollection(collection.getName());
-		}
 	}
 	
-	public void write(boolean xml)
+	public void write(boolean xml) throws IOException
 	{
+		if(!file.getName().toLowerCase().endsWith(".xml") && !file.getName().toLowerCase().endsWith(".bin"))
+			throw new IOException("INVALID FILE EXTENSION! Only write to a file that ends with .xml or .bin.");
+		
 		try {
 			File file = R2DFileUtility.getResource(this.path);
 						
 			doWriteOperation(file,xml);
-			
-			Path path = Paths.get(file.getAbsolutePath());
-			UserDefinedFileAttributeView view = Files.getFileAttributeView(path, UserDefinedFileAttributeView.class);
-			//TODO: Change xml check from using attributes to something else
-			if(view != null)
-			{
-				view.write("user.xml", Charset.defaultCharset().encode(Boolean.toString(xml)));
-				view.write("user.mimetype", Charset.defaultCharset().encode("application/xml"));
-			}
 			
 			ResourceLoader.refreshFile(file);
 		} catch (IOException e) {
@@ -101,9 +66,14 @@ public class R2DFileManager {
 		}
 	}
 	
-	public void write()
+	public void write() throws IOException
 	{
-		write(USE_XML);
+		if(file.getName().toLowerCase().endsWith(".xml"))
+			write(true);
+		else if(file.getName().toLowerCase().endsWith(".bin"))
+			write(false);
+		else
+			throw new IOException("INVALID FILE EXTENSION! Only write to a file that ends with .xml or .bin.");
 	}
 	
 	private void doWriteOperation(File file, boolean xml) throws IOException

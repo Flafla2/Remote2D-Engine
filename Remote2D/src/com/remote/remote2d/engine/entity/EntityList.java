@@ -242,12 +242,13 @@ public class EntityList {
 	/**
 	 * Instantiates the given prefab onto the entity list at the given index.  In other words, it takes a saved file, loads it into
 	 * the level, and adds it into the entity list.
-	 * @param path Path to compiled entity data, in the form of a prefab file (The file must end in the filetype denoted by {@link Entity#getExtension()})
+	 * @param path Path to compiled entity data, in the form of a prefab file (The file must end in the filetype denoted by {@link Entity#getExtension()}, plus
+	 * .xml or .bin at the end)
 	 * @param index The index at which you want to instantiate (insert) the entity.
 	 */
 	public Entity instantiatePrefab(String path, int index)
 	{
-		if(!R2DFileUtility.R2DExists(path) || !path.endsWith(Entity.getExtension()))
+		if(!R2DFileUtility.R2DExists(path) || !Entity.isValidFile(path))
 			return null;
 		
 		Entity e = new Entity(map);

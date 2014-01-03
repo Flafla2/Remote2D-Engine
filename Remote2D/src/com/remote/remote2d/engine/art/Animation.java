@@ -319,6 +319,12 @@ public class Animation implements R2DFileSaver {
 		return ".anim";
 	}
 	
+	public static boolean isValidFile(String name)
+	{
+		String lc = name.toLowerCase();
+		return lc.endsWith(getExtension()+".xml") || lc.endsWith(getExtension()+".bin");
+	}
+	
 	@Override
 	public Animation clone()
 	{

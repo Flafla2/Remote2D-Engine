@@ -2,6 +2,7 @@ package com.remote.remote2d.editor;
 
 import java.util.ArrayList;
 
+import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.gui.GuiButton;
@@ -28,7 +29,7 @@ public class GuiWindowCreatePrefab extends GuiWindow {
 		
 		stringSet = Fonts.get("Arial").getStringSet("Create Prefab for Entity: "+e.name, 20, 280);
 		textField = new GuiTextField(new Vector2(10,dim.y-95),new Vector2(dim.x-20,40), 20);
-		textField.text = "/res/entity/prefab"+Entity.getExtension();
+		textField.text = "/res/entity/prefab"+Entity.getExtension()+".xml";
 		this.entity = e.getUUID();
 	}
 	
@@ -57,7 +58,7 @@ public class GuiWindowCreatePrefab extends GuiWindow {
 		Vector2 mouse = getMouseInWindow(i,j);
 		textField.tick((int)mouse.x, (int)mouse.y, k);
 		
-		if(!textField.text.endsWith(Entity.getExtension()))
+		if(!Entity.isValidFile(textField.text))
 			doneButton.setDisabled(true);
 		else if(doneButton.getDisabled())
 			doneButton.setDisabled(false);
@@ -70,13 +71,19 @@ public class GuiWindowCreatePrefab extends GuiWindow {
 			holder.closeWindow(this);
 		else if(button.id == 1)
 		{
-			Entity e = ((GuiEditor)holder).getMap().getEntityList().getEntityWithUUID(entity);
-			R2DFileManager manager = new R2DFileManager(textField.text,null);
-			Map.saveEntityFull(e, manager.getCollection(), true);
-			manager.write();
-			
-			e.setPrefabPath(textField.text);
-			holder.closeWindow(this);
+			try
+			{
+				Entity e = ((GuiEditor)holder).getMap().getEntityList().getEntityWithUUID(entity);
+				R2DFileManager manager = new R2DFileManager(textField.text,null);
+				Map.saveEntityFull(e, manager.getCollection(), true);
+				manager.write();
+				
+				e.setPrefabPath(textField.text);
+				holder.closeWindow(this);
+			}catch(Exception e)
+			{
+				throw new Remote2DException(e);
+			}
 		}
 	}
 	

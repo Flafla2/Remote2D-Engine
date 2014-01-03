@@ -90,7 +90,7 @@ public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSectio
 			DraggableObjectFile fileobj = ((DraggableObjectFile)object);
 			if(fileobj.file != null)
 			{
-				if(fileobj.file.getName().endsWith(Animation.getExtension()) || fileobj.file.getName().endsWith(Animation.getExtension()+".xml"))
+				if(Animation.isValidFile(fileobj.file.getName()))
 					return true;
 			}
 		}
@@ -105,7 +105,7 @@ public class GuiEditorInspectorSectionAnimation extends GuiEditorInspectorSectio
 			DraggableObjectFile fileobj = ((DraggableObjectFile)object);
 			if(fileobj.file != null)
 			{
-				if(fileobj.file.getName().endsWith(Animation.getExtension()) || fileobj.file.getName().endsWith(Animation.getExtension()+".xml"))
+				if(Animation.isValidFile(fileobj.file.getName()))
 				{
 					textField.text = fileobj.file.getPath();
 					textField.text.replace('\\', '/');

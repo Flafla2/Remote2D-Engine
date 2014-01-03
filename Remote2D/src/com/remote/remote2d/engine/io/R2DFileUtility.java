@@ -1,6 +1,7 @@
 package com.remote.remote2d.engine.io;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 import com.remote.remote2d.engine.Remote2D;
@@ -29,11 +30,17 @@ public class R2DFileUtility {
 			//Log.debug(f.isFile()+" "+filter.accept(file, f.getName()));
 			if(f.isFile() && filter.accept(file, f.getName()))
 			{
-				String localPath = R2DFileUtility.getRelativeFile(f).getPath();
-				R2DFileManager manager = new R2DFileManager(localPath,null);
-				manager.read();
-				f.renameTo(new File(f.getAbsolutePath()+".orig"));
-				manager.write(true);
+				try
+				{
+					String localPath = R2DFileUtility.getRelativeFile(f).getPath();
+					R2DFileManager manager = new R2DFileManager(localPath,null);
+					manager.read();
+					f.renameTo(new File(f.getAbsolutePath()+".orig"));
+					manager.write(true);
+				} catch(IOException e)
+				{
+					throw new Remote2DException(e);
+				}
 			} else if(f.isDirectory() && recursive)
 				convertFolderToXML(R2DFileUtility.getRelativeFile(f).getPath(),recursive);
 		}
@@ -54,13 +61,18 @@ public class R2DFileUtility {
 		{
 			if(f.isFile() && filter.accept(file, f.getName()))
 			{
-				
-				String localPath = R2DFileUtility.getRelativeFile(f).getPath();
-				localPath = localPath.substring(0,localPath.length()-4);
-				R2DFileManager manager = new R2DFileManager(localPath,null);
-				manager.read();
-				f.renameTo(new File(f.getAbsolutePath()+".orig"));
-				manager.write(false);
+				try
+				{
+					String localPath = R2DFileUtility.getRelativeFile(f).getPath();
+					localPath = localPath.substring(0,localPath.length()-4);
+					R2DFileManager manager = new R2DFileManager(localPath,null);
+					manager.read();
+					f.renameTo(new File(f.getAbsolutePath()+".orig"));
+					manager.write(false);
+				} catch(IOException e)
+				{
+					throw new Remote2DException(e);
+				}
 			} else if(f.isDirectory() && recursive)
 				convertFolderToXML(R2DFileUtility.getRelativeFile(f).getPath(),recursive);
 		}

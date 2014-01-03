@@ -85,9 +85,9 @@ public class GuiEditorBrowser extends Gui {
 		else if(file.isFile())
 		{
 			String localPath = R2DFileUtility.getRelativeFile(file).getPath();
-			if(localPath.endsWith(Animation.getExtension()))
+			if(Animation.isValidFile(localPath))
 				Remote2D.guiList.push(new GuiCreateSpriteSheet(new Animation(localPath)));
-			else if(localPath.endsWith(Entity.getExtension()))
+			else if(Entity.isValidFile(localPath))
 			{
 				Entity e = editor.getMap().getEntityList().instantiatePrefab(localPath);
 				editor.setSelectedEntity(e.getUUID());
