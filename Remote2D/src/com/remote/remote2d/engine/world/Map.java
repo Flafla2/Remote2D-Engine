@@ -345,4 +345,10 @@ public class Map implements R2DFileSaver {
 		return ".r2d";
 	}
 	
+	public static boolean isValidFile(String name)
+	{
+		String lc = name.toLowerCase();
+		return lc.endsWith(getExtension()+".xml") || lc.endsWith(getExtension()+".bin");
+	}
+	
 }

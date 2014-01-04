@@ -1,15 +1,48 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <r2dxml>
-    <type id="10" name="map.r2d">
-        <type id="3" name="entityCount">1</type>
+    <type id="10" name="map.r2d.xml">
+        <type id="3" name="entityCount">2</type>
+        <type id="10" name="entity_1">
+            <type id="11" name="dim">
+                <x>16.0</x>
+                <y>16.0</y>
+            </type>
+            <type id="3" name="componentCount">1</type>
+            <type id="5" name="rotation">0.0</type>
+            <type id="8" name="name">Main Camera</type>
+            <type id="8" name="uuid">f68564c8-cbaa-4efc-90cd-c2dd9acef401</type>
+            <type id="10" name="component_0">
+                <type id="8" name="className">Camera</type>
+                <type id="8" name="uuid">e96dcd5b-c261-490c-b966-cf6d8611f2c6</type>
+            </type>
+            <type id="10" name="material">
+                <type id="11" name="uvDim">
+                    <x>1.0</x>
+                    <y>1.0</y>
+                </type>
+                <type id="5" name="Alpha">0.0</type>
+                <type id="11" name="uvPos">
+                    <x>0.0</x>
+                    <y>0.0</y>
+                </type>
+                <type id="9" name="Repeat">false</type>
+                <type id="9" name="Linear_Scaling">false</type>
+                <type id="3" name="Color">-5592406</type>
+                <type id="1" name="RenderType">0</type>
+            </type>
+            <type id="11" name="pos">
+                <x>0.0</x>
+                <y>0.0</y>
+            </type>
+        </type>
         <type id="10" name="entity_0">
             <type id="5" name="rotation">0.0</type>
             <type id="8" name="name">Player</type>
-            <type id="8" name="prefabPath">res/entity/prefab.entity</type>
+            <type id="8" name="prefabPath">res/entity/prefab.entity.xml</type>
             <type id="8" name="uuid">f6927c23-cba7-4c5e-a196-72cc1a205d99</type>
             <type id="11" name="pos">
-                <x>162.0</x>
-                <y>0.0</y>
+                <x>-32.0</x>
+                <y>-32.0</y>
             </type>
         </type>
     </type>

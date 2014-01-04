@@ -141,7 +141,7 @@ public class Animation implements R2DFileSaver {
 	}
 	
 	/**
-	 * Renders this animation.  Note: The animation WILL stretch if the dimensions are not proportional!
+	 * Renders this animation.
 	 * @param pos Position (top left corner) to render
 	 * @param dim Dimensions of rendered sprite
 	 * @param color Color (in hex) to render as.  For example 0xff5555 will render as a red tint
@@ -149,6 +149,19 @@ public class Animation implements R2DFileSaver {
 	 * @see #render(Vector2, Vector2)
 	 */
 	public void render(Vector2 pos, Vector2 dim, int color, float alpha)
+	{
+		render(pos,dim,new Vector2(0,0), new Vector2(1,1), color, alpha);
+	}
+	
+	/**
+	 * Renders this animation.
+	 * @param pos Position (top left corner) to render
+	 * @param dim Dimensions of rendered sprite
+	 * @param color Color (in hex) to render as.  For example 0xff5555 will render as a red tint
+	 * @param alpha How opaque it is (0.0-1.0)
+	 * @see #render(Vector2, Vector2)
+	 */
+	public void render(Vector2 pos, Vector2 dim, Vector2 uvPos, Vector2 uvDim, int color, float alpha)
 	{
 		if(framePos == null)
 		{
@@ -167,8 +180,13 @@ public class Animation implements R2DFileSaver {
 		
 		ColliderBox collider = framePos[currentframe];
 		BufferedImage image = tex.getImage();
-		Vector2 imgPos = collider.pos.divide(new Vector2(image.getWidth(),image.getHeight()));
+		
 		Vector2 imgDim = collider.dim.divide(new Vector2(image.getWidth(),image.getHeight()));
+		Vector2 imgPosOffset = uvPos.multiply(imgDim);
+		Vector2 imgPos = collider.pos.divide(new Vector2(image.getWidth(),image.getHeight()));
+		imgPos.add(imgPosOffset);
+		imgDim = imgDim.multiply(uvDim);
+		
 		image.flush();
 		image = null;
 		
@@ -313,6 +331,11 @@ public class Animation implements R2DFileSaver {
 			lastFrameTime = System.currentTimeMillis();
 			currentframe = frame;
 		}
+	}
+	
+	public Texture getTexture()
+	{
+		return tex;
 	}
 
 	public static String getExtension() {

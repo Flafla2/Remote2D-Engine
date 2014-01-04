@@ -6,14 +6,17 @@ import com.remote.remote2d.engine.world.Map;
 public class OperationOpenMap extends Operation {
 	
 	Map map;
+	String path;
 
-	public OperationOpenMap(GuiEditor editor, Map map) {
+	public OperationOpenMap(GuiEditor editor, Map map, String path) {
 		super(editor);
 		this.map = map;
+		this.path = path;
 	}
 
 	@Override
 	public void execute() {
+		map.path = path;
 		editor.setMap(map);
 	}
 

@@ -6,7 +6,6 @@ import com.remote.remote2d.engine.gui.GuiButton;
 import com.remote.remote2d.engine.gui.GuiTextField;
 import com.remote.remote2d.engine.gui.GuiWindow;
 import com.remote.remote2d.engine.gui.WindowHolder;
-import com.remote.remote2d.engine.io.R2DFileUtility;
 import com.remote.remote2d.engine.logic.ColliderBox;
 import com.remote.remote2d.engine.logic.Vector2;
 import com.remote.remote2d.engine.world.Map;
@@ -25,7 +24,7 @@ public class GuiWindowOpenMap extends GuiWindow {
 		super(holder, pos, dim, allowedBounds, "Open Map");
 		
 		textField = new GuiTextField(new Vector2(10,10),new Vector2(dim.x-20,40), 20);
-		textField.text = "/res/maps/map.r2d";
+		textField.text = "/res/maps/map.r2d.xml";
 	}
 	
 	@Override
@@ -51,7 +50,7 @@ public class GuiWindowOpenMap extends GuiWindow {
 		Vector2 mouse = getMouseInWindow(i,j);
 		textField.tick((int)mouse.x, (int)mouse.y, k);
 		
-		if(!R2DFileUtility.R2DExists(textField.text))
+		if(!ResourceLoader.isR2DLoaded(textField.text))
 			doneButton.setDisabled(true);
 		else if(doneButton.getDisabled())
 			doneButton.setDisabled(false);
@@ -69,9 +68,9 @@ public class GuiWindowOpenMap extends GuiWindow {
 			Map newMap = new Map();
 			newMap.loadR2DFile(ResourceLoader.getCollection(textField.text));
 			if(editor.getMap() != null)
-				editor.confirmOperation(new OperationOpenMap(editor,newMap));
+				editor.confirmOperation(new OperationOpenMap(editor,newMap,textField.text));
 			else
-				editor.executeOperation(new OperationOpenMap(editor,newMap));
+				editor.executeOperation(new OperationOpenMap(editor,newMap,textField.text));
 		}
 	}
 

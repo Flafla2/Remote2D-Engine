@@ -35,6 +35,10 @@ public class Material {
 	 * no texture or animation will render.
 	 */
 	private RenderType renderType;
+	private Vector2 uvPos = new Vector2(0,0);
+	private Vector2 uvDim = new Vector2(1,1);
+	public boolean linearScaling = Texture.DEFAULT_LINEAR_SCALE;
+	public boolean repeat = Texture.DEFAULT_REPEAT;
 	
 	public Material(RenderType renderType, Texture tex, Animation anim, int color, float alpha)
 	{
@@ -163,6 +167,28 @@ public class Material {
 		return alpha;
 	}
 	
+	public Vector2 getUVPos()
+	{
+		return uvPos;
+	}
+
+	public void setUVPos(Vector2 uvPos)
+	{
+		if(uvPos != null)
+			this.uvPos = uvPos.copy();
+	}
+
+	public Vector2 getUVDim()
+	{
+		return uvDim;
+	}
+
+	public void setUVDim(Vector2 uvDim)
+	{
+		if(uvDim != null)
+			this.uvDim = uvDim.copy();
+	}
+
 	/**
 	 * Renders this material based on the dimensions given and its RenderType.
 	 * @param pos Top left corner of rendered rectangle.
@@ -177,11 +203,23 @@ public class Material {
 			break;
 		case TEX:
 			if(tex != null)
-				Renderer.drawRect(pos, dim, tex, color, alpha);
+			{
+				if(tex.isLinearScaling() != linearScaling)
+					tex.setLinearScaling(linearScaling);
+				if(tex.isRepeat() != repeat)
+					tex.setRepeat(repeat);
+				Renderer.drawRect(pos, dim, uvPos, uvDim, tex, color, alpha);
+			}
 			break;
 		case ANIM:
 			if(anim != null)
-				anim.render(pos, dim, color, alpha);
+			{
+				if(anim.getTexture().isLinearScaling() != linearScaling)
+					anim.getTexture().setLinearScaling(linearScaling);
+				if(anim.getTexture().isRepeat() != repeat)
+					anim.getTexture().setRepeat(repeat);
+				anim.render(pos, dim, uvPos, uvDim, color, alpha);
+			}
 			break;
 		}
 	}

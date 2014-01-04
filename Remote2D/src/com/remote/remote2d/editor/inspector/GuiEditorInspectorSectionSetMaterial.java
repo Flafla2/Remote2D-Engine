@@ -18,7 +18,7 @@ public class GuiEditorInspectorSectionSetMaterial extends GuiEditorInspectorSect
 	private final int selectedColor = 0xcccccc;
 
 	public GuiEditorInspectorSectionSetMaterial(String name, GuiEditor inspector, Vector2 pos, int width) {
-		super(name, inspector, pos, width, new String[]{"color","alpha","texture","animation"}, new Class[]{Color.class,Float.class,Texture.class,Animation.class});
+		super(name, inspector, pos, width, new String[]{"color","alpha","UVPos","UVDim","texture","animation","linearScaling","repeat"}, new Class[]{Color.class,Float.class,Vector2.class,Vector2.class,Texture.class,Animation.class,Boolean.class,Boolean.class});
 		renderTypePos = new Vector2[3];
 		int typedimx = (width-20)/3;
 		renderTypeDim = new Vector2(typedimx,20);
@@ -35,7 +35,12 @@ public class GuiEditorInspectorSectionSetMaterial extends GuiEditorInspectorSect
 
 	@Override
 	public Object getData() {
-		return new Material(renderType,(Texture)getDataWithName("texture"),(Animation)getDataWithName("animation"),((Color)getDataWithName("color")).getRGB(),(Float)getDataWithName("alpha"));
+		Material mat = new Material(renderType,(Texture)getDataWithName("texture"),(Animation)getDataWithName("animation"),((Color)getDataWithName("color")).getRGB(),(Float)getDataWithName("alpha"));
+		mat.linearScaling = (Boolean)getDataWithName("linearScaling");
+		mat.repeat = (Boolean)getDataWithName("repeat");
+		mat.setUVPos((Vector2)getDataWithName("UVPos"));
+		mat.setUVDim((Vector2)getDataWithName("UVDim"));
+		return mat;
 	}
 	
 	@Override
@@ -107,14 +112,18 @@ public class GuiEditorInspectorSectionSetMaterial extends GuiEditorInspectorSect
 		Material mat = (Material)o;
 		setDataWithName("color",new Color(mat.getColor()));
 		setDataWithName("alpha",mat.getAlpha());
+		setDataWithName("UVPos",mat.getUVPos());
+		setDataWithName("UVDim",mat.getUVDim());
 		setDataWithName("texture",mat.getTexture());
 		setDataWithName("animation",mat.getAnimation());
+		setDataWithName("repeat",mat.repeat);
+		setDataWithName("linearScaling",mat.linearScaling);
 		renderType = mat.getRenderType();
 	}
 	
 	@Override
 	public boolean isComplete() {
-		return isComplete("color") && isComplete("alpha");
+		return isComplete("color") && isComplete("alpha") && isComplete("UVPos") && isComplete("UVDim");
 	}
 
 }

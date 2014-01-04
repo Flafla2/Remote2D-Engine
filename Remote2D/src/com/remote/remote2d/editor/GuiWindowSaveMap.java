@@ -7,6 +7,7 @@ import com.remote.remote2d.engine.gui.GuiWindow;
 import com.remote.remote2d.engine.gui.WindowHolder;
 import com.remote.remote2d.engine.logic.ColliderBox;
 import com.remote.remote2d.engine.logic.Vector2;
+import com.remote.remote2d.engine.world.Map;
 
 public class GuiWindowSaveMap extends GuiWindow {
 	
@@ -22,7 +23,7 @@ public class GuiWindowSaveMap extends GuiWindow {
 		super(holder, pos, dim, allowedBounds, "Save Map");
 		
 		textField = new GuiTextField(new Vector2(10,10),new Vector2(dim.x-20,40), 20);
-		textField.text = "/res/maps/map.r2d";
+		textField.text = "/res/maps/map.r2d.xml";
 		if(holder instanceof GuiEditor && ((GuiEditor)holder).getMap().path != null)
 			textField.text = ((GuiEditor)holder).getMap().path;
 	}
@@ -49,6 +50,11 @@ public class GuiWindowSaveMap extends GuiWindow {
 		super.tick(i,j,k);
 		Vector2 mouse = getMouseInWindow(i,j);
 		textField.tick((int)mouse.x, (int)mouse.y, k);
+		
+		if(!Map.isValidFile(textField.text))
+			doneButton.setDisabled(true);
+		else if(doneButton.getDisabled())
+			doneButton.setDisabled(false);
 	}
 	
 	@Override

@@ -1,8 +1,18 @@
 package com.remote.remote2d.engine.art;
 
+import static org.lwjgl.opengl.GL11.GL_LINEAR;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
+import static org.lwjgl.opengl.GL11.glTexParameteri;
+
 import java.awt.image.BufferedImage;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import com.remote.remote2d.engine.DisplayHandler;
 
@@ -25,16 +35,9 @@ public class Texture {
 	 */
 	public static boolean DEFAULT_REPEAT = false;
 	
-	/**
-	 * If true, scales textures linearly when stretched.  Generally for things
-	 * like pixel art this should be false.
-	 */
-	public boolean linearScaling = false;
+	private boolean linearScaling = false;
 	private long lastReload;
-	/**
-	 * If true, repeats/tiles the texture when scaled instead of stretching it.
-	 */
-	public boolean repeat = false;
+	private boolean repeat = false;
 	private String textureLocation;
 	private BufferedImage image;
 	private int glId;
@@ -159,5 +162,30 @@ public class Texture {
 	public long getLastBindTime()
 	{
 		return lastBindTime;
+	}
+	
+	public boolean isLinearScaling()
+	{
+		return linearScaling;
+	}
+
+	public void setLinearScaling(boolean linearScaling)
+	{
+		this.linearScaling = linearScaling;
+		bind();
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, linearScaling ? GL_LINEAR : GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, linearScaling ? GL_LINEAR : GL_NEAREST);
+	}
+
+	public boolean isRepeat()
+	{
+		return repeat;
+	}
+
+	public void setRepeat(boolean repeat) {
+		this.repeat = repeat;
+		bind();
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, repeat ? GL11.GL_REPEAT : GL12.GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, repeat ? GL11.GL_REPEAT : GL12.GL_CLAMP_TO_EDGE);
 	}
 }

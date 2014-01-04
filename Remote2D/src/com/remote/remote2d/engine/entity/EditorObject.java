@@ -110,6 +110,10 @@ public abstract class EditorObject implements R2DFileSaver {
 						if(mat.getAnimation() != null)
 							matColl.setString("Animation", mat.getAnimation().getPath());
 						matColl.setFloat("Alpha", mat.getAlpha());
+						matColl.setBoolean("Linear_Scaling", mat.linearScaling);
+						matColl.setBoolean("Repeat", mat.repeat);
+						matColl.setVector2D("uvPos", mat.getUVPos());
+						matColl.setVector2D("uvDim", mat.getUVDim());
 						collection.setCollection(matColl);
 					} else
 					{
@@ -173,7 +177,12 @@ public abstract class EditorObject implements R2DFileSaver {
 						if(matColl.getString("Animation") != null && !matColl.getString("Animation").trim().equals(""))
 							anim = new Animation(matColl.getString("Animation"));
 						float alpha = matColl.getFloat("Alpha");
-						field.set(this, new Material(renderType,tex,anim,color,alpha));
+						Material mat = new Material(renderType,tex,anim,color,alpha);
+						mat.linearScaling = matColl.getBoolean("Linear_Scaling");
+						mat.repeat = matColl.getBoolean("Repeat");
+						mat.setUVPos(matColl.getVector2D("uvPos"));
+						mat.setUVDim(matColl.getVector2D("uvDim"));
+						field.set(this, mat);
 					}
 					else
 					{

@@ -11,7 +11,6 @@ import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Material;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.art.ResourceLoader;
-import com.remote.remote2d.engine.art.Texture;
 import com.remote.remote2d.engine.entity.component.Component;
 import com.remote.remote2d.engine.entity.component.ComponentCollider;
 import com.remote.remote2d.engine.io.R2DTypeCollection;
@@ -64,11 +63,8 @@ public class Entity extends EditorObject {
 	 * The material of this entity - what color, textures, etc. This entity uses.
 	 */
 	public Material material;
-	public boolean repeatTex = false;
-	public boolean linearScaling = false;
 	//TODO: Readd parents
 	
-	private Texture slashTex;
 	private String prefabPath = null;
 	private Vector2 oldPos;
 	private static final String slashLoc = "res/gui/slash.png";
@@ -85,7 +81,6 @@ public class Entity extends EditorObject {
 		this.name = name;
 		components = new ArrayList<Component>();
 		
-		slashTex = new Texture(slashLoc,false,true);
 		material = new Material(0xaaaaaa,1);
 		
 		pos = new Vector2(0,0);
@@ -98,7 +93,6 @@ public class Entity extends EditorObject {
 		super(map,uuid);
 		this.name = name;
 		components = new ArrayList<Component>();
-		slashTex = new Texture(slashLoc,false,true);
 		
 		pos = new Vector2(0,0);
 		oldPos = new Vector2(0,0);
@@ -404,7 +398,8 @@ public class Entity extends EditorObject {
 					color = 0xff0000;
 				else
 					color = 0xffaaaa;
-				Renderer.drawRect(new Vector2(0,0), dim, new Vector2(0,0), new Vector2(maxX, maxY), slashTex, color, 1);
+				ResourceLoader.getTexture(slashLoc).setRepeat(true);
+				Renderer.drawRect(new Vector2(0,0), dim, new Vector2(0,0), new Vector2(maxX, maxY), ResourceLoader.getTexture(slashLoc), color, 1);
 			}
 			
 			material.render(new Vector2(0,0), dim);
