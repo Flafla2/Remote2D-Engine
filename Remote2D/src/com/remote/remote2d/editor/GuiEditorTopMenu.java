@@ -17,6 +17,7 @@ import com.remote.remote2d.engine.DisplayHandler;
 import com.remote.remote2d.engine.Remote2D;
 import com.remote.remote2d.engine.art.Fonts;
 import com.remote.remote2d.engine.art.Renderer;
+import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.entity.InsertableComponentList;
 import com.remote.remote2d.engine.gui.Gui;
 import com.remote.remote2d.engine.gui.KeyShortcut;
@@ -37,13 +38,14 @@ public class GuiEditorTopMenu extends Gui {
 				
 		int currentX = 0;
 				
-		String[] fileContents = {"New Map","Open Map","Save Map","Save Map As..."};
+		String[] fileContents = {"New Map","Open Map","Save Map","Save Map As...","Reload Resources"};
 		GuiEditorTopMenuSection file = new GuiEditorTopMenuSection(currentX, 0, height, fileContents, "File", this);
 		
 		file.keyCombos[0] = new KeyShortcut(new int[]{Keyboard.KEY_N});
 		file.keyCombos[1] = new KeyShortcut(new int[]{Keyboard.KEY_O});
 		file.keyCombos[2] = new KeyShortcut(new int[]{Keyboard.KEY_S});
 		file.keyCombos[3] = new KeyShortcut(new int[]{Keyboard.KEY_S}).setUseShift(true);
+		file.keyCombos[4] = new KeyShortcut(new int[]{Keyboard.KEY_R}).setUseShift(true);
 		
 		file.reloadSubWidth();
 		
@@ -219,6 +221,10 @@ public class GuiEditorTopMenu extends Gui {
 			} else if(secSubTitle.equalsIgnoreCase("Save Map As...") && editor.getMap() != null)
 			{
 				editor.pushWindow(new GuiWindowSaveMap(editor,new Vector2(i,j),editor.getWindowBounds()));
+			} else if(secSubTitle.equalsIgnoreCase("Reload Resources"))
+			{
+				ResourceLoader.refresh(".");
+				editor.getBrowser().refresh();
 			}
 		} else if(secTitle.equalsIgnoreCase("Edit"))
 		{

@@ -37,6 +37,13 @@ public class GuiEditorBrowser extends Gui {
 		pushFolder(new Folder("."));
 	}
 	
+	public void refresh()
+	{
+		for(int x=0;x<folderStack.size();x++)
+			folderStack.get(x).setPath(folderStack.get(x).getPath());
+		setAllUnselected();
+	}
+	
 	public void pushFolder(Folder f)
 	{
 		folderStack.push(f);
