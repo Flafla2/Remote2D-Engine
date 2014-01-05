@@ -463,7 +463,7 @@ public class Remote2D {
 	
 	public static String getVersion()
 	{
-		return "0.1.3 ALPHA";
+		return "0.2 ALPHA";
 	}
 
 }

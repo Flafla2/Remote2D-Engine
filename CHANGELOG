@@ -1,5 +1,15 @@
 ===CHANGELOG===
 
+==V0.2 ALPHA==
+FEATURES:
+- The old AnimLoader has been removed and replaced by a general ResourceLoader. The ResourceLoader caches all Remote2D files as well as all Textures.  This provides a substantial speedup when loading textures, prefabs, maps, and more.
+- The file extension specification has been changed to be easier to tell if it is XML or Binary.  EVERY R2D file must end with either ".xxx.xml" or ".xxx.bin", where ".xxx" is the extension that would be used in a previous Remote2D release.  For example, in this release you could use ".entity.xml" or ".entity.bin" for prefab files.  You can NOT use ".entity" as with previous releases.
+- Materials were changed to add repetition and scaling parameters.
+- UV data was also added to Materials and Animations
+- All example files / programs were changed to conform to the new specifications
+FIXES:
+- Fixed a bug where using the default "Save..." dialog wouldn't remember the current path until you save at least once (NOT when you load for the first time)
+
 ==V0.1.3.1 ALPHA==
 FEATURES:
 - Added an override to GuiInGame for Remote2DGame instances
