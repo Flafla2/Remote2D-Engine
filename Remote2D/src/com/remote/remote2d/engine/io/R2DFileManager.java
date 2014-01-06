@@ -50,7 +50,7 @@ public class R2DFileManager {
 			collection = new R2DTypeCollection(collection.getName());
 	}
 	
-	public void write(boolean xml) throws IOException
+	private void write(boolean xml) throws IOException
 	{
 		if(!file.getName().toLowerCase().endsWith(".xml") && !file.getName().toLowerCase().endsWith(".bin"))
 			throw new IOException("INVALID FILE EXTENSION! Only write to a file that ends with .xml or .bin.");

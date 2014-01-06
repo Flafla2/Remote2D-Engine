@@ -33,10 +33,14 @@ public class R2DFileUtility {
 				try
 				{
 					String localPath = R2DFileUtility.getRelativeFile(f).getPath();
-					R2DFileManager manager = new R2DFileManager(localPath,null);
-					manager.read();
+					R2DFileManager read = new R2DFileManager(localPath,null);
+					read.read();
+					
 					f.renameTo(new File(f.getAbsolutePath()+".orig"));
-					manager.write(true);
+					
+					R2DFileManager write = new R2DFileManager(localPath.substring(0,localPath.length()-4)+".xml",null);
+					write.setCollection(read.getCollection());
+					write.write();
 				} catch(IOException e)
 				{
 					throw new Remote2DException(e);
@@ -64,11 +68,14 @@ public class R2DFileUtility {
 				try
 				{
 					String localPath = R2DFileUtility.getRelativeFile(f).getPath();
-					localPath = localPath.substring(0,localPath.length()-4);
-					R2DFileManager manager = new R2DFileManager(localPath,null);
-					manager.read();
+					R2DFileManager read = new R2DFileManager(localPath,null);
+					read.read();
+					
 					f.renameTo(new File(f.getAbsolutePath()+".orig"));
-					manager.write(false);
+					
+					R2DFileManager write = new R2DFileManager(localPath.substring(0,localPath.length()-4)+".bin",null);
+					write.setCollection(read.getCollection());
+					write.write();
 				} catch(IOException e)
 				{
 					throw new Remote2DException(e);
