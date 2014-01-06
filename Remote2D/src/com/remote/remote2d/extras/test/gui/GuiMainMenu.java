@@ -45,7 +45,7 @@ public class GuiMainMenu extends GuiMenu {
 	{
 		if (button.id == 0) {
 			Map newMap = new Map();
-			newMap.loadR2DFile(ResourceLoader.getCollection("res/maps/map.r2d"));
+			newMap.loadR2DFile(ResourceLoader.getCollection("res/maps/map.r2d.xml"));
 			Remote2D.guiList.push(Remote2D.getGame().getNewInGameGui(newMap)); // start game
 		}
 		else if (button.id == 1) Remote2D.guiList.add(new GuiEditor());

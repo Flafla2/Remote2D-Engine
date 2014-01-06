@@ -8,6 +8,8 @@ import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.entity.component.Component;
 import com.remote.remote2d.engine.io.R2DFileUtility;
+import com.remote.remote2d.engine.logic.ColliderBox;
+import com.remote.remote2d.engine.logic.Vector2;
 import com.remote.remote2d.engine.world.Map;
 
 /**
@@ -105,11 +107,13 @@ public class EntityList {
 	 */
 	public void render(boolean editor, float interpolation)
 	{
+		ColliderBox ra = map.camera.getMapRenderArea();
 		for(int i=0;i<entityList.size();i++)
 		{
 			try
 			{
-				entityList.get(i).render(editor,interpolation);
+				if(ra.getCollision(entityList.get(i).getGeneralCollider(), new Vector2(0)).collides)
+					entityList.get(i).render(editor,interpolation);
 			} catch(Exception e)
 			{
 				if(editor)
