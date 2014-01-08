@@ -112,7 +112,7 @@ public class EntityList {
 		{
 			try
 			{
-				if(Collider.getCollision(entityList.get(i).getGeneralCollider(), ra).collides)
+				if(Collider.collides(entityList.get(i).getGeneralCollider(), ra))
 					entityList.get(i).render(editor,interpolation);
 			} catch(Exception e)
 			{
