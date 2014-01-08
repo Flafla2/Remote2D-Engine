@@ -8,8 +8,8 @@ import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.entity.component.Component;
 import com.remote.remote2d.engine.io.R2DFileUtility;
+import com.remote.remote2d.engine.logic.Collider;
 import com.remote.remote2d.engine.logic.ColliderBox;
-import com.remote.remote2d.engine.logic.Vector2;
 import com.remote.remote2d.engine.world.Map;
 
 /**
@@ -112,7 +112,7 @@ public class EntityList {
 		{
 			try
 			{
-				if(ra.getCollision(entityList.get(i).getGeneralCollider(), new Vector2(0)).collides)
+				if(Collider.getCollision(entityList.get(i).getGeneralCollider(), ra).collides)
 					entityList.get(i).render(editor,interpolation);
 			} catch(Exception e)
 			{

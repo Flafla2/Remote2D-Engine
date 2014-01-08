@@ -137,12 +137,16 @@ public class Map implements R2DFileSaver {
 		
 		//First collision pass: Test to see which element will be hit first, and if they are hit at all
 		ArrayList<Collision> allCollision = new ArrayList<Collision>();
+		ArrayList<Collider> colliding = new ArrayList<Collider>();
 		for(int x=0;x<allColliders.size();x++)
 		{
 			Collider other = allColliders.get(x);
-			Collision collision = coll.getCollision(other, velocity);
+			Collision collision = Collider.getCollision(other, coll.getTransformedCollider(velocity));
 			if(collision.collides)
+			{
 				allCollision.add(collision);
+				colliding.add(other);
+			}
 		}
 		
 		Collections.sort(allCollision, new CollisionComparator());
@@ -151,8 +155,8 @@ public class Map implements R2DFileSaver {
 		Vector2 correction = new Vector2(0,0);
 		for(int x=0;x<allCollision.size();x++)
 		{
-			Collider other = allCollision.get(x).idle;
-			Collision collision = coll.getCollision(other, velocity.add(correction));
+			Collider other = colliding.get(x);
+			Collision collision = Collider.getCollision(other, coll.getTransformedCollider(velocity.add(correction)));
 			if(collision.collides)
 			{
 				correction = correction.add(collision.correction);

@@ -110,12 +110,12 @@ public class GuiEditorTopMenu extends Gui {
 		
 		window.reloadSubWidth();
 		
-		String[] devContents = {"Reinitialize Editor", "View Art Asset", "Fancypants Collider Test","Normal Collider Test", "1D Perlin Noise", "2D Perlin Noise", "Toggle Wireframe"};
+		String[] devContents = {"Reinitialize Editor", "View Art Asset", "Collider Test", "1D Perlin Noise", "2D Perlin Noise", "Toggle Wireframe"};
 		GuiEditorTopMenuSection dev = new GuiEditorTopMenuSection(currentX, 0, height, devContents, "Developer", this);
 		if(dev.getEnabled())
 			currentX += dev.width;
 		
-		dev.keyCombos[6] = new KeyShortcut(new int[]{Keyboard.KEY_W});
+		dev.keyCombos[5] = new KeyShortcut(new int[]{Keyboard.KEY_W});
 		
 		sections.add(file);
 		sections.add(world);
@@ -266,12 +266,7 @@ public class GuiEditorTopMenu extends Gui {
 				GuiWindowViewArtAsset window = new GuiWindowViewArtAsset(editor, new Vector2(200,200), editor.getWindowBounds());
 				window.setSelected(true);
 				editor.pushWindow(window);
-			} else if(secSubTitle.equalsIgnoreCase("Fancypants Collider Test"))
-			{
-				GuiWindowCollisionTest window = new GuiWindowCollisionTest(editor, new Vector2(300,300), editor.getWindowBounds());
-				window.setSelected(true);
-				editor.pushWindow(window);
-			} else if(secSubTitle.equalsIgnoreCase("Normal Collider Test"))
+			} else if(secSubTitle.equalsIgnoreCase("Collider Test"))
 			{
 				GuiWindowGeneralColliderTest window = new GuiWindowGeneralColliderTest(editor, new Vector2(300,300), editor.getWindowBounds());
 				window.setSelected(true);

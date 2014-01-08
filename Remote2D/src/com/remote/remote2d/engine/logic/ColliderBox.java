@@ -84,4 +84,9 @@ public class ColliderBox extends Collider{
 		verts[2] = new Vector2(pos.x+dim.x,pos.y+dim.y);
 		verts[3] = new Vector2(pos.x,pos.y+dim.y);
 	}
+
+	@Override
+	public Vector2 getCenter() {
+		return new Vector2(pos.x+dim.x/2,pos.y+dim.y/2);
+	}
 }

@@ -303,7 +303,7 @@ public class Entity extends EditorObject {
 			return null;
 		
 		mainCollider = mainCollider.getTransformedCollider(pos);
-		Collision mainColliderCollision = coll.getCollision(mainCollider, movement);
+		Collision mainColliderCollision = Collider.getCollision(mainCollider, coll.getTransformedCollider(movement));
 		if(!mainColliderCollision.collides)
 			return null;
 		

@@ -3,6 +3,8 @@ package com.remote.remote2d.engine.logic;
 import com.remote.remote2d.engine.art.Renderer;
 
 public class ColliderGeneric extends Collider {
+	
+	private Vector2 computedCenter = new Vector2(0,0);
 
 	public ColliderGeneric(Vector2[] newVerts) {
 		this.verts = newVerts;
@@ -10,6 +12,12 @@ public class ColliderGeneric extends Collider {
 
 	@Override
 	public void updateVerts() {
+		computedCenter.y = 0;
+		computedCenter.x = 0;
+		
+		for(Vector2 vec : verts)
+			computedCenter = computedCenter.add(vec);
+		computedCenter = computedCenter.divide(new Vector2(2));
 	}
 
 	@Override
@@ -30,6 +38,11 @@ public class ColliderGeneric extends Collider {
 	@Override
 	public void drawCollider(int color) {
 		Renderer.drawLinePoly(verts, color, 1.0f);
+	}
+
+	@Override
+	public Vector2 getCenter() {
+		return computedCenter;
 	}
 
 }

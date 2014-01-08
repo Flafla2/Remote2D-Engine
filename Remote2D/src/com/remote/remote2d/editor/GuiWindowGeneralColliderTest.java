@@ -68,7 +68,7 @@ public class GuiWindowGeneralColliderTest extends GuiWindow {
 			
 			moveCollider = ColliderLogic.setColliderPos(moveCollider, m);
 			
-			collision = moveCollider.getCollision(mainCollider,vec);
+			collision = Collider.getCollision(mainCollider,moveCollider);
 			altMoveCollider = moveCollider.getTransformedCollider(vec.add(collision.correction));
 			rawMoveCollider = moveCollider.getTransformedCollider(vec);
 		}

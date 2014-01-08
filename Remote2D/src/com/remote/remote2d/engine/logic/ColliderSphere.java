@@ -66,4 +66,9 @@ public class ColliderSphere extends Collider {
 		}
 	}
 
+	@Override
+	public Vector2 getCenter() {
+		return pos.copy();
+	}
+
 }

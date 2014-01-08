@@ -118,6 +118,8 @@ public class GuiEditorTopMenuSection extends Gui {
 	
 	@Override
 	public void tick(int i, int j, int k) {
+		if(!isEnabled)
+			return;
 		for(int x = 0; x<keyCombos.length; x++)
 		{
 			if(keyCombos[x] == null)
@@ -128,8 +130,6 @@ public class GuiEditorTopMenuSection extends Gui {
 				selectedBox = x;
 			}
 		}
-		if(!isEnabled)
-			return;
 		isHovered = i > x && j > y && i < x+width && j < y+height;
 		if (Remote2D.hasMouseBeenPressed() && isHovered)
 		{

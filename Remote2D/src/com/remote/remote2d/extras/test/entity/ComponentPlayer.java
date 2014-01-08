@@ -136,7 +136,8 @@ public class ComponentPlayer extends Component {
 
 	@Override
 	public void onEntitySpawn() {
-		Log.debug(testEntity.name);
+		if(testEntity != null)
+			Log.debug(testEntity.name);
 		testParticles = new ParticleSystem(entity.getMap());
 	}
 	
