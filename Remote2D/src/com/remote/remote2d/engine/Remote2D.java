@@ -46,16 +46,16 @@ public class Remote2D {
 	/**
 	 * The speed at which the tick() function runs, in hertz.  In other words, the target "Ticks per second"
 	 */
-	private static final double GAME_HERTZ = 30.0;
+	private static double GAME_HERTZ = 30.0;
 	/**
 	 * The calculated value in nanoseconds on how much time <i>should</i> be in between tick functions, based on GAME_HERTZ.
 	 */
-	private static final double TIME_BETWEEN_UPDATES = 1000000000 / GAME_HERTZ;
+	private static double TIME_BETWEEN_UPDATES = 1000000000 / GAME_HERTZ;
 	/**
 	 * An arbitrary value dictating the max amount of ticks() we should do if we are playing catchup.  The lower this is, the better
 	 * render quality on slower machines, but physics/game logic will appear to slow down.  Set this to -1 for 100% accuracy.
 	 */
-	private static final int MAX_UPDATES_BEFORE_RENDER = 5;
+	public static int MAX_UPDATES_BEFORE_RENDER = 5;
 	/**
 	 * When the last time we ticked was.  This is used to determine how many times we need to tick().
 	 */
@@ -65,8 +65,8 @@ public class Remote2D {
 	 */
 	private static double lastRenderTime = System.nanoTime();
 	
-	private static final double TARGET_FPS = 60;
-	private static final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;
+	private static double TARGET_FPS = 60;
+	private static double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;
 	
 	/*----------GAME VARIABLES--------------*/
 	/**
@@ -142,7 +142,7 @@ public class Remote2D {
 				} else if(!(e instanceof Remote2DException))
 					throw new Remote2DException(e);
 			}
-			Display.update();
+			
 			lastRenderTime = now;
 			   
 			int thisSecond = (int) (lastUpdateTime / 1000000000);
@@ -152,6 +152,10 @@ public class Remote2D {
 				fpsCounter = 0;
 				lastSecondTime = thisSecond;
 			}
+			
+			Display.update();
+			//if(TARGET_FPS != -1)
+			//	Display.sync((int)TARGET_FPS);
 			   
 			while ( now - lastRenderTime < TARGET_TIME_BETWEEN_RENDERS && now - lastUpdateTime < TIME_BETWEEN_UPDATES)
 			{
@@ -162,6 +166,18 @@ public class Remote2D {
 				now = System.nanoTime();
 			}
 		}
+	}
+	
+	public static void setTargetFPS(int fps)
+	{
+		TARGET_FPS = fps;
+		TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;
+	}
+	
+	public static void setTargetTPS(int tps)
+	{
+		GAME_HERTZ = tps;
+		TIME_BETWEEN_UPDATES = 1000000000 / GAME_HERTZ;
 	}
 	
 	private static void initGame()

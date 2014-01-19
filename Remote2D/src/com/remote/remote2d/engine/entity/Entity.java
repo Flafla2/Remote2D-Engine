@@ -231,9 +231,9 @@ public class Entity extends EditorObject {
 	 * A general collider that encompasses this Entity's rendered area.  NOT to be used
 	 * for collision detection.
 	 */
-	public Collider getGeneralCollider()
+	public Collider getGeneralCollider(float interpolation)
 	{
-		return pos.getColliderWithDim(getDim());
+		return Interpolator.linearInterpolate(oldPos, pos, interpolation).getColliderWithDim(getDim());
 	}
 	
 	/**
@@ -258,7 +258,7 @@ public class Entity extends EditorObject {
 	 */
 	public Vector2 getPosGlobal(float interpolation)
 	{
-		return Renderer.matrixMultiply(new Vector2(0,0), getTransformMatrix());
+		return Renderer.matrixMultiply(new Vector2(0,0), getTransformMatrix(1));
 	}
 	
 	/**
@@ -269,7 +269,7 @@ public class Entity extends EditorObject {
 	 */
 	public Vector2 getPosGlobal()
 	{
-		return Renderer.matrixMultiply(new Vector2(0,0), getTransformMatrix());
+		return Renderer.matrixMultiply(new Vector2(0,0), getTransformMatrix(1));
 	}
 	
 	/**
@@ -316,23 +316,25 @@ public class Entity extends EditorObject {
 		
 		return retColliders;
 	}
-	
+		
 	/**
 	 * The final matrix made up of the matrices of the combined transformations
 	 * of this Entity and its parents.
 	 * 
 	 * NOTE: Because parents have not been implemented yet this is equivalent to {@link #getLocalTransformMatrix()}
+	 * @param interpolation 
 	 */
-	public Matrix4f getTransformMatrix()
+	public Matrix4f getTransformMatrix(float interpolation)
 	{
-		Matrix4f mat = getLocalTransformMatrix();
+		Matrix4f mat = getLocalTransformMatrix(interpolation);
 
 		return mat;
 	}
 	
-	public Matrix4f getLocalTransformMatrix() {
+	public Matrix4f getLocalTransformMatrix(float interpolation) {
 		Matrix4f mat = new Matrix4f();
-		Matrix4f.translate(new Vector3f(pos.x,pos.y,0), mat, mat);
+		Vector2 vec = Interpolator.linearInterpolate(oldPos, pos, interpolation);
+		Matrix4f.translate(new Vector3f(vec.x,vec.y,0), mat, mat);
 		Matrix4f.rotate((float)((rotation*Math.PI)/180f), new Vector3f(0,0,1), mat, mat);
 		return mat;
 	}
@@ -387,7 +389,7 @@ public class Entity extends EditorObject {
 			components.get(x).renderBefore(editor, interpolation);
 		
 		Renderer.pushMatrix();
-			Renderer.mult(getTransformMatrix());
+			Renderer.mult(getTransformMatrix(interpolation));
 			
 			if(editor)
 			{

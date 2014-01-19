@@ -59,7 +59,12 @@ public class Camera {
 	
 	public ColliderBox getMapRenderArea()
 	{
-		return pos.subtract(getDimensions().divide(new Vector2(2))).getColliderWithDim(getDimensions());
+		return getMapRenderArea(1);
+	}
+	
+	public ColliderBox getMapRenderArea(float interpolation)
+	{
+		return getTruePos(interpolation).subtract(getDimensions().divide(new Vector2(2))).getColliderWithDim(getDimensions());
 	}
 	
 	public Vector2 getDimensions()

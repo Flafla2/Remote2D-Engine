@@ -166,40 +166,20 @@ public class Map implements R2DFileSaver {
 	}
 	
 	/**
-	 * Uses quicksort to sort a batch of collisions by distance traveled.
-	 * @param collection
-	 * @return the sorted batch
+	 * Returns if the given collider collides with any other collider in the map
+	 * @param coll Collider to test
 	 */
-	public static ArrayList<Collision> sortColliders(ArrayList<Collision> collection)
+	public boolean collidesWithMap(Collider coll)
 	{
-		if(collection.size() <= 1)
-			return collection;
-		//Log.debug("sort colliders:"+collection.size());
-		int pivot = collection.size()/2;
-		boolean odd = collection.size()%2 != 0;
-		ArrayList<Collision> less = new ArrayList<Collision>();
-		ArrayList<Collision> more = new ArrayList<Collision>();
-		for(int x=0;x<collection.size();x++)
+		for(int x=0;x<entities.size();x++)
 		{
-			int distanceThis = collection.get(x).max-collection.get(x).min;
-			int distancePivot;
-			if(odd)
-				distancePivot = (collection.get(pivot).max+collection.get(pivot+1).max)/2-(collection.get(pivot).min+collection.get(pivot+1).min)/2;
-			else
-				distancePivot = collection.get(pivot).max-collection.get(pivot).min;
-			//Log.debug(x+" "+distancePivot+" "+distanceThis);
-			if(distanceThis > distancePivot)//if the shortest correction is longer than the pivot(so shortest time to collision), we set it towards the front
-				less.add(collection.get(x));
-			else
-				more.add(collection.get(x));
+			Entity e = entities.get(x);
+			ArrayList<Collider> colliders = e.getColliders();
+			for(Collider c : colliders)
+				if(Collider.collides(coll, c.getTransformedCollider(e.pos)))
+					return true;
 		}
-		
-		//Log.debug("less:"+less.size()+" more:"+more.size());
-		
-		ArrayList<Collision> returnArray = sortColliders(less);
-		returnArray.addAll(sortColliders(more));
-		
-		return returnArray;
+		return false;
 	}
 	
 	public Entity getTopEntityAtPoint(Vector2 vec)

@@ -56,7 +56,7 @@ public class EntityList {
 		entityList.add(i,e);
 		if(iterator != -1)
 		{
-			if(i < iterator)
+			if(i <= iterator)
 				iterator++;
 		}
 	}
@@ -107,12 +107,12 @@ public class EntityList {
 	 */
 	public void render(boolean editor, float interpolation)
 	{
-		ColliderBox ra = map.camera.getMapRenderArea();
+		ColliderBox ra = map.camera.getMapRenderArea(interpolation);
 		for(int i=0;i<entityList.size();i++)
 		{
 			try
 			{
-				if(Collider.collides(entityList.get(i).getGeneralCollider(), ra))
+				if(Collider.collides(entityList.get(i).getGeneralCollider(interpolation), ra))
 					entityList.get(i).render(editor,interpolation);
 			} catch(Exception e)
 			{
@@ -257,7 +257,7 @@ public class EntityList {
 		
 		Entity e = new Entity(map);
 		e.setPrefabPath(path);
-		entityList.add(index,e);
+		addEntityToList(e,index);
 		return e;
 	}
 	
