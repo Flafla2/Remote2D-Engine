@@ -15,7 +15,6 @@ import com.remote.remote2d.engine.entity.component.Component;
 import com.remote.remote2d.engine.entity.component.ComponentCollider;
 import com.remote.remote2d.engine.io.R2DTypeCollection;
 import com.remote.remote2d.engine.logic.Collider;
-import com.remote.remote2d.engine.logic.Collision;
 import com.remote.remote2d.engine.logic.Interpolator;
 import com.remote.remote2d.engine.logic.Vector2;
 import com.remote.remote2d.engine.world.Map;
@@ -303,8 +302,7 @@ public class Entity extends EditorObject {
 			return null;
 		
 		mainCollider = mainCollider.getTransformedCollider(pos);
-		Collision mainColliderCollision = Collider.getCollision(mainCollider, coll.getTransformedCollider(movement));
-		if(!mainColliderCollision.collides)
+		if(!Collider.collides(mainCollider, coll.getTransformedCollider(movement)))
 			return null;
 		
 		ArrayList<Collider> colliders = getColliders();
