@@ -45,6 +45,11 @@ public abstract class Collider {
 		return getCollision(col1,col2).collides;
 	}
 	
+	public static boolean hasCheapCollisionCalculation(Collider col1, Collider col2)
+	{
+		return (col1 instanceof ColliderBox && col2 instanceof ColliderBox) || (col1 instanceof ColliderSphere && col2 instanceof ColliderSphere);
+	}
+	
 	public static Collision getCollision(Collider stationary, Collider responding)
 	{
 		boolean broad = CollisionResponderBroad.doesCollide(stationary, responding);

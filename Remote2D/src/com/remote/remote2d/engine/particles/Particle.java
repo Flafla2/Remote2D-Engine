@@ -54,7 +54,7 @@ public class Particle {
 		velocity = velocity.add(environment);
 		Vector2 correction = new Vector2(0,0);
 		if(map != null)
-			correction = map.getCorrection(pos.subtract(new Vector2(dim/2,dim/2)).getColliderWithDim(new Vector2(dim,dim)), velocity);
+			correction = map.getCorrection(pos.add(velocity).subtract(new Vector2(dim/2,dim/2)).getColliderWithDim(new Vector2(dim,dim)));
 		pos = pos.add(velocity.add(correction));
 		
 		if(!correction.equals(new Vector2(0,0)))

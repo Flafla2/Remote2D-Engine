@@ -286,34 +286,6 @@ public class Entity extends EditorObject {
 	{
 		return pos.copy();
 	}
-	
-	/**
-	 * Assuming this Entity is STATIC (not moving):
-	 * Calculates any potential colliders from this Entity that would collide with the given Collider
-	 * @param coll Any moving collider
-	 * @param movement The movement vector of said collider
-	 * @return If this Entity collides with coll, list of all colliders involved with this Entity.  Otherwise, null.
-	 */
-	public ArrayList<Collider> getPossibleColliders(Collider coll, Vector2 movement)
-	{
-		
-		Collider mainCollider = getBroadPhaseCollider();
-		if(mainCollider == null)
-			return null;
-		
-		mainCollider = mainCollider.getTransformedCollider(pos);
-		if(!Collider.collides(mainCollider, coll.getTransformedCollider(movement)))
-			return null;
-		
-		ArrayList<Collider> colliders = getColliders();
-		ArrayList<Collider> retColliders = new ArrayList<Collider>();
-		for(int x=0;x<colliders.size();x++)
-		{
-			retColliders.add(colliders.get(x).getTransformedCollider(pos));
-		}
-		
-		return retColliders;
-	}
 		
 	/**
 	 * The final matrix made up of the matrices of the combined transformations

@@ -81,7 +81,7 @@ public class ComponentPlayer extends Component {
 		
 		Vector2 globalPos = entity.getPosGlobal();
 		
-		Vector2 correction = entity.getMap().getCorrection(globalPos.getColliderWithDim(entity.getDim()),new Vector2(velocity.getElements()));
+		Vector2 correction = entity.getMap().getCorrection(globalPos.add(velocity).getColliderWithDim(entity.getDim()));
 		velocity = velocity.add(correction);
 		
 		//velocity = velocity.multiply(new Vector2DF(friction,friction));

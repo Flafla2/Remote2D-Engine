@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
+import com.esotericsoftware.minlog.Log;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.entity.EntityList;
@@ -105,12 +106,16 @@ public class Map implements R2DFileSaver {
 			entities.tick(i, j, k);
 	}
 	
-	public Vector2 getCorrection(Entity e, Vector2 movement)
+	public Vector2 getCorrection(Entity e)
 	{
-		Vector2 ret = movement.copy();
+		Vector2 ret = new Vector2(0,0);
 		for(Collider c : e.getColliders())
 		{
-			ret = ret.add(getCorrection(c,movement));
+			Vector2 correction = ret.add(getCorrection(c));
+			if(Math.abs(correction.x) < Math.abs(ret.x))
+				correction.x = ret.x;
+			if(Math.abs(correction.y) < Math.abs(ret.y))
+				correction.y = ret.y;
 		}
 		return ret;
 	}
@@ -118,48 +123,37 @@ public class Map implements R2DFileSaver {
 	/**
 	 * Gives you the correction if you have a moving collider somewhere in the map.
 	 * @param coll The moving collider (before moving)
-	 * @param velocity Said collider's movement vector
 	 * @return The "correction" - just add this to your movement vector and you won't collide with anything
 	 */
-	public Vector2 getCorrection(Collider coll,Vector2 velocity)
+	public Vector2 getCorrection(Collider coll)
 	{
 		ArrayList<Collider> allColliders = new ArrayList<Collider>();
 		
-		//Broad phase: check the main collider of each worldelement.
 		for(int x=0;x<entities.size();x++)
 		{
-			ArrayList<Collider> elementColliders = entities.get(x).getPossibleColliders(coll, velocity);
-			if(elementColliders != null)
+			ArrayList<Collider> elementColliders = entities.get(x).getColliders();
+			if(elementColliders == null)
+				continue;
+			
+			for(int i=0;i<elementColliders.size();i++)
 			{
-				allColliders.addAll(elementColliders);
+				Collider col2 = elementColliders.get(i).getTransformedCollider(entities.get(x).pos);
+				if(!Collider.hasCheapCollisionCalculation(coll, col2) || Collider.collides(coll, col2))
+					allColliders.add(col2);
 			}
 		}
-		
-		//First collision pass: Test to see which element will be hit first, and if they are hit at all
-		ArrayList<Collision> allCollision = new ArrayList<Collision>();
-		ArrayList<Collider> colliding = new ArrayList<Collider>();
+				
+		Vector2 correction = new Vector2(0,0);
 		for(int x=0;x<allColliders.size();x++)
 		{
 			Collider other = allColliders.get(x);
-			Collision collision = Collider.getCollision(other, coll.getTransformedCollider(velocity));
+			Collision collision = Collider.getCollision(other, coll);
 			if(collision.collides)
 			{
-				allCollision.add(collision);
-				colliding.add(other);
-			}
-		}
-		
-		Collections.sort(allCollision, new CollisionComparator());
-		
-		//Second collsion pass: Get the actual collision vectors of each collider and add it to the main return vector
-		Vector2 correction = new Vector2(0,0);
-		for(int x=0;x<allCollision.size();x++)
-		{
-			Collider other = colliding.get(x);
-			Collision collision = Collider.getCollision(other, coll.getTransformedCollider(velocity.add(correction)));
-			if(collision.collides)
-			{
-				correction = correction.add(collision.correction);
+				if(Math.abs(correction.x) < Math.abs(collision.correction.x))
+					correction.x = collision.correction.x;
+				if(Math.abs(correction.y) < Math.abs(collision.correction.y))
+					correction.y = collision.correction.y;
 			}
 		}
 		return correction;
