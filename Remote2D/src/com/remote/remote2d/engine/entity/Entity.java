@@ -12,7 +12,6 @@ import com.remote.remote2d.engine.art.Material;
 import com.remote.remote2d.engine.art.Renderer;
 import com.remote.remote2d.engine.art.ResourceLoader;
 import com.remote.remote2d.engine.entity.component.Component;
-import com.remote.remote2d.engine.entity.component.ComponentCollider;
 import com.remote.remote2d.engine.io.R2DTypeCollection;
 import com.remote.remote2d.engine.logic.Collider;
 import com.remote.remote2d.engine.logic.Interpolator;
@@ -188,8 +187,10 @@ public class Entity extends EditorObject {
 		ArrayList<Collider> colliders = new ArrayList<Collider>();
 		for(Component c : components)
 		{
-			if(c instanceof ComponentCollider)
-				colliders.add(((ComponentCollider)c).getCollider());
+			Collider[] colls = c.getColliders();
+			if(colls != null)
+				for(Collider col : colls)
+					colliders.add(col);
 		}
 		return colliders;
 	}

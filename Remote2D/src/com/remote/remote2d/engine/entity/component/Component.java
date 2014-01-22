@@ -6,6 +6,7 @@ import com.remote.remote2d.engine.Remote2DException;
 import com.remote.remote2d.engine.entity.EditorObject;
 import com.remote.remote2d.engine.entity.Entity;
 import com.remote.remote2d.engine.io.R2DTypeCollection;
+import com.remote.remote2d.engine.logic.Collider;
 
 /**
  * A component is an "attachment" to an entity, which modifies its behavior.
@@ -58,6 +59,16 @@ public abstract class Component extends EditorObject{
 	 * Called upon initializing this Component.  Use this instead of a constructor!
 	 */
 	public abstract void init();
+	
+	/**
+	 * @return An array of colliders (local to this entity - in other words {@link Entity#pos}
+	 * should be the origin of these colliders) that should be considered by {@link com.remote.remote2d.engine.world.Map#collidesWithMap(Collider)}
+	 * and {@link com.remote.remote2d.engine.world.Map#getCorrection(Collider)}, or null if none exist.
+	 */
+	public Collider[] getColliders()
+	{
+		return null;
+	}
 	
 	public static Component newInstanceWithEntity(Class<?> componentClass, Entity entity)
 	{
