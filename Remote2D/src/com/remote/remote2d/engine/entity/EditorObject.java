@@ -81,7 +81,10 @@ public abstract class EditorObject implements R2DFileSaver {
 					} else if(o instanceof Float)
 					{
 						collection.setFloat(fields[x].getName(), (Float)o);
-					} else if(o instanceof Vector2)
+					} else if(o instanceof Double)
+					{
+						collection.setDouble(fields[x].getName(), (Double)o);
+					}  else if(o instanceof Vector2)
 					{
 						collection.setVector2D(fields[x].getName(), (Vector2)o);
 					} else if(o instanceof Texture)
@@ -146,6 +149,8 @@ public abstract class EditorObject implements R2DFileSaver {
 						field.set(this, collection.getString(field.getName()));
 					else if(field.getType() == float.class)
 						field.set(this, collection.getFloat(field.getName()));
+					else if(field.getType() == double.class)
+						field.set(this, collection.getDouble(field.getName()));
 					else if(field.getType() == long.class)
 						field.set(this, collection.getLong(field.getName()));
 					else if(field.getType() == Texture.class)
