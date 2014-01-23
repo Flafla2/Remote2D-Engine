@@ -68,6 +68,13 @@ public class EditorObjectWizard {
 							sec.textField.text = o+"";
 						sections.add(sec);
 						currentPos.y += sec.sectionHeight();
+					}  else if(type == double.class)
+					{
+						GuiEditorInspectorSectionDouble sec = new GuiEditorInspectorSectionDouble(name,editor,currentPos,width);
+						if(o != null)
+							sec.textField.text = o+"";
+						sections.add(sec);
+						currentPos.y += sec.sectionHeight();
 					} else if(type == Vector2.class)
 					{
 						GuiEditorInspectorSectionVec2D sec = new GuiEditorInspectorSectionVec2D(name,editor,currentPos,width);
